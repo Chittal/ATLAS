@@ -1,0 +1,16 @@
+{% for stop_id, pos in map_data.positions.items() %}
+<div class="station" 
+     data-stop-id="{{ stop_id }}"
+     data-name="{{ pos.name }}"
+     data-level="{{ pos.level }}"
+     style="left: {{ pos.x - 10 }}px; top: {{ pos.y - 10 }}px; background-color: #666;"
+     title="{{ pos.name }}">
+</div>
+
+<div class="station-label" 
+     style="left: {{ pos.x }}px; top: {{ pos.y + 18 }}px; transform: translateX(-50%);">
+    {{ pos.name }}
+</div>
+{% endfor %}
+
+

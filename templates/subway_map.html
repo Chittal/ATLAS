@@ -1,0 +1,799 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ map_data.title }}{% endblock %}
+
+{% block base_styles %}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .user-selector {
+            background: #34495e;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .user-selector button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .user-selector button:hover, .user-selector button.active {
+            background: #2980b9;
+        }
+
+        .map-container {
+            padding: 40px;
+            background: white;
+            position: relative;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0 20px 0;
+        }
+
+        .filter-bar label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .zoom-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+            min-width: 40px;
+        }
+
+        .zoom-btn:hover {
+            background: #2980b9;
+        }
+
+        .zoom-btn:active {
+            background: #21618c;
+        }
+
+        .subway-map {
+            width: 100%;
+            height: 70vh; /* responsive viewport */
+            background: white;
+            position: relative;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .subway-map:active {
+            cursor: grabbing;
+        }
+
+        /* Fixed coordinate stage (800x600) scaled to fit container */
+        .map-stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 800px;
+            height: 600px;
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
+        }
+
+        .map-svg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .station {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 3;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .station:hover {
+            transform: scale(1.3);
+        }
+
+        .station.transfer {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 4px solid #333;
+        }
+
+        .station-label {
+            position: absolute;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            white-space: normal;
+            word-wrap: break-word;
+            z-index: 4;
+            max-width: 200px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            line-height: 1.2;
+        }
+
+        .station-tooltip {
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            max-width: 200px;
+        }
+
+        .track-indicators {
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .track-indicator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin-right: 2px;
+            border-radius: 50%;
+        }
+
+        /* Legend - moved to bottom */
+        .legend-bottom {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .legend-bottom h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .legend-items {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            max-width: 300px;
+        }
+
+        .user-info h4 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .user-info p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* North arrow */
+        .north-arrow {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 20px solid #333;
+            z-index: 10;
+        }
+
+        .north-arrow::after {
+            content: 'N';
+            position: absolute;
+            top: 25px;
+            left: -4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .map-container {
+                padding: 20px;
+            }
+            
+            .subway-map {
+                height: 500px;
+            }
+            
+            .legend-items {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .user-info {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-top: 20px;
+            }
+        }
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="header">
+            <h1>{{ map_data.title }}</h1>
+            <p>Multi-user AI Learning Path Visualization</p>
+        </div>
+        
+        
+        
+        <div class="map-container">
+            <div class="filter-bar">
+                <label for="audFilter">Audience:</label>
+                <select id="audFilter">
+                    <option value="all" selected>All</option>
+                    <option value="knowledge_workers">Knowledge Workers</option>
+                    <option value="technical_workers">Technical Workers</option>
+                    <option value="managers">Managers</option>
+                </select>
+                
+                <div class="zoom-controls">
+                    <button id="zoomIn" class="zoom-btn">+</button>
+                    <button id="zoomOut" class="zoom-btn">-</button>
+                    <button id="zoomReset" class="zoom-btn">Reset</button>
+                </div>
+            </div>
+            <div class="subway-map" id="subwayMap">
+                <div class="map-stage" id="mapStage" 
+                     style="width: {{ map_data.stage.width }}px; height: {{ map_data.stage.height }}px;"
+                     data-stage-w="{{ map_data.stage.width }}" data-stage-h="{{ map_data.stage.height }}">
+                    <!-- Tracks (HTMX fragment) -->
+                    <div id="tracks-fragment" 
+                     hx-get="/fragments/tracks?user=all" 
+                     hx-trigger="load" 
+                     hx-swap="outerHTML">
+                        Loading tracks...
+                    </div>
+
+                    <!-- Stations (HTMX fragment) -->
+                    <div id="stations-fragment"
+                     hx-get="/fragments/stations?user=all"
+                     hx-trigger="load"
+                     hx-swap="outerHTML">
+                        Loading stations...
+                    </div>
+                </div>
+
+                <!-- Tooltip -->
+                <div class="station-tooltip" id="tooltip"></div>
+
+                <!-- North arrow -->
+                <div class="north-arrow"></div>
+            </div>
+
+
+            
+        </div>
+        
+        <!-- Legend moved to bottom -->
+        <div class="legend-bottom">
+            <h3>Learning Tracks</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: {{ map_data.colors.knowledge_workers }};"></div>
+                    <span>Knowledge Workers</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: {{ map_data.colors.technical_workers }};"></div>
+                    <span>Technical Workers</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: {{ map_data.colors.managers }};"></div>
+                    <span>Managers</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // Map data from server
+        const mapData = {{ map_data | tojson }};
+        const colors = mapData.colors;
+        
+        // User type descriptions
+        const userDescriptions = {
+            knowledge_workers: {
+                title: "Knowledge Workers",
+                description: "Conceptual learners seeking relevance and confidence. Focus on understanding AI concepts and practical applications in their domain."
+            },
+            technical_workers: {
+                title: "Technical Workers", 
+                description: "Hands-on learners seeking structured mastery. Focus on implementation, coding, and technical deep-dives."
+            },
+            managers: {
+                title: "Managers/Organizations",
+                description: "Need visibility, guidance, and workforce development. Focus on strategy, ROI, and organizational AI adoption."
+            }
+        };
+
+        // HTMX will render tracks/stations; functions left for tooltip behavior
+        
+        function drawTransferConnections(svg) {
+            // Math Foundations transfer (t2) - connects conceptual and technical
+            const mathFoundations = mapData.positions['t2'];
+            const libraries = mapData.positions['c4']; // Libraries & Tools
+            
+            if (mathFoundations && libraries) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', libraries.x);
+                line.setAttribute('y1', libraries.y);
+                line.setAttribute('x2', mathFoundations.x);
+                line.setAttribute('y2', mathFoundations.y);
+                line.setAttribute('stroke', colors.conceptual);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('stroke-dasharray', '3,3');
+                svg.appendChild(line);
+            }
+            
+            // Deep Learning transfer - connects technical and business
+            const deepLearning = mapData.positions['deeplearning'];
+            const aiOrganizations = mapData.positions['b3'];
+            
+            if (deepLearning && aiOrganizations) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', deepLearning.x);
+                line.setAttribute('y1', deepLearning.y);
+                line.setAttribute('x2', aiOrganizations.x);
+                line.setAttribute('y2', aiOrganizations.y);
+                line.setAttribute('stroke', colors.technical);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('stroke-dasharray', '3,3');
+                svg.appendChild(line);
+            }
+        }
+        
+        function drawSharedConnections(svg) {
+            // Connect to Ethics from multiple points
+            const ethics = mapData.positions['ethics'];
+            
+            // From Prompting Fundamentals
+            const prompting = mapData.positions['c3'];
+            if (ethics && prompting) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', prompting.x);
+                line.setAttribute('y1', prompting.y);
+                line.setAttribute('x2', ethics.x);
+                line.setAttribute('y2', ethics.y);
+                line.setAttribute('stroke', colors.shared);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('stroke-dasharray', '5,5');
+                svg.appendChild(line);
+            }
+            
+            // From Deep Learning Fundamentals
+            const deepLearning = mapData.positions['deeplearning'];
+            if (ethics && deepLearning) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', deepLearning.x);
+                line.setAttribute('y1', deepLearning.y);
+                line.setAttribute('x2', ethics.x);
+                line.setAttribute('y2', ethics.y);
+                line.setAttribute('stroke', colors.shared);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('stroke-dasharray', '5,5');
+                svg.appendChild(line);
+            }
+            
+            // From AI in Organizations
+            const aiOrgs = mapData.positions['b3'];
+            if (ethics && aiOrgs) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', aiOrgs.x);
+                line.setAttribute('y1', aiOrgs.y);
+                line.setAttribute('x2', ethics.x);
+                line.setAttribute('y2', ethics.y);
+                line.setAttribute('stroke', colors.shared);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                line.setAttribute('stroke-dasharray', '5,5');
+                svg.appendChild(line);
+            }
+            
+            // Connect Ethics to Future
+            const future = mapData.positions['future'];
+            if (ethics && future) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', ethics.x);
+                line.setAttribute('y1', ethics.y);
+                line.setAttribute('x2', future.x);
+                line.setAttribute('y2', future.y);
+                line.setAttribute('stroke', colors.shared);
+                line.setAttribute('stroke-width', '8');
+                line.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(line);
+            }
+        }
+        
+        function drawSpecializationBranches(svg) {
+            const deepLearning = mapData.positions['deeplearning'];
+            
+            // Computer Vision branch
+            const vision = mapData.positions['vision'];
+            if (deepLearning && vision) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', deepLearning.x);
+                line.setAttribute('y1', deepLearning.y);
+                line.setAttribute('x2', vision.x);
+                line.setAttribute('y2', vision.y);
+                line.setAttribute('stroke', colors.specializations);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(line);
+            }
+            
+            // NLP branch
+            const nlp = mapData.positions['nlp'];
+            if (deepLearning && nlp) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', deepLearning.x);
+                line.setAttribute('y1', deepLearning.y);
+                line.setAttribute('x2', nlp.x);
+                line.setAttribute('y2', nlp.y);
+                line.setAttribute('stroke', colors.specializations);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(line);
+            }
+            
+            // MLOps branch
+            const mlops = mapData.positions['mlops'];
+            if (deepLearning && mlops) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', deepLearning.x);
+                line.setAttribute('y1', deepLearning.y);
+                line.setAttribute('x2', mlops.x);
+                line.setAttribute('y2', mlops.y);
+                line.setAttribute('stroke', colors.specializations);
+                line.setAttribute('stroke-width', '6');
+                line.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(line);
+            }
+        }
+
+        // Update station colors based on user type
+        function updateStationsForUser(userType) {
+            const stations = document.querySelectorAll('.station');
+            
+            stations.forEach(station => {
+                const stopId = station.dataset.stopId;
+                const pos = mapData.positions[stopId];
+                
+                if (!pos) return;
+                
+                // Find which tracks this station belongs to
+                let stationColor = '#666';
+                let isTransfer = false;
+                let trackCount = 0;
+                
+                // Check main tracks
+                mapData.tracks.forEach(track => {
+                    const stop = track.stops.find(s => s.id === stopId);
+                    if (stop) {
+                        trackCount++;
+                        if (userType === 'all' || stop.audience.includes(userType)) {
+                            stationColor = colors[track.id];
+                        }
+                    }
+                });
+                
+                // Check shared stops
+                const sharedStop = mapData.shared_stops.find(s => s.id === stopId);
+                if (sharedStop) {
+                    trackCount++;
+                    if (userType === 'all' || sharedStop.audience.includes(userType)) {
+                        stationColor = colors.shared;
+                    }
+                }
+                
+                // Check specializations
+                const spec = mapData.specializations.find(s => s.id === stopId);
+                if (spec) {
+                    trackCount++;
+                    if (userType === 'all' || spec.audience.includes(userType)) {
+                        stationColor = colors.specializations;
+                    }
+                }
+                
+                // Identify transfer stations
+                const transferStations = ['t2', 'deeplearning', 'b3', 'ethics'];
+                isTransfer = transferStations.includes(stopId) || trackCount > 1;
+                
+                station.style.backgroundColor = stationColor;
+                station.className = `station ${isTransfer ? 'transfer' : ''}`;
+            });
+        }
+
+        // Update user info
+        function updateUserInfo(userType) {
+            const userInfo = document.getElementById('userInfo');
+            
+            if (userType === 'all') {
+                userInfo.innerHTML = `
+                    <h4>All Learning Paths</h4>
+                    <p>This view shows all learning tracks and how they connect. Different user types can follow different paths through the same subway system.</p>
+                `;
+            } else {
+                const userDesc = userDescriptions[userType];
+                userInfo.innerHTML = `
+                    <h4>${userDesc.title}</h4>
+                    <p>${userDesc.description}</p>
+                `;
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentScale = 1;
+            let baseScale = 1;
+            let isDragging = false;
+            let dragStart = { x: 0, y: 0 };
+            let currentPan = { x: 0, y: 0 };
+            
+            // Scale the fixed stage to fit container while preserving aspect
+            function scaleStage() {
+                const container = document.getElementById('subwayMap');
+                const stage = document.getElementById('mapStage');
+                if (!container || !stage) return;
+                const cw = container.clientWidth;
+                const ch = container.clientHeight;
+                const sw = parseFloat(stage.getAttribute('data-stage-w')) || 800;
+                const sh = parseFloat(stage.getAttribute('data-stage-h')) || 600;
+                baseScale = Math.min(cw / sw, ch / sh);
+                applyZoom();
+            }
+            
+            function applyZoom() {
+                const stage = document.getElementById('mapStage');
+                if (!stage) return;
+                const finalScale = baseScale * currentScale;
+                stage.style.transform = `scale(${finalScale}) translate(${currentPan.x}px, ${currentPan.y}px)`;
+                stage.style.transformOrigin = 'top left';
+            }
+            
+            // Zoom functions
+            function zoomIn() {
+                currentScale = Math.min(currentScale * 1.2, 3); // Max 3x zoom
+                applyZoom();
+            }
+            
+            function zoomOut() {
+                currentScale = Math.max(currentScale / 1.2, 0.3); // Min 0.3x zoom
+                applyZoom();
+            }
+            
+            function zoomReset() {
+                currentScale = 1;
+                currentPan = { x: 0, y: 0 };
+                applyZoom();
+            }
+            
+            // Initial setup
+            scaleStage();
+            window.addEventListener('resize', scaleStage);
+            
+            // Zoom button event listeners
+            document.getElementById('zoomIn').addEventListener('click', zoomIn);
+            document.getElementById('zoomOut').addEventListener('click', zoomOut);
+            document.getElementById('zoomReset').addEventListener('click', zoomReset);
+            
+            // Pan/drag functionality
+            const subwayMap = document.getElementById('subwayMap');
+            
+            subwayMap.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                dragStart.x = e.clientX - currentPan.x;
+                dragStart.y = e.clientY - currentPan.y;
+                subwayMap.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                currentPan.x = e.clientX - dragStart.x;
+                currentPan.y = e.clientY - dragStart.y;
+                applyZoom();
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                subwayMap.style.cursor = 'grab';
+            });
+            
+            // Prevent context menu on right click
+            subwayMap.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+            
+            // Audience filter select
+            const audSel = document.getElementById('audFilter');
+            function applyFilter() {
+                const userType = audSel.value;
+                // Highlight edges by data-audience; grey out the rest
+                const svg = document.querySelector('.map-svg');
+                const edges = svg ? svg.querySelectorAll('path[data-audience]') : [];
+                edges.forEach(p => {
+                    const aud = p.getAttribute('data-audience');
+                    if (userType === 'all' || aud === userType) {
+                        p.style.opacity = '1';
+                        p.style.filter = 'none';
+                        p.style.strokeWidth = '8px';
+                    } else {
+                        p.style.opacity = '0.2';
+                        p.style.filter = 'grayscale(100%)';
+                        p.style.strokeWidth = '6px';
+                    }
+                });
+                // Stations: highlight those incident to highlighted edges
+                const activeNodes = new Set();
+                edges.forEach(p => {
+                    const aud = p.getAttribute('data-audience');
+                    if (userType === 'all' || aud === userType) {
+                        activeNodes.add(p.getAttribute('data-from'));
+                        activeNodes.add(p.getAttribute('data-to'));
+                    }
+                });
+                document.querySelectorAll('.station').forEach(st => {
+                    const id = st.getAttribute('data-stop-id');
+                    if (userType === 'all' || activeNodes.has(id)) {
+                        st.style.opacity = '1';
+                    } else {
+                        st.style.opacity = '0.5';
+                    }
+                });
+                document.querySelectorAll('.station-label').forEach(lbl => {
+                    // No reliable id; leave labels as-is but dim when station dimmed
+                });
+            }
+            audSel.addEventListener('change', applyFilter);
+            // Run once after HTMX loads fragments
+            document.body.addEventListener('htmx:afterSwap', function(evt){
+                if (evt.detail && evt.detail.target && (evt.detail.target.id === 'tracks-fragment' || evt.detail.target.id === 'stations-fragment')) {
+                    applyFilter();
+                }
+            });
+            
+            // Station tooltips
+            const tooltip = document.getElementById('tooltip');
+            document.querySelectorAll('.station').forEach(station => {
+                station.addEventListener('mouseenter', function(e) {
+                    const name = this.dataset.name;
+                    const level = this.dataset.level;
+                    tooltip.innerHTML = `<strong>${name}</strong><br/>Level: ${level}`;
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY - 10 + 'px';
+                    tooltip.style.opacity = '1';
+                });
+                
+                station.addEventListener('mouseleave', function() {
+                    tooltip.style.opacity = '0';
+                });
+                
+                station.addEventListener('mousemove', function(e) {
+                    tooltip.style.left = e.pageX + 10 + 'px';
+                    tooltip.style.top = e.pageY - 10 + 'px';
+                });
+            });
+        });
+    </script>
+{% endblock %}

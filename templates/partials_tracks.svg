@@ -1,0 +1,83 @@
+<svg class="map-svg" viewBox="0 0 {{ map_data.stage.width }} {{ map_data.stage.height }}" preserveAspectRatio="none">
+    {% if map_data.nodes is defined and map_data.edges is defined %}
+        {# New schema edges: draw by audience_type color #}
+        {% for edge in map_data.edges %}
+            {% set s1 = map_data.positions.get(edge.from) %}
+            {% set s2 = map_data.positions.get(edge.to) %}
+            {% if s1 and s2 %}
+                {% set mx = (s1.x + s2.x) / 2 %}
+                {% set my = (s1.y + s2.y) / 2 %}
+                {% set dx = s2.x - s1.x %}
+                {% set dy = s2.y - s1.y %}
+                {% set bend = 0.25 %}
+                {% set cx = s1.x + dx * 0.5 %}
+                {% set cy = s1.y + dy * 0.5 + (dx * bend * (1 if dy >= 0 else -1)) %}
+                <path d="M {{ s1.x }} {{ s1.y }} Q {{ cx }} {{ cy }} {{ s2.x }} {{ s2.y }}"
+                      data-audience="{{ edge.color_key or edge.audience_type }}" data-from="{{ edge.from }}" data-to="{{ edge.to }}"
+                      fill="none" stroke="{{ map_data.colors.get(edge.color_key or edge.audience_type, '#1f77b4') }}" stroke-width="8" stroke-linecap="round"/>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {# Legacy schema: connections based on stops.next #}
+        {% for track in map_data.tracks %}
+            {% for stop in track.stops %}
+                {% if stop.next is defined %}
+                    {% for nxt in stop.next %}
+                        {% set s1 = map_data.positions.get(stop.id) %}
+                        {% set s2 = map_data.positions.get(nxt) %}
+                        {% if s1 and s2 %}
+                            {% set mx = (s1.x + s2.x) / 2 %}
+                            {% set my = (s1.y + s2.y) / 2 %}
+                            {% set cx = mx %}
+                            {% set cy = my + 40 %}
+                            <path d="M {{ s1.x }} {{ s1.y }} Q {{ cx }} {{ cy }} {{ s2.x }} {{ s2.y }}"
+                                  fill="none"
+                                  stroke="{{ map_data.colors[track.id] }}"
+                                  stroke-width="8"
+                                  stroke-linecap="round"/>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Cross connections and shared/specialization branches -->
+    {% if map_data.shared_stops is defined %}
+    {# Shared stops edges #}
+    {% for stop in map_data.shared_stops %}
+        {% if stop.next is defined %}
+            {% set s1 = map_data.positions.get(stop.id) %}
+            {% for nxt in stop.next %}
+                {% set s2 = map_data.positions.get(nxt) %}
+                {% if s1 and s2 %}
+                    {% set mx = (s1.x + s2.x) / 2 %}
+                    {% set my = (s1.y + s2.y) / 2 %}
+                    <path d="M {{ s1.x }} {{ s1.y }} Q {{ mx }} {{ my - 25 }} {{ s2.x }} {{ s2.y }}"
+                          fill="none" stroke="{{ map_data.colors.shared }}" stroke-width="8" stroke-linecap="round"/>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    {% if map_data.specializations is defined %}
+    {# Specializations edges #}
+    {% for spec in map_data.specializations %}
+        {% if spec.next is defined %}
+            {% set s1 = map_data.positions.get(spec.id) %}
+            {% for nxt in spec.next %}
+                {% set s2 = map_data.positions.get(nxt) %}
+                {% if s1 and s2 %}
+                    {% set mx = (s1.x + s2.x) / 2 %}
+                    {% set my = (s1.y + s2.y) / 2 %}
+                    <path d="M {{ s1.x }} {{ s1.y }} Q {{ mx }} {{ my + 20 }} {{ s2.x }} {{ s2.y }}"
+                          fill="none" stroke="{{ map_data.colors.specializations }}" stroke-width="6" stroke-linecap="round"/>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+</svg>
+
+
