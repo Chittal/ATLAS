@@ -1,0 +1,61 @@
+{
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "Python",
+      "description": "Programming foundations with Python, including syntax, data structures, and libraries for data science.",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            {
+              "type": "course",
+              "title": "Python for Everybody",
+              "url": "https://www.coursera.org/learn/python",
+              "difficulty": "beginner"
+            }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            {
+              "type": "article",
+              "title": "What is Python and Why is it Used in AI?",
+              "url": "https://realpython.com/what-is-python-used-for/",
+              "difficulty": "beginner"
+            }
+          ]
+        },
+        "managers": {
+          "resources": [
+            {
+              "type": "article",
+              "title": "Why Python Dominates AI and Data Science",
+              "url": "https://hbr.org",
+              "difficulty": "beginner"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Machine Learning",
+      "description": "Core ML concepts: supervised and unsupervised learning, model evaluation, and practical applications.",
+      "resources": {}
+    },
+    {
+      "id": "n3",
+      "name": "Artificial Intelligence",
+      "description": "Broader AI topics including NLP, computer vision, reinforcement learning, generative AI, and ethics.",
+      "resources": {}
+    }
+  ],
+  "edges": [
+    { "from": "n1", "to": "n2", "audience_type": "technical_workers" },
+    { "from": "n1", "to": "n2", "audience_type": "knowledge_workers" },
+    { "from": "n1", "to": "n2", "audience_type": "managers" },
+    { "from": "n2", "to": "n3", "audience_type": "technical_workers" },
+    { "from": "n2", "to": "n3", "audience_type": "knowledge_workers" },
+    { "from": "n2", "to": "n3", "audience_type": "managers" }
+  ]
+}

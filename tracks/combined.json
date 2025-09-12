@@ -1,0 +1,530 @@
+{
+  "nodes": [
+    {
+      "id": "py1",
+      "name": "Python Basics",
+      "description": "Learn Python syntax, variables, loops, functions, and basic programming concepts.",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Python for Everybody", "url": "https://www.coursera.org/learn/python", "difficulty": "beginner" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Python Basics for Non-Programmers", "url": "https://realpython.com/python-basics/", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "guide", "title": "Why Python is Popular in AI & Data", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "py2",
+      "name": "Data Structures & OOP",
+      "description": "Lists, dictionaries, sets, tuples, classes, and object-oriented programming in Python.",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Python Data Structures", "url": "https://www.coursera.org/learn/python-data", "difficulty": "beginner" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Understanding Python Data Structures", "url": "https://realpython.com/python-data-structures/", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "guide", "title": "Data Organization Concepts for Leaders", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "py3",
+      "name": "Python Libraries",
+      "description": "Learn libraries like NumPy, Pandas, Matplotlib, and Seaborn for data handling and visualization.",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Python for Data Science", "url": "https://www.datacamp.com/courses/intro-to-python-for-data-science", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Data Visualization with Python", "url": "https://realpython.com/python-matplotlib-guide/", "difficulty": "intermediate" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "guide", "title": "Understanding Data Tools", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "py4",
+      "name": "File Handling & APIs",
+      "description": "Read/write files, work with CSV/JSON, and interact with APIs using Python.",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Working with Web Data in Python", "url": "https://www.coursera.org/learn/python-network-data", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Working with Data Files", "url": "https://realpython.com/working-with-files-in-python/", "difficulty": "intermediate" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "guide", "title": "Data Integration Concepts", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "py5",
+      "name": "Python for Data Science",
+      "description": "Use Python for data analysis, cleaning, visualization, and basic statistics.",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Data Analysis with Python", "url": "https://www.coursera.org/learn/data-analysis-with-python", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Data Science Fundamentals", "url": "https://towardsdatascience.com/data-science-fundamentals", "difficulty": "intermediate" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "guide", "title": "Data-Driven Decision Making", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ml1",
+      "name": "Math & Statistics",
+      "description": "Linear algebra, calculus, probability, and statistics for ML",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Mathematics for Machine Learning", "url": "https://www.coursera.org/specializations/mathematics-machine-learning", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "guide", "title": "Statistics 101", "url": "https://towardsdatascience.com/statistics-for-data-science-7102f80688a5", "difficulty": "beginner" }
+          ]
+        },
+        "managers": { "resources": [] }
+      }
+    },
+    {
+      "id": "ml2",
+      "name": "Programming Foundations",
+      "description": "Advanced Python, data handling with NumPy, Pandas, and visualization",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Advanced Python for Data Science", "url": "https://www.datacamp.com/courses/intermediate-python", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": { "resources": [] },
+        "managers": { "resources": [] }
+      }
+    },
+    {
+      "id": "ml3",
+      "name": "Data Preprocessing",
+      "description": "Data cleaning, feature engineering, handling missing data",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Feature Engineering", "url": "https://www.coursera.org/learn/feature-engineering", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Understanding Data Preparation", "url": "https://towardsdatascience.com/data-preprocessing-in-data-science", "difficulty": "beginner" }
+          ]
+        },
+        "managers": { "resources": [] }
+      }
+    },
+    {
+      "id": "ml4",
+      "name": "Supervised Learning",
+      "description": "Regression, classification, decision trees, ensembles",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Supervised Machine Learning", "url": "https://www.coursera.org/learn/machine-learning", "difficulty": "beginner" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "guide", "title": "Supervised vs Unsupervised Learning", "url": "https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "article", "title": "Business Applications of Supervised ML", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ml5",
+      "name": "Unsupervised Learning",
+      "description": "Clustering, dimensionality reduction, anomaly detection",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Unsupervised Learning in Python", "url": "https://www.datacamp.com/courses/unsupervised-learning-in-python", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Clustering Explained Simply", "url": "https://towardsdatascience.com/clustering-basics", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "AI for Market Segmentation", "url": "https://www.mckinsey.com", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ml6",
+      "name": "Model Evaluation",
+      "description": "Metrics like accuracy, precision, recall, F1, ROC, cross-validation",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Evaluating Machine Learning Models", "url": "https://www.coursera.org/learn/machine-learning-data-analysis", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "guide", "title": "ML Metrics for Non-Experts", "url": "https://towardsdatascience.com/evaluating-ml-models", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "article", "title": "KPIs for ML Projects", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ml7",
+      "name": "Deep Learning",
+      "description": "Neural networks, CNNs, RNNs, transformers",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Deep Learning Specialization", "url": "https://www.coursera.org/specializations/deep-learning", "difficulty": "advanced" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "What is Deep Learning?", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "Deep Learning Business Impact", "url": "https://www.bcg.com", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai1",
+      "name": "AI Foundations",
+      "description": "Core concepts of AI, ML, and Data - building on ML knowledge",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Machine Learning Specialization", "url": "https://www.coursera.org/specializations/machine-learning-introduction", "difficulty": "beginner" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "AI Basics for Business", "url": "https://hbr.org/2019/10/the-potential-and-limits-of-ai", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "AI and the Future of Work", "url": "https://www.weforum.org/reports/ai-future-of-work", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai2",
+      "name": "Prompt Engineering",
+      "description": "Learn how to design effective prompts for AI systems",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Prompt Engineering for Developers", "url": "https://learn.deeplearning.ai/courses/prompt-engineering", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "guide", "title": "Prompting for Non-Technical Professionals", "url": "https://www.promptingguide.ai", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "article", "title": "How Prompt Engineering Impacts Productivity", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai3",
+      "name": "LLMs & Fine-Tuning",
+      "description": "Deep dive into large language models and customization",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Fine-Tuning Language Models", "url": "https://huggingface.co/course/chapter3", "difficulty": "advanced" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Understanding LLMs", "url": "https://towardsdatascience.com/llm-for-everyone", "difficulty": "intermediate" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "The Economics of Large Language Models", "url": "https://openai.com/research", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai4",
+      "name": "Data Engineering for AI",
+      "description": "Pipelines, ETL, data quality, governance for AI systems",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Data Engineering Zoomcamp", "url": "https://github.com/DataTalksClub/data-engineering-zoomcamp", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": { "resources": [] },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "Data Governance in AI Projects", "url": "https://oecd.ai", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai5",
+      "name": "MLOps & AI Deployment",
+      "description": "Model deployment, monitoring, CI/CD for ML and AI systems",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "MLOps Specialization", "url": "https://www.coursera.org/specializations/mlops-machine-learning-production", "difficulty": "advanced" }
+          ]
+        },
+        "knowledge_workers": { "resources": [] },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "Operationalizing ML", "url": "https://weforum.org", "difficulty": "intermediate" },
+            { "type": "article", "title": "Best Practices for AI Deployment", "url": "https://hbr.org", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai6",
+      "name": "AI Ethics & Governance",
+      "description": "Responsible AI, bias, fairness, and compliance",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Ethics in AI", "url": "https://www.edx.org/course/ethics-of-ai", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "Everyday AI Ethics", "url": "https://www.weforum.org/agenda/2020/10/ai-ethics-explained", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "AI Governance Frameworks", "url": "https://oecd.ai/en/guidelines", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai7",
+      "name": "Generative AI Applications",
+      "description": "Text, image, audio, and multimodal AI systems",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Generative AI with Diffusion Models", "url": "https://learn.deeplearning.ai/courses/generative-ai", "difficulty": "advanced" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "guide", "title": "Creative Use of Generative AI", "url": "https://www.adobe.com/sensei/generative-ai.html", "difficulty": "intermediate" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "Generative AI in Enterprises", "url": "https://www.bcg.com", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai8",
+      "name": "AI in Business Applications",
+      "description": "Use cases in marketing, finance, HR, operations, and industry-specific applications",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "course", "title": "Applied Machine Learning", "url": "https://www.coursera.org/learn/applied-machine-learning", "difficulty": "intermediate" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "course", "title": "AI for Everyone", "url": "https://www.coursera.org/learn/ai-for-everyone", "difficulty": "beginner" },
+            { "type": "guide", "title": "Practical ML Applications", "url": "https://towardsdatascience.com/ml-usecases", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "article", "title": "AI Business Case Studies", "url": "https://www.mckinsey.com/featured-insights/artificial-intelligence", "difficulty": "beginner" },
+            { "type": "report", "title": "ML in Industry", "url": "https://mckinsey.com", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai9",
+      "name": "AI Regulation & Policy",
+      "description": "Understanding AI laws, compliance, and global policies",
+      "resources": {
+        "technical_workers": { "resources": [] },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "EU AI Act Simplified", "url": "https://artificialintelligenceact.eu", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "AI Regulation Landscape", "url": "https://oecd.ai/en/policy", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai10",
+      "name": "Future of Work with AI",
+      "description": "How AI transforms careers, productivity, and organizations",
+      "resources": {
+        "technical_workers": {
+          "resources": [
+            { "type": "article", "title": "AI Career Paths", "url": "https://towardsdatascience.com", "difficulty": "beginner" }
+          ]
+        },
+        "knowledge_workers": {
+          "resources": [
+            { "type": "article", "title": "AI in Daily Workflows", "url": "https://hbr.org", "difficulty": "beginner" }
+          ]
+        },
+        "managers": {
+          "resources": [
+            { "type": "report", "title": "AI and Workforce Development", "url": "https://www.weforum.org", "difficulty": "intermediate" }
+          ]
+        }
+      }
+    }
+  ],
+  "edges": [
+    { "from": "py1", "to": "py2", "audience_type": "technical_workers" },
+    { "from": "py2", "to": "py3", "audience_type": "technical_workers" },
+    { "from": "py3", "to": "py4", "audience_type": "technical_workers" },
+    { "from": "py4", "to": "py5", "audience_type": "technical_workers" },
+    { "from": "py5", "to": "ml1", "audience_type": "technical_workers" },
+    { "from": "py5", "to": "ml2", "audience_type": "technical_workers" },
+
+    { "from": "py1", "to": "py2", "audience_type": "knowledge_workers" },
+    { "from": "py2", "to": "py3", "audience_type": "knowledge_workers" },
+    { "from": "py3", "to": "py5", "audience_type": "knowledge_workers" },
+    { "from": "py5", "to": "ml1", "audience_type": "knowledge_workers" },
+
+    { "from": "py1", "to": "py2", "audience_type": "managers" },
+    { "from": "py2", "to": "py5", "audience_type": "managers" },
+
+    { "from": "ml1", "to": "ml2", "audience_type": "technical_workers" },
+    { "from": "ml2", "to": "ml3", "audience_type": "technical_workers" },
+    { "from": "ml3", "to": "ml4", "audience_type": "technical_workers" },
+    { "from": "ml3", "to": "ml5", "audience_type": "technical_workers" },
+    { "from": "ml4", "to": "ml6", "audience_type": "technical_workers" },
+    { "from": "ml5", "to": "ml6", "audience_type": "technical_workers" },
+    { "from": "ml6", "to": "ml7", "audience_type": "technical_workers" },
+
+    { "from": "ml1", "to": "ml3", "audience_type": "knowledge_workers" },
+    { "from": "ml3", "to": "ml4", "audience_type": "knowledge_workers" },
+    { "from": "ml3", "to": "ml5", "audience_type": "knowledge_workers" },
+    { "from": "ml4", "to": "ml6", "audience_type": "knowledge_workers" },
+    { "from": "ml5", "to": "ml6", "audience_type": "knowledge_workers" },
+
+    { "from": "py5", "to": "ml4", "audience_type": "managers" },
+    { "from": "ml4", "to": "ml6", "audience_type": "managers" },
+    { "from": "py5", "to": "ml5", "audience_type": "managers" },
+    { "from": "ml5", "to": "ml6", "audience_type": "managers" },
+    { "from": "ml6", "to": "ml7", "audience_type": "managers" },
+
+    { "from": "ml7", "to": "ai1", "audience_type": "technical_workers" },
+    { "from": "ml6", "to": "ai1", "audience_type": "knowledge_workers" },
+    { "from": "ml7", "to": "ai1", "audience_type": "managers" },
+
+    { "from": "ai1", "to": "ai2", "audience_type": "technical_workers" },
+    { "from": "ai2", "to": "ai3", "audience_type": "technical_workers" },
+    { "from": "ai3", "to": "ai4", "audience_type": "technical_workers" },
+    { "from": "ai4", "to": "ai5", "audience_type": "technical_workers" },
+    { "from": "ai3", "to": "ai6", "audience_type": "technical_workers" },
+    { "from": "ai5", "to": "ai7", "audience_type": "technical_workers" },
+    { "from": "ai7", "to": "ai8", "audience_type": "technical_workers" },
+    { "from": "ai8", "to": "ai10", "audience_type": "technical_workers" },
+
+    { "from": "ai1", "to": "ai2", "audience_type": "knowledge_workers" },
+    { "from": "ai2", "to": "ai3", "audience_type": "knowledge_workers" },
+    { "from": "ai3", "to": "ai6", "audience_type": "knowledge_workers" },
+    { "from": "ai6", "to": "ai7", "audience_type": "knowledge_workers" },
+    { "from": "ai7", "to": "ai8", "audience_type": "knowledge_workers" },
+    { "from": "ai8", "to": "ai9", "audience_type": "knowledge_workers" },
+    { "from": "ai9", "to": "ai10", "audience_type": "knowledge_workers" },
+
+    { "from": "ai1", "to": "ai2", "audience_type": "managers" },
+    { "from": "ai2", "to": "ai3", "audience_type": "managers" },
+    { "from": "ai3", "to": "ai5", "audience_type": "managers" },
+    { "from": "ai3", "to": "ai6", "audience_type": "managers" },
+    { "from": "ai5", "to": "ai7", "audience_type": "managers" },
+    { "from": "ai6", "to": "ai8", "audience_type": "managers" },
+    { "from": "ai7", "to": "ai8", "audience_type": "managers" },
+    { "from": "ai8", "to": "ai9", "audience_type": "managers" },
+    { "from": "ai9", "to": "ai10", "audience_type": "managers" }
+  ]
+}

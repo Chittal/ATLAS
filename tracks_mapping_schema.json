@@ -3,6 +3,7 @@
       {
         "id": "id1",
         "name": "Ethics",
+        "parent_id": "optional parent node id",
         "description": "shared description",
         "resources": {
           "technical_workers": {

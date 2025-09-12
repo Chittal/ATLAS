@@ -1,10 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import json
 import os
 from fastapi import Query
+from typing import List, Optional
 
 app = FastAPI(title="AI Learning Subway Map", description="Multi-user AI Learning Path Visualization")
 
@@ -14,10 +15,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Setup templates
 templates = Jinja2Templates(directory="templates")
 
+
 # Load data (supports legacy ai_track.json and new tracks_mapping_schema.json)
 def load_track_data():
     # preferred = ['ai-tracks.json', 'tracks_mapping_schema.json', 'ai_track.json', 'ml-tracks.json']
-    path = 'combined-tracks.json'
+    path = 'tracks/combined.json'
     if os.path.exists(path):
         with open(path, 'r') as f:
             return json.load(f)
