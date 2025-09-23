@@ -10,18 +10,16 @@ from langchain.schema import (
     HumanMessage,
     AIMessage,
 )
+from typing import Optional
 
 
 def call_ollama_model(model: str, messages: list[dict], system_prompt: Optional[str]):
 	"""
 	This function calls the ollama model with provided messages.
 	"""
-
-    # Initialize the Groq model
-    # Initialize Ollama LLM
     llm = Ollama(model=model)
 
-	chat_messages = []
+    chat_messages = []
 
     # Add system message if provided
     if system_prompt:
