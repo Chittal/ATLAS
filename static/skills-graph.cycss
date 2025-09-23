@@ -1,0 +1,104 @@
+/* Skills Graph Styling */
+
+node {
+    background-color: #007bff;
+    border-color: #0056b3;
+    border-width: 2px;
+    content: data(name);
+    width: 50px;
+    height: 50px;
+    min-zoomed-font-size: 12;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-outline-color: #000000;
+    text-outline-width: 1px;
+    z-index: 1;
+}
+
+/* Selected states */
+node:selected,
+node.start,
+node.end {
+    border-width: 4px;
+    z-index: 9999;
+}
+
+node.start {
+    background-color: #28a745;
+    border-color: #1e7e34;
+    color: white;
+}
+
+node.end {
+    background-color: #dc3545;
+    border-color: #bd2130;
+    color: white;
+}
+
+/* Edges */
+edge {
+    width: 3px;
+    line-color: #6c757d;
+    curve-style: bezier;
+    opacity: 0.6;
+    z-index: 0;
+}
+
+/* Different relationship types */
+edge[relationship_type = "prerequisite"] {
+    line-color: #dc3545;
+    line-style: solid;
+}
+
+edge[relationship_type = "related"] {
+    line-color: #6c757d;
+    line-style: dashed;
+}
+
+edge[relationship_type = "next-step"] {
+    line-color: #28a745;
+    line-style: solid;
+    width: 4px;
+}
+
+/* Path highlighting */
+edge.path {
+    line-color: #007bff;
+    width: 6px;
+    opacity: 1;
+    z-index: 10;
+}
+
+node.path {
+    border-color: #007bff;
+    border-width: 4px;
+    z-index: 10;
+}
+
+/* Dimmed elements */
+edge.not-path {
+    opacity: 0.2;
+}
+
+node.not-path {
+    opacity: 0.4;
+}
+
+/* Core styling */
+core {
+    active-bg-color: #007bff;
+    active-bg-opacity: 0.2;
+}
+
+/* Hover effects */
+node:hover {
+    border-width: 3px;
+    z-index: 100;
+}
+
+edge:hover {
+    width: 5px;
+    opacity: 0.8;
+    z-index: 5;
+}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+<style>
+    #cy {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+
+    #loading {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        margin-top: -0.5em;
+        font-size: 2em;
+        color: #6c757d;
+        z-index: 1000;
+    }
+
+    #loading.loaded { display: none; }
+
+    .controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .controls button {
+        margin: 5px;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .controls button:hover { background-color: #0056b3; }
+    .controls button:disabled { background-color: #6c757d; cursor: not-allowed; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="controls">
+                <button id="reset-view">Reset View</button>
+                <button id="layout-cose">Auto Layout</button>
+                <button id="toggle-labels">Toggle Labels</button>
+            </div>
+            <div id="cy"></div>
+            <div id="loading"><span class="spinner-border" role="status"></span> Loading flat graph...</div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    let cy;
+    let labelsVisible = true;
+
+    async function init() {
+        try {
+            const response = await fetch('/api/roadmap-flat');
+            const data = await response.json();
+
+            const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+
+            document.getElementById('loading').classList.add('loaded');
+
+            cy = cytoscape({
+                container: document.getElementById('cy'),
+                elements: data.elements,
+                style: styleText,
+                layout: { name: 'cose' },
+            });
+
+            bind();
+        } catch (e) {
+            document.getElementById('loading').innerText = 'Error: ' + (e && e.message ? e.message : e);
+        }
+    }
+
+    function bind() {
+        document.getElementById('reset-view').addEventListener('click', () => cy.fit());
+        document.getElementById('layout-cose').addEventListener('click', () => cy.layout({ name: 'cose' }).run());
+        document.getElementById('toggle-labels').addEventListener('click', () => {
+            labelsVisible = !labelsVisible;
+            cy.style().selector('node').style('label', labelsVisible ? 'data(name)' : '').update();
+        });
+    }
+
+    init();
+});
+</script>
+{% endblock %}
+{% endblock %}
+
+

@@ -1,0 +1,482 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Roadmap Progression{% endblock %}
+
+{% block body %}
+<div id="loading">Loading roadmap...</div>
+<div id="cy"></div>
+
+<div class="controls">
+    <h4>🎯 Learning Roadmap Progression</h4>
+    <button onclick="resetLayout()">Reset Layout</button>
+    <button onclick="toggleLabels()">Toggle Labels</button>
+    <button onclick="fitToScreen()">Fit to Screen</button>
+    <div class="mt-2">
+        <small class="text-muted">Click and drag to explore • Scroll to zoom</small>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<style>
+    #cy {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #ffffff;
+        border: 1px solid #ddd;
+    }
+
+    #loading {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        margin-top: -0.5em;
+        font-size: 2em;
+        color: #333333;
+        z-index: 1000;
+    }
+
+    #loading.loaded {
+        display: none;
+    }
+
+    .controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        color: #111827;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .controls h4 {
+        color: #111827;
+        margin: 0 0 10px 0;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .controls button {
+        margin: 3px;
+        padding: 8px 16px;
+        background: #0d6efd;
+        color: #ffffff;
+        border: 1px solid #0b5ed7;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .controls button:hover {
+        background: #0b5ed7;
+    }
+
+    .controls small {
+        color: #6b7280;
+    }
+
+    .level-info {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        backdrop-filter: blur(10px);
+        max-width: 300px;
+    }
+
+    .level-info h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+        font-size: 16px;
+    }
+
+    .level-info p {
+        margin: 5px 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .level-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 2px;
+    }
+
+    /* Cytoscape.js styling */
+    .cy-node {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    .cy-node:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .cy-node.foundation {
+        background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+    }
+
+    .cy-node.programming-basics {
+        background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    }
+
+    .cy-node.development-tools {
+        background: linear-gradient(45deg, #45B7D1, #96C93D);
+    }
+
+    .cy-node.web-fundamentals {
+        background: linear-gradient(45deg, #F093FB, #F5576C);
+    }
+
+    .cy-node.web-frameworks {
+        background: linear-gradient(45deg, #4FACFE, #00F2FE);
+    }
+
+    .cy-node.full-stack {
+        background: linear-gradient(45deg, #43E97B, #38F9D7);
+    }
+
+    .cy-node.databases {
+        background: linear-gradient(45deg, #FA709A, #FEE140);
+    }
+
+    .cy-node.mobile-gaming {
+        background: linear-gradient(45deg, #A8EDEA, #FED6E3);
+    }
+
+    .cy-node.design-qa {
+        background: linear-gradient(45deg, #D299C2, #FED6E3);
+    }
+
+    .cy-node.data-analytics {
+        background: linear-gradient(45deg, #89F7FE, #66A6FF);
+    }
+
+    .cy-node.devops-infrastructure {
+        background: linear-gradient(45deg, #FD746C, #2C3E50);
+    }
+
+    .cy-node.security {
+        background: linear-gradient(45deg, #FF416C, #FF4B2B);
+    }
+
+    .cy-node.modern-languages {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+    }
+
+    .cy-node.system-design {
+        background: linear-gradient(45deg, #f093fb, #f5576c);
+    }
+
+    .cy-node.leadership {
+        background: linear-gradient(45deg, #4facfe, #00f2fe);
+    }
+
+    .cy-node.ai-ml {
+        background: linear-gradient(45deg, #43e97b, #38f9d7);
+    }
+
+    .cy-edge {
+        stroke: rgba(255, 255, 255, 0.6);
+        stroke-width: 2px;
+        stroke-dasharray: 5, 5;
+        animation: dash 1s linear infinite;
+    }
+
+    @keyframes dash {
+        to {
+            stroke-dashoffset: -10;
+        }
+    }
+
+    .cy-edge.progression-edge {
+        stroke: rgba(255, 255, 255, 0.8);
+        stroke-width: 3px;
+        stroke-dasharray: none;
+    }
+
+    .cy-label {
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="loading">Loading Learning Roadmap...</div>
+<div id="cy"></div>
+
+<div class="controls">
+    <button onclick="resetView()">Reset View</button>
+    <button onclick="toggleLabels()">Toggle Labels</button>
+    <button onclick="autoLayout()">Auto Layout</button>
+    <button onclick="showLevels()">Show Levels</button>
+</div>
+
+<div class="level-info" id="levelInfo" style="display: none;">
+    <h3>Learning Progression</h3>
+    <div id="levelDetails"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+<script>
+    let cy;
+    let showLabels = true;
+    let levelData = null;
+
+    // Initialize the graph
+    async function initGraph() {
+        try {
+            console.log('🚀 Starting roadmap initialization...');
+            const response = await fetch('/api/roadmap-progression');
+            console.log('📡 API response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('📊 Received data:', data);
+            console.log('📈 Number of nodes:', data.elements?.nodes?.length || 0);
+            console.log('🔗 Number of edges:', data.elements?.edges?.length || 0);
+            
+            levelData = data;
+            
+            console.log('🎨 Creating Cytoscape graph...');
+            cy = cytoscape({
+                container: document.getElementById('cy'),
+                elements: data.elements,
+                style: [
+                    {
+                        selector: 'node',
+                        style: {
+                            'background-color': '#9ca3af',
+                            'label': 'data(name)',
+                            'text-valign': 'center',
+                            'text-halign': 'center',
+                            'width': '14px',
+                            'height': '14px',
+                            'font-size': '25px',
+                            'font-weight': '800',
+                            'color': 'black',
+                            'min-zoomed-font-size': 8,
+                            'text-wrap': 'wrap',
+                            'text-max-width': 90,
+                            'text-background-color': '#ffffff',
+                            'text-background-opacity': 0.9,
+                            'text-background-padding': 2,
+                            'text-background-shape': 'round-rectangle',
+                            
+                            // 🔹 Outline for background box
+                            'text-border-color': 'black',  // border color
+                            'text-border-width': 2,          // thickness
+                            'text-border-opacity': 1,        // visible
+
+                            'text-outline-width': 0,
+                            'border-width': 2,
+                            'border-color': '#9ca3af',
+                            'border-opacity': 1,
+                            'shape': 'round-rectangle'
+                        }
+                    },
+                    {
+                        selector: 'edge',
+                        style: {
+                            'width': 3,
+                            'line-color': '#9aa1a9',
+                            'target-arrow-shape': 'none',
+                            'curve-style': 'bezier',
+                            'opacity': 0.7
+                        }
+                    },
+                    {
+                        selector: 'edge.progression-edge',
+                        style: {
+                            'width': 3,
+                            'line-color': '#9aa1a9',
+                            'target-arrow-shape': 'none',
+                            'curve-style': 'bezier',
+                            'opacity': 0.8
+                        }
+                    }
+                ],
+                layout: {
+                    name: 'preset',
+                    positions: function(node) {
+                        return node.data('position');
+                    }
+                }
+            });
+
+            // Add subway map styling with colors suitable for a light theme
+            const lineColors = ['#2563eb', '#16a34a', '#f59e0b', '#ef4444', '#10b981', '#8b5cf6', '#0891b2', '#e11d48'];
+            
+            if (levelData && levelData.level_names) {
+                levelData.level_names.forEach((levelName, index) => {
+                    const color = lineColors[index % lineColors.length];
+                    
+                    // Color edges for this level (like subway lines)
+                    cy.edges().forEach(edge => {
+                        const sourceLevel = edge.source().data('level');
+                        const targetLevel = edge.target().data('level');
+                        
+                        if (sourceLevel === levelName || targetLevel === levelName) {
+                            edge.style('line-color', color);
+                        }
+                    });
+                    
+                    // Color nodes for this level (like subway stations)
+                    cy.nodes(`[level="${levelName}"]`)
+                        .style('background-color', '#FFFFFF')
+                        .style('border-color', color)
+                        .style('border-width', '3px');
+                });
+            }
+
+            // Add event listeners
+            cy.on('tap', 'node', function(evt) {
+                const node = evt.target;
+                const level = node.data('level');
+                const levelIndex = node.data('level_index');
+                
+                // Highlight connected nodes
+                const connected = node.neighborhood();
+                cy.elements().style('opacity', 0.3);
+                connected.style('opacity', 1);
+                node.style('opacity', 1);
+                
+                // Show level info
+                showLevelInfo(level, levelIndex);
+            });
+
+            cy.on('tap', function(evt) {
+                if (evt.target === cy) {
+                    cy.elements().style('opacity', 1);
+                    document.getElementById('levelInfo').style.display = 'none';
+                }
+            });
+
+            console.log('✅ Roadmap loaded successfully!');
+            document.getElementById('loading').classList.add('loaded');
+            
+        } catch (error) {
+            console.error('❌ Error loading roadmap data:', error);
+            document.getElementById('loading').textContent = 'Error loading roadmap data: ' + error.message;
+        }
+    }
+
+    function showLevelInfo(level, levelIndex) {
+        const levelInfo = document.getElementById('levelInfo');
+        const levelDetails = document.getElementById('levelDetails');
+        
+        if (levelData && levelData.levels && levelData.levels[level]) {
+            const skills = levelData.levels[level];
+            levelDetails.innerHTML = `
+                <p><strong>Level ${levelIndex + 1}:</strong> ${level.replace('_', ' ').toUpperCase()}</p>
+                <p><strong>Skills in this level:</strong></p>
+                <div>
+                    ${skills.map(skill => `<span class="level-badge">${skill.name}</span>`).join('')}
+                </div>
+            `;
+        }
+        
+        levelInfo.style.display = 'block';
+    }
+
+    function resetView() {
+        cy.fit();
+        cy.center();
+    }
+
+    // Wire the top buttons to working handlers for better UX
+    function resetLayout() {
+        if (!cy) return;
+        cy.elements().positions(node => node.data('position'));
+        cy.fit();
+    }
+
+    function fitToScreen() {
+        if (!cy) return;
+        cy.fit();
+    }
+
+    function toggleLabels() {
+        showLabels = !showLabels;
+        cy.style()
+            .selector('node')
+            .style('label', showLabels ? 'data(name)' : '')
+            .update();
+    }
+
+    function autoLayout() {
+        cy.layout({
+            name: 'dagre',
+            rankDir: 'LR',
+            spacingFactor: 1.5,
+            nodeSep: 100,
+            edgeSep: 50,
+            rankSep: 200
+        }).run();
+    }
+
+    function showLevels() {
+        const levelInfo = document.getElementById('levelInfo');
+        if (levelInfo.style.display === 'none') {
+            levelInfo.style.display = 'block';
+            if (levelData && levelData.level_names) {
+                const levelDetails = document.getElementById('levelDetails');
+                levelDetails.innerHTML = `
+                    <h3>All Learning Levels</h3>
+                    ${levelData.level_names.map((level, index) => `
+                        <p><strong>Level ${index + 1}:</strong> ${level.replace('_', ' ').toUpperCase()}</p>
+                    `).join('')}
+                `;
+            }
+        } else {
+            levelInfo.style.display = 'none';
+        }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 DOM loaded, checking dependencies...');
+        
+        // Check if Cytoscape is loaded
+        if (typeof cytoscape === 'undefined') {
+            console.error('❌ Cytoscape.js not loaded!');
+            document.getElementById('loading').textContent = 'Error: Cytoscape.js library not loaded';
+            return;
+        }
+        
+        console.log('✅ Cytoscape.js loaded successfully');
+        initGraph();
+    });
+</script>
+{% endblock %}
