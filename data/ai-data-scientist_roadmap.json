@@ -1,0 +1,130 @@
+{
+  "nodes": [
+    {
+      "id": "aStaDENn5PhEa-cFvNzXa",
+      "name": "Mathematics",
+      "resources": {
+        "description": "# Mathematics\n\nMathematics is the foundation of AI and Data Science. It is essential to have a good understanding of mathematics to excel in these fields.",
+        "resources": []
+      }
+    },
+    {
+      "id": "4WZL_fzJ3cZdWLLDoWN8D",
+      "name": "Statistics",
+      "resources": {
+        "description": "# Statistics\n\nStatistics is the science of collecting, analyzing, interpreting, presenting, and organizing data. It is a branch of mathematics that deals with the collection, analysis, interpretation, presentation, and organization of data. It is used in a wide range of fields, including science, engineering, medicine, and social science. Statistics is used to make informed decisions, to predict future events, and to test hypotheses. It is also used to summarize data, to describe relationships between variables, and to make inferences about populations based on samples.",
+        "resources": []
+      }
+    },
+    {
+      "id": "Gd2egqKZPnbPW1W2jw4j8",
+      "name": "Econometrics",
+      "resources": {
+        "description": "# Econometrics\n\nEconometrics is the application of statistical methods to economic data. It is a branch of economics that aims to give empirical content to economic relations. More precisely, it is \"the quantitative analysis of actual economic phenomena based on the concurrent development of theory and observation, related by appropriate methods of inference.\" Econometrics can be described as something that allows economists \"to sift through mountains of data to extract simple relationships.\"",
+        "resources": []
+      }
+    },
+    {
+      "id": "XLDWuSt4tI4gnmqMFdpmy",
+      "name": "Coding",
+      "resources": {
+        "description": "# Coding\n\nProgramming is a fundamental skill for data scientists. You need to be able to write code to manipulate data, build models, and deploy solutions. The most common programming languages used in data science are Python and R. Python is a general-purpose programming language that is easy to learn and has a large number of libraries for data manipulation and machine learning. R is a programming language and free software environment for statistical computing and graphics. It is widely used for statistical analysis and data visualization.",
+        "resources": []
+      }
+    },
+    {
+      "id": "l1027SBZxTHKzqWw98Ee-",
+      "name": "Exploratory Data Analysis",
+      "resources": {
+        "description": "# Exploratory Data Analysis\n\nExploratory Data Analysis (EDA) is an approach to analyzing data sets to summarize their main characteristics, often with visual methods. EDA is used to understand what the data can tell us beyond the formal modeling or hypothesis testing task. It is a crucial step in the data analysis process.",
+        "resources": []
+      }
+    },
+    {
+      "id": "kBdt_t2SvVsY3blfubWIz",
+      "name": "Machine Learning",
+      "resources": {
+        "description": "# Machine Learning\n\nMachine learning is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to \"learn\" (e.g., progressively improve performance on a specific task) from data, without being explicitly programmed. The name machine learning was coined in 1959 by Arthur Samuel. Evolved from the study of pattern recognition and computational learning theory in artificial intelligence, machine learning explores the study and construction of algorithms that can learn from and make predictions on data – such algorithms overcome following strictly static program instructions by making data-driven predictions or decisions, through building a model from sample inputs. Machine learning is employed in a range of computing tasks where designing and programming explicit algorithms with good performance is difficult or infeasible; example applications include email filtering, detection of network intruders, and computer vision.",
+        "resources": []
+      }
+    },
+    {
+      "id": "cjvVLN0XjrKPn6o20oMmc",
+      "name": "Deep Learning",
+      "resources": {
+        "description": "## Deep Learning\n\nDeep learning is a subset of machine learning that deals with algorithms inspired by the structure and function of the brain called artificial neural networks. Deep learning is a key technology behind driverless cars, enabling them to recognize a stop sign, or to distinguish a pedestrian from a lamppost. It is the key to voice control in consumer devices like phones, tablets, TVs, and hands-free speakers. Deep learning is getting lots of attention lately and for good reason. It’s achieving results that were not possible before.",
+        "resources": []
+      }
+    },
+    {
+      "id": "Qa85hEVe2kz62k9Pj4QCA",
+      "name": "MLOps",
+      "resources": {
+        "description": "# MLOps\n\nMLOps is a practice for collaboration and communication between data scientists and operations professionals to help manage production ML lifecycle. It is a set of best practices that aims to automate the ML lifecycle, including training, deployment, and monitoring. MLOps helps organizations to scale ML models and deliver business value faster.",
+        "resources": []
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "iogwMmOvub2ZF4zgg6WyF",
+      "target": "_hYN0gEi9BL24nptEtXWU"
+    },
+    {
+      "source": "_hYN0gEi9BL24nptEtXWU",
+      "target": "idLHBxhvcIqZTqmh_E8Az"
+    },
+    {
+      "source": "_hYN0gEi9BL24nptEtXWU",
+      "target": "os3Pa6W9SSNEzgmlBbglQ"
+    },
+    {
+      "source": "_hYN0gEi9BL24nptEtXWU",
+      "target": "3oInpqvTSSC5_K6i7j8N7"
+    },
+    {
+      "source": "_hYN0gEi9BL24nptEtXWU",
+      "target": "YKhuRbcUFzo0hTvuTq-Yl"
+    },
+    {
+      "source": "jZ67HhVRelJaxjsCckSSI",
+      "target": "hWA7RtuqltMTmHdcCnmES"
+    },
+    {
+      "source": "",
+      "target": "NMznG9mo2wzNFnjhg990f"
+    },
+    {
+      "source": "",
+      "target": "gc_7cuIO2_joKlQRAPDfX"
+    },
+    {
+      "source": "rrrvATyhXqRgJGWI3z0WF",
+      "target": "AvbMQ5vY3ip1oX_6Yq4ie"
+    },
+    {
+      "source": "hWA7RtuqltMTmHdcCnmES",
+      "target": "1AJv95mTLpR7L8KBoGym8"
+    },
+    {
+      "source": "hWA7RtuqltMTmHdcCnmES",
+      "target": "0etAs56EeBfh_0IlAaSra"
+    },
+    {
+      "source": "jZ67HhVRelJaxjsCckSSI",
+      "target": "h6ceO0kiBIxNRkPzN3hBY"
+    },
+    {
+      "source": "jZ67HhVRelJaxjsCckSSI",
+      "target": "_JlT9oKQ6Yu4UX6l19G8P"
+    },
+    {
+      "source": "_hYN0gEi9BL24nptEtXWU",
+      "target": "jZ67HhVRelJaxjsCckSSI"
+    },
+    {
+      "source": "HVHYJ8gWHCZMACuvKP7gK",
+      "target": "HVHYJ8gWHCZMACuvKP7gK"
+    }
+  ]
+}

@@ -39,7 +39,7 @@ node.end {
 /* Edges */
 edge {
     width: 3px;
-    line-color: #6c757d;
+    line-color: #2563eb;
     curve-style: bezier;
     opacity: 0.6;
     z-index: 0;
@@ -76,6 +76,13 @@ node.path {
     z-index: 10;
 }
 
+/* Generic highlighted styling for programmatic path display */
+node.highlighted {
+    border-color: #2563eb;
+    border-width: 4px;
+    background-color: #bfdbfe;
+}
+
 /* Dimmed elements */
 edge.not-path {
     opacity: 0.2;
@@ -101,4 +108,19 @@ edge:hover {
     width: 5px;
     opacity: 0.8;
     z-index: 5;
+}
+
+edge.highlighted {
+    line-color: #22c55e;
+    width: 5px;
+    opacity: 1;
+}
+
+/* Dim non-path elements in flat view as well */
+node.not-path {
+    opacity: 0.15;
+}
+
+edge.not-path {
+    opacity: 0.08;
 }

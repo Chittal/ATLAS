@@ -1,0 +1,3280 @@
+{
+  "nodes": [
+    {
+      "id": "m1wX27XBWKXZcTMH2U1xp",
+      "name": "Learn the Fundamentals",
+      "resources": {
+        "description": "# QA Basics\n\nThe phrase \"fit for use or purpose\" sums up quality, which is incredibly difficult to define. It all comes down to fulfilling the requirements and expectations of the consumer in terms of the product's usefulness, design, dependability, durability, and price.\n\nAssurance is nothing more than a confident statement made about a good or service. It is the assurance that a good outcome is guaranteed for a good or service. It offers a warranty that the product will perform faultlessly in accordance with expectations or needs.\n\nQuality Assurance (QA) also known as QA testing is an activity to ensure that an organization provides the best product or service to the customers. QA testing of a software involves the testing of performance, adaptability, and functionality. Yet, software quality assurance extends beyond software quality; it also comprises the quality process used for developing, testing, and release of software products. QA relies on the software development cycle, which includes the management of software requirements, design, coding, testing, and release.",
+        "resources": []
+      }
+    },
+    {
+      "id": "Zja25damM2vXMOYCyRZiq",
+      "name": "Test Oracles",
+      "resources": {
+        "description": "# Test Oracles\n\nA test oracle is a mechanism; different from the program itself that can be used to check the correctness of the program's output for the test cases. Conceptually, we can consider testing a process in which the test cases are given to the test oracle and the program under testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What are Test Oracles",
+            "url": "https://ecomputernotes.com/software-engineering/what-are-test-oracles"
+          },
+          {
+            "type": "video",
+            "title": "Test Oracle in Software Testing",
+            "url": "https://www.youtube.com/watch?v=DR22zNNetp0&t=1s"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1976f2-opqLqV4ImPJlt0",
+      "name": "Test Prioritization",
+      "resources": {
+        "description": "# Test Prioritization\n\nTest prioritization is ordering the test cases to be conducted eventually. Prioritizing test cases aids to meet two important constraints, namely time and budget in software testing to enhance the fault detection rate as early as possible.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "A Tour of what is Test Prioritization?",
+            "url": "https://www.browserstack.com/guide/test-case-prioritization"
+          },
+          {
+            "type": "article",
+            "title": "Test Prioritization",
+            "url": "https://www.professionalqa.com/test-prioritization"
+          },
+          {
+            "type": "article",
+            "title": "Test Prioritization fundamentals!",
+            "url": "https://testomat.io/features/test-case-priorities/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pH9h2tjO6raO_g4W8EgKq",
+      "name": "Manage your Testing",
+      "resources": {
+        "description": "# Manage Your Testing\n\nTest Management is a process of managing the testing activities in order to ensure high quality and high-end testing of the software application. The method consists of organizing, controlling, ensuring traceability and visibility of the testing process in order to deliver the high quality software application. It ensures that the software testing process runs as expected.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Test Management Process in Software Testing",
+            "url": "https://www.guru99.com/test-management-phases-a-complete-guide-for-testing-project.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FE_Wp2RPWFDHNaQIBLqH6",
+      "name": "qTest",
+      "resources": {
+        "description": "# QTest\n\nqTest is a test management tool used for Project Management, Bug Tracking, and Test Management. It follows the centralized test management concept that helps to communicate easily and assists in rapid development of task across QA team and other stakeholders.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "QTest Tutorial",
+            "url": "https://www.tutorialspoint.com/qtest/qtest_introduction.htm"
+          },
+          {
+            "type": "video",
+            "title": "Getting Started with qTest and Parameters",
+            "url": "https://www.youtube.com/watch?v=1q8vQ2XF9QE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5Tn6Wtw8QE56LZ9BlRAmW",
+      "name": "TestRail",
+      "resources": {
+        "description": "# TestRail\n\nTestRail is a web-based test case management tool. It is used by testers, developers and team leads to manage, track, and organize software testing efforts. TestRail allows team members to enter test cases, organize test suites, execute test runs, and track their results, all from a modern and easy to use web interface.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "TestRail",
+            "url": "https://www.gurock.com/testrail/"
+          },
+          {
+            "type": "article",
+            "title": "TestRail Review Tutorial: Learn End-To-End Test Case Management",
+            "url": "https://www.softwaretestinghelp.com/testrail-tutorial/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "leiCCxLJgXCpk1a--mE83",
+      "name": "TestLink",
+      "resources": {
+        "description": "# TestLink\n\nTestLink is most widely used web based open source test management tool. It synchronizes both requirements specification and test specification together. Tester can create test project and document test cases using this tool. With TestLink you can create an account for multiple users and assign different user roles.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "TestLink",
+            "url": "https://testlink.org/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "aGvbxmZCHbbt9PgXL1ooJ",
+      "name": "Zephyr",
+      "resources": {
+        "description": "# Zephyr\n\nZephyr is a testing solution that improves the quality of your software by managing and monitoring end-to-end testing. It is very effective for managing manual testing. Its key capabilities include:\n\n- Test-case creation\n- Organization of tests by product releases and components\n- Assignment of tests to the Quality Assurance team",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Zephyr for JIRA Tutorial: Test Management Tool",
+            "url": "https://www.guru99.com/zephyr-agile-jira.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "JInFH3JRvAxjvpIFKjUiP",
+      "name": "What is Quality Assurance?",
+      "resources": {
+        "description": "# What is Quality\n\nQuality is extremely hard to define, and it is simply stated: “Fit for use or purpose.” It is all about meeting the needs and expectations of customers concerning the functionality, design, reliability, durability, & price of the product.\n\n## What is Assurance\n\nAssurance is nothing but a positive declaration of a product or service, which gives confidence. It is certain of a product or a service which it will work well. It provides a guarantee that the product will work without any problems as per the expectations or requirements.\n\n## Quality Assurance in Software Testing\n\nQuality Assurance in Software Testing is defined as a procedure to ensure the quality of software products or services provided to the customers by an organization. Quality assurance focuses on improving the software development process and making it efficient and effective per the quality standards defined for software products. Quality Assurance is popularly known as QA Testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Quality Assurance(QA)? Process, Methods, Examples",
+            "url": "https://www.guru99.com/all-about-quality-assurance.html"
+          },
+          {
+            "type": "article",
+            "title": "What Do Software Testers Do?",
+            "url": "https://www.ministryoftesting.com/articles/what-do-software-testers-do"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vZv4Ow5bg_PbKoF557G9S",
+      "name": "QA Mindset",
+      "resources": {
+        "description": "# QA Mindset\n\nAs a Quality Assurance Engineer, your primary responsibility is to nurture a proactive, quality-centric, and holistic mindset throughout the organization. This involves promoting the understanding that quality is not solely the responsibility of the QA chapter, or achieved through manual testing alone, but rather a shared commitment that requires collaboration from all team members. Quality should be seamlessly integrated into every phase of the software development lifecycle, from requirements gathering to deployment and maintenance. Your role is to take initiative, provide guidance, and lead the company in adopting best practices and methodologies that prioritize quality. By educating and empowering your colleagues, you can foster a culture where everyone understands the significance of delivering high-quality products and is equipped with the knowledge and tools to contribute effectively to this goal.\n\nA few important points:\n\n- Foster a quality-centric mindset and promote shared responsibility for quality across the organization\n- Integrate quality processes into every phase of the software development lifecycle and encourage collaboration among team members\n- Take initiative, provide guidance, and lead the company in adopting best practices for ensuring high-quality products\n- Implement and maintain robust automation frameworks to enhance testing efficiency, coverage, and reliability\n- Continuously improve quality processes, stay updated with industry trends, and advocate for the importance of quality in driving customer satisfaction and business success\n- Think outside the box, ask questions, explore edge cases, and don't be afraid to misuse the product to uncover potential issues\n- Foster open communication, transparency, and a proactive approach to identifying and mitigating quality risks early in the development process",
+        "resources": [
+          {
+            "type": "article",
+            "title": "The Software Tester’s Mindset",
+            "url": "https://softwaretester.careers/the-software-testers-mindset/"
+          },
+          {
+            "type": "article",
+            "title": "Skills QA needs",
+            "url": "https://theqalead.com/careers/quality-assurance-skills/"
+          },
+          {
+            "type": "article",
+            "title": "How to Think Like a Tester",
+            "url": "https://medium.com/@blakenorrish/how-to-think-like-a-tester-7a174ff6aeaf"
+          },
+          {
+            "type": "article",
+            "title": "ISTQB® Foundation Level Syllabus 2024 - v4.0",
+            "url": "https://astqb.org/assets/documents/ISTQB_CTFL_Syllabus-v4.0.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "uFOVuenPyOKZGgoJXkwRZ",
+      "name": "Testing Approaches",
+      "resources": {
+        "description": "# Testing Approaches\n\nTest approach has two techniques:\n\n- Proactive - An approach in which the test design process is initiated as early as possible in order to find and fix the defects before the build is created.\n- Reactive - An approach in which the testing is not started until after design and coding are completed.\n\nThree approaches are commonly used to implement functional testing:\n\n- Black Box Testing\n- White Box Testing\n- Gray Box Testing",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Functional Testing Approaches and Agile Considerations",
+            "url": "https://www.qualitylogic.com/knowledge-center/functional-testing-approaches-agile-considerations/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "y4QnZ2xQyc4x6Kr-eGBer",
+      "name": "White Box Testing",
+      "resources": {
+        "description": "# White Box Testing\n\nWhite Box Testing is a technique in which software’s internal structure, design, and coding are tested to verify input-output flow and improve design, usability, and security. In white box testing, code is visible to testers, so it is also called Clear box testing, Open box testing, Transparent box testing, Code-based testing, and Glass box testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "White Box Testing – What is, Techniques, Example & Types",
+            "url": "https://www.guru99.com/white-box-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "A Complete Guide With Techniques, Examples, & Tools",
+            "url": "https://www.softwaretestinghelp.com/white-box-testing-techniques-with-example/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZmWEG7Wu-h7bZe6pGxqDg",
+      "name": "Gray Box Testing",
+      "resources": {
+        "description": "# Gray Box Testing\n\nGray box testing is a software testing technique to test a software product or application with partial knowledge of the internal structure of the application. The purpose of gray box testing is to search and identify the defects due to improper code structure or improper use of applications.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Gray Box Testing? Techniques & Example",
+            "url": "https://www.guru99.com/grey-box-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2zfwE6uzGYc2qnvOZ47LB",
+      "name": "Black Box Testing",
+      "resources": {
+        "description": "# Black box testing\n\nBlack Box Testing is a software testing method in which the functionalities of software applications are tested without having knowledge of internal code structure, implementation details and internal paths. Black Box Testing mainly focuses on input and output of software applications and it is entirely based on software requirements and specifications. It is also known as Behavioral Testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is BLACK Box Testing? Techniques, Example & Types",
+            "url": "https://www.guru99.com/black-box-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Black Box Testing: An In-Depth Tutorial With Examples And Techniques",
+            "url": "https://www.softwaretestinghelp.com/black-box-testing/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZqgeqqZTGA-y7jVNyPCt4",
+      "name": "Project Management",
+      "resources": {
+        "description": "# Project Management\n\nA project is a temporary endeavor to create a unique product, service, or result. A project is temporary because it has a defined beginning and end time, and it is unique because it has a particular set of operations designed to accomplish a goal.\n\nProject Management is a discipline of planning, organizing, motivating, and controlling the resources to achieve specific project goals. The main objective of project management is to achieve project goals and targets while keeping in mind the project scope, time, quality, and cost. It facilitates the project workflow with team collaboration on a single project.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What are the Main Objectives of Project Management?",
+            "url": "https://www.guru99.com/introduction-project-management-pmp-certification.html"
+          },
+          {
+            "type": "article",
+            "title": "Project Management in Software Testing",
+            "url": "https://huddle.eurostarsoftwaretesting.com/project-management-in-software-testing/"
+          },
+          {
+            "type": "article",
+            "title": "Project Management Life Cycle Phases: What are the stages?",
+            "url": "https://www.guru99.com/initiation-phase-project-management-life-cycle.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Project Management",
+            "url": "https://app.daily.dev/tags/project-management?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wVqbs8Rh0WjLQqJZ0XiF0",
+      "name": "Atlassian",
+      "resources": {
+        "description": "# Atlassian\n\nJira is a software application used for issue tracking and project management. The tool, developed by the Australian software company Atlassian, has become widely used by agile development teams to track bugs, stories, epics, and other tasks.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Atlassian",
+            "url": "https://www.atlassian.com/"
+          },
+          {
+            "type": "course",
+            "title": "What is Jira used for?",
+            "url": "https://www.atlassian.com/software/jira/guides/use-cases/what-is-jira-used-for#glossary-of-items"
+          },
+          {
+            "type": "article",
+            "title": "What is Jira?",
+            "url": "https://www.simplilearn.com/tutorials/jira/what-is-jira-and-how-to-use-jira-testing-software"
+          },
+          {
+            "type": "article",
+            "title": "JIRA Tutorial: A Complete Hands-On How-To-Use JIRA Guide",
+            "url": "https://www.softwaretestinghelp.com/atlassian-jira-tutorial-1/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Atlassian",
+            "url": "https://app.daily.dev/tags/atlassian?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "xLPE9CqqiYz0miMFI3ThY",
+      "name": "Assembla",
+      "resources": {
+        "description": "# Assembla\n\nAssembla is an extensive suite of applications for software development, enabling distributed agile teams. It allows development teams to manage, initiate and maintain agile projects, applications and websites.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Assembla",
+            "url": "https://get.assembla.com/projects/"
+          },
+          {
+            "type": "article",
+            "title": "What is Assembla?",
+            "url": "https://www.selecthub.com/project-management-software/assembla"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6bS1YjGJHARAUKTywYMU9",
+      "name": "YouTrack",
+      "resources": {
+        "description": "# YouTrack\n\nYouTrack is a project management software developed by JetBrains. It’s in the form of a plugin that can be attached to the JetBrains IDEs such as Intellij Idea, and helps create and assign tasks to a development team as well as track the progress of working.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "YouTrack",
+            "url": "https://www.jetbrains.com/youtrack/"
+          },
+          {
+            "type": "article",
+            "title": "YouTrack for Beginners",
+            "url": "https://medium.com/nerd-for-tech/youtrack-for-beginners-31e1e156fdd0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "dmfMp6ydjtHo6oKv97AzB",
+      "name": "Trello",
+      "resources": {
+        "description": "# Trello\n\nTrello is a popular, simple, and easy-to-use collaboration tool that enables you to organize projects and everything related to them into boards. With Trello, you can find all kinds of information, such as:\n\n- What’s being worked on?\n- Who’s working on what?\n- What progress the project is making",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Trello",
+            "url": "https://trello.com/en"
+          },
+          {
+            "type": "article",
+            "title": "What is Trello and How To Use It?",
+            "url": "https://www.simplilearn.com/tutorials/project-management-tutorial/what-is-trello"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gQLbDFP00itL260i1BiDe",
+      "name": "Testing Techniques",
+      "resources": {
+        "description": "# Testing Techniques\n\nTesting Techniques are methods applied to evaluate a system or a component with a purpose to find if it satisfies the given requirements. Testing of a system helps to identify gaps, errors, or any kind of missing requirements differing from the actual requirements. These techniques ensure the overall quality of the product or software including performance, security, customer experience, and so on.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What are Testing Techniques : Types, Advantages & Disadvantages",
+            "url": "https://www.elprocus.com/what-are-testing-techniques-types-advantages-disadvantages/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wmMIL-0ytz7a3JygyB-wc",
+      "name": "Load Testing",
+      "resources": {
+        "description": "# Load Testing\n\nLoad Testing is a type of Performance Testing that determines the performance of a system, software product, or software application under real-life-based load conditions. Load testing determines the behavior of the application when multiple users use it at the same time. It is the response of the system measured under varying load conditions.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Load testing and Best Practices",
+            "url": "https://loadninja.com/load-testing/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Load Testing",
+            "url": "https://app.daily.dev/tags/load-testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bapKhjye4oWQxTEZ4fl_c",
+      "name": "Performance Testing",
+      "resources": {
+        "description": "# Performance Testing\n\nPerformance Testing is a subset of Performance Engineering. It is a process of evaluating a system’s behavior under various extreme conditions. The main intent of performance testing is monitoring and improving key performance indicators such as response time, throughput, memory, CPU utilization, and more.\n\nThere are three objectives (three S) of Performance testing to observe and evaluate: `Speed`, `Scalability`, and `Stability`.\n\n## Types of Performance Testing\n\nFollowing are the commonly used performance testing types, but not limited to:\n\n- Load Testing\n- Stress Testing\n- Spike Testing\n- Endurance Testing\n- Volume Testing\n- Scalability Testing\n- Capacity Testing",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Performance Testing Tutorial – Types (Example)",
+            "url": "https://www.guru99.com/performance-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Performance",
+            "url": "https://app.daily.dev/tags/performance?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "skrOrieK1T0hHj_mJBNsW",
+      "name": "Stress Testing",
+      "resources": {
+        "description": "# Stress Testing\n\n`Stress Testing` is a type of `Performance Testing`. The objective of stress testing is to identify the breaking point of application under test under extreme normal load.\n\ne.g. Injecting high volume of requests per second to an API might cause the disruption to its service, or throws HTTP 503 Service Unavailable or cause other consequences.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Stress Testing in Software Testing?",
+            "url": "https://www.guru99.com/stress-testing-tutorial.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "MahtxMJD3ETHfgk_PQabQ",
+      "name": "Security Testing",
+      "resources": {
+        "description": "# Security Testing\n\nSecurity Testing is a type of Software Testing that uncovers vulnerabilities, threats, or risks in a software application and prevents malicious attacks from intruders. The purpose of Security Tests is to identify all possible loopholes and weaknesses of the software system which might result in a loss of information, revenue, repute at the hands of the employees or outsiders of the organization.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Security Testing? Types with Example",
+            "url": "https://www.guru99.com/what-is-security-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Security Testing: Types, Tools, and Best Practices",
+            "url": "https://brightsec.com/blog/security-testing/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Security",
+            "url": "https://app.daily.dev/tags/security?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zGzpjxz3nvVH9Eu3NOPbk",
+      "name": "Accessibility Testing",
+      "resources": {
+        "description": "# Accessibility Testing\n\nAccessibility Testing is defined as a type of Software Testing performed to ensure that the application being tested is usable by people with disabilities like hearing, color blindness, old age, low vision and other disadvantaged groups.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Accessibility Testing? (Examples)",
+            "url": "https://www.guru99.com/accessibility-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Accessibility Testing Tutorial (Step By Step Guide)",
+            "url": "https://www.softwaretestinghelp.com/what-is-web-accessibility-testing/"
+          },
+          {
+            "type": "article",
+            "title": "IBM Accessibility Toolkit",
+            "url": "https://www.ibm.com/able/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Accessibility",
+            "url": "https://app.daily.dev/tags/accessibility?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vYIEsjTKoO1ciypGIDlil",
+      "name": "Non-Functional Testing",
+      "resources": {
+        "description": "# Non-Functional Testing\n\nNon-functional testing is a type of software testing to test non-functional parameters such as reliability, load test, performance, and accountability of the software. The primary purpose of non-functional testing is to test the reading speed of the software system as per non-functional parameters. The parameters of non-functional testing are never tested before the functional testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Non Functional Testing",
+            "url": "https://www.browserstack.com/guide/what-is-non-functional-testing"
+          },
+          {
+            "type": "article",
+            "title": "Types of Non Functional Testing",
+            "url": "https://www.guru99.com/non-functional-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "o4xmFhw_ilWdhpCiEotck",
+      "name": "Functional Testing",
+      "resources": {
+        "description": "# Functional Testing\n\nFunctional testing is a type of software testing that validates the software system against the functional requirements/specifications. The purpose of Functional tests is to test each function of the software application by providing appropriate input and verifying the output against the Functional requirements.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Functional Testing? Types & Examples",
+            "url": "https://www.guru99.com/functional-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Functional Testing : A Detailed Guide",
+            "url": "https://www.browserstack.com/guide/functional-testing"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Ls_pezva7_ZW2HHn7RvO4",
+      "name": "UAT",
+      "resources": {
+        "description": "# UAT\n\nUser Acceptance Testing (UAT) is a type of testing performed by the end user or the client to verify/accept the software system before moving the software application to the production environment. UAT is done in the final phase of testing after functional, integration and system testing is done.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is User Acceptance Testing (UAT)?",
+            "url": "https://www.guru99.com/user-acceptance-testing.html"
+          },
+          {
+            "type": "video",
+            "title": "How to plan your UAT",
+            "url": "https://www.youtube.com/watch?v=AU8SV7091-s"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2h6mJeIFCU72J7aggTvnQ",
+      "name": "Exploratory Testing",
+      "resources": {
+        "description": "# Exploratory testing\n\nExploratory testing is evaluating a product by learning about it through exploration and experimentation, including to some degree: questioning, study, modeling, observation, inference, etc.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Exploratory Testing",
+            "url": "https://www.satisfice.com/exploratory-testing"
+          },
+          {
+            "type": "article",
+            "title": "Exploratory Testing 3.0",
+            "url": "https://www.satisfice.com/blog/archives/1509"
+          },
+          {
+            "type": "article",
+            "title": "History of Definitions of Exploratory Testing",
+            "url": "https://www.satisfice.com/blog/archives/1504"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Lve3xpC1FU91TQqoDOYv7",
+      "name": "Sanity Testing",
+      "resources": {
+        "description": "# Sanity Testing\n\nSanity testing is a kind of Software Testing performed after receiving a software build, with minor changes in code, or functionality, to ascertain that the bugs have been fixed and no further issues are introduced due to these changes. The goal is to determine that the proposed functionality works roughly as expected. If sanity test fails, the build is rejected to save the time and costs involved in a more rigorous testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Sanity Testing?",
+            "url": "https://www.browserstack.com/guide/sanity-testing#:~:text=Sanity%20Testing%20or%20Surface%20Level,working%20properly%20without%20any%20bugs."
+          }
+        ]
+      }
+    },
+    {
+      "id": "XCeXiKvBblmDArfbWjDvw",
+      "name": "Regression Testing",
+      "resources": {
+        "description": "# Regression Testing\n\nRegression Testing is a type of software testing to confirm that a recent program or code change has not adversely affected existing features. Regression testing is a black box testing technique. Test cases are re-executed to check the previous functionality of the application is working fine and that the new changes have not produced any bugs.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Regression Testing?",
+            "url": "https://www.guru99.com/regression-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "What is Regression Testing? Definition, Tools and Examples",
+            "url": "https://katalon.com/resources-center/blog/regression-testing"
+          },
+          {
+            "type": "video",
+            "title": "What is Regression Testing? A Software Testing FAQ - Why? How? When?",
+            "url": "https://www.youtube.com/watch?v=xmQuLTarGI4"
+          }
+        ]
+      }
+    },
+    {
+      "id": "MVShii4LZiWW_gPTJzkty",
+      "name": "Smoke Testing",
+      "resources": {
+        "description": "# Smoke Testing\n\nSmoke Testing is a software testing process that determines whether the deployed software build is stable or not. Smoke testing is a confirmation for QA team to proceed with further software testing. It consists of a minimal set of tests run on each build to test software functionalities.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Smoke Testing | Software Testing",
+            "url": "https://www.guru99.com/smoke-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PMO3M33U6RuvNdINvqIAA",
+      "name": "Unit Testing",
+      "resources": {
+        "description": "# Unit Testing\n\nUnit testing is where individual **units** (modules, functions/methods, routines, etc.) of software are tested to ensure their correctness. This low-level testing ensures smaller components are functionally sound while taking the burden off of higher-level tests. Generally, a developer writes these tests during the development process and they are run as automated tests.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Unit Testing Tutorial",
+            "url": "https://www.guru99.com/unit-testing-guide.html"
+          },
+          {
+            "type": "video",
+            "title": "What is Unit Testing?",
+            "url": "https://youtu.be/3kzHmaeozDI"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a_vwz-onn6QEoc27N6oBc",
+      "name": "Integration Testing",
+      "resources": {
+        "description": "# Integration Testing\n\nIntegration Testing is a type of testing where software modules are integrated logically and tested as a group. A typical software project consists of multiple software modules coded by different programmers. This testing level aims to expose defects in the interaction between these software modules when they are integrated. Integration Testing focuses on checking data communication amongst these modules.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Integration Testing Tutorial",
+            "url": "https://www.guru99.com/integration-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pb3QkhSCgRByJHuPxVAlU",
+      "name": "SDLC Delivery Model",
+      "resources": {
+        "description": "# SDLC\n\nThe Software Development Life Cycle (SDLC) is a process followed for a software project, within a software organization. It consists of a detailed plan describing how to develop, maintain, replace and alter or enhance specific software. The life cycle defines a methodology for improving the quality of software and the overall development process.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "QA Role In SDLC: Why Is Quality Assurance Important In IT",
+            "url": "https://cadabra.studio/blog/why-is-quality-assurance-important-qa-role-in-sdlc/"
+          },
+          {
+            "type": "article",
+            "title": "SDLC Overview",
+            "url": "https://www.tutorialspoint.com/sdlc/sdlc_overview.htm"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "zELjfWwfEYSc1YO8JLoJn",
+      "name": "V Model",
+      "resources": {
+        "description": "# V Model\n\nV Model is a highly disciplined SDLC model that has a testing phase parallel to each development phase. The V model is an extension of the waterfall model wherein software development and testing is executed in a sequential way. It's also known as the Validation or Verification Model.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "V-Model in Software Testing",
+            "url": "https://www.guru99.com/v-model-software-testing.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7h-Xfp2Foiyn7-pI0w7ft",
+      "name": "Waterfall",
+      "resources": {
+        "description": "# Waterfall Model\n\nWaterfall Model is a sequential model that divides software development into pre-defined phases. Each phase must be completed before the next phase can begin with no overlap between the phases. Each phase is designed for performing specific activity during the SDLC phase.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Waterfall Model in SDLC? Advantages and Disadvantages",
+            "url": "https://www.guru99.com/what-is-sdlc-or-waterfall-model.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "47NXgbc1OTGE06qXxlQoh",
+      "name": "Agile Model",
+      "resources": {
+        "description": "# Agile Model\n\nThe agile model refers to a software development approach based on iterative development. Agile methods break tasks into smaller iterations or parts that do not directly involve long-term planning. The project scope and requirements are laid down at the beginning of the development process. Plans regarding the number of iterations, the duration, and the scope of each iteration are clearly defined in advance.\n\nThe Agile software development methodology is one of the simplest and most effective processes to turn a vision for a business need into software solutions.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Agile Methodology: What is Agile Model in Software Testing?",
+            "url": "https://www.guru99.com/agile-scrum-extreme-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Manifesto for Agile Software Development",
+            "url": "https://agilemanifesto.org/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Agile",
+            "url": "https://app.daily.dev/tags/agile?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cJyQx-LBcOL11nkK-P2JH",
+      "name": "Kanban",
+      "resources": {
+        "description": "# Kanban\n\nKanban is a very popular framework for development in the agile software development methodology. It provides a transparent way of visualizing the tasks and work capacity of a team. It mainly uses physical and digital boards to allow the team members to visualize the current state of the project they are working on.\n\nA kanban board is an agile project management tool designed to help visualize work, limit work-in-progress, and maximize efficiency.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Kanban - A Brief Introduction",
+            "url": "https://www.atlassian.com/agile/kanban"
+          },
+          {
+            "type": "article",
+            "title": "Kanban Model in Software Engineering",
+            "url": "https://www.guru99.com/kanban-cards-boards-methodology.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "k3xPwDzA1WUEAwJ6-Q8PW",
+      "name": "Scrum",
+      "resources": {
+        "description": "# Scrum\n\nScrum in Software Testing is a methodology for building complex software applications. It provides easy solutions for executing complicated tasks. Scrum helps the development team to focus on all aspects of the software product development like quality, performance, usability, and so on. It provides with transparency, inspection and adaptation during the software development to avoid complexity.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Scrum Testing Methodology Tutorial",
+            "url": "https://www.guru99.com/scrum-testing-beginner-guide.html"
+          },
+          {
+            "type": "article",
+            "title": "Scrum - What is, How it works",
+            "url": "https://www.atlassian.com/agile/scrum"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Scrum",
+            "url": "https://app.daily.dev/tags/scrum?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4SLrNPD_No05CKeAVDFn5",
+      "name": "XP",
+      "resources": {
+        "description": "# XP\n\nExtreme Programming (XP) is an agile software development framework that aims to produce higher quality software, and higher quality of life for the development team. XP is the most specific of the agile frameworks regarding appropriate engineering practices for software development.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Extreme Programming (XP)?",
+            "url": "https://www.agilealliance.org/glossary/xp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Tdj051ANlwwpo03X1hjbF",
+      "name": "SAFe",
+      "resources": {
+        "description": "# SAFe\n\nScaled Agile Framework (SAFe) is a freely available online knowledge base that allows you to apply lean-agile practices at the enterprise level. It provides a simple and lightweight experience for software development. It is a set of organizations and workflow patterns intended to guide enterprises for scaling lean and agile practices. It is divided into three segments which are Team, Program and Portfolio.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "SAFe (Scaled Agile Framework) Tutorial",
+            "url": "https://www.guru99.com/scaled-agile-framework.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "daUEq4xlh4PIltSdiD4F2",
+      "name": "Manual Testing",
+      "resources": {
+        "description": "# QA Manual Testing\n\nManual Testing is a type of software testing in which test cases are executed manually by a tester without using any automated tools. The purpose of Manual Testing is to identify the bugs, issues, and defects in the software application. Manual software testing is the most primitive technique of all testing types and it helps to find critical bugs in the software application.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Manual Testing Tutorial: What is, Types, Concepts",
+            "url": "https://www.guru99.com/manual-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "M78baCVYpsk7C6j-VPvPZ",
+      "name": "TDD",
+      "resources": {
+        "description": "# TDD - Test Driven Development\n\nTest Driven Development (TDD) is software development approach in which test cases are developed to specify and validate what the code will do. In simple terms, test cases for each functionality are created and tested first and if the test fails then the new code is written in order to pass the test and making code simple and bug-free.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Test Driven Development (TDD)? Tutorial with Example",
+            "url": "https://www.guru99.com/test-driven-development.html"
+          },
+          {
+            "type": "article",
+            "title": "Introduction to Test Driven Development (TDD)",
+            "url": "https://pt.coursera.org/learn/test-and-behavior-driven-development-tdd-bdd"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about TDD",
+            "url": "https://app.daily.dev/tags/tdd?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2U8WRKkuF-YCEWtpgTspF",
+      "name": "Test Planning",
+      "resources": {
+        "description": "# Test Planning\n\nA Test Plan is a detailed document that describes the test strategy, objectives, schedule, estimation, deliverables, and resources required to perform testing for a software product. Test Plan helps us determine the effort needed to validate the quality of the application under test.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Test Plan: What is, How to Create (with Example)",
+            "url": "https://www.guru99.com/what-everybody-ought-to-know-about-test-planing.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ELnCFVRkO_s5qI_3Yzf5U",
+      "name": "Test Cases and Scenarios",
+      "resources": {
+        "description": "# Test Cases and Scenarios\n\nA Test Case is a set of actions executed to verify a particular feature or functionality of your software application. A Test Case contains test steps, test data, precondition, and postcondition developed for a specific test scenario to verify any requirement. The test case includes specific variables or conditions, using which a testing engineer can compare expected and actual results to determine whether a software product is functioning as per the requirements of the customer.\n\nA Test Scenario is defined as any functionality that can be tested. It is a collective set of test cases which helps the testing team to determine the positive and negative characteristics of the project.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Test Case vs Test Scenario – Difference Between Them",
+            "url": "https://www.guru99.com/test-case-vs-test-scenario.html"
+          },
+          {
+            "type": "article",
+            "title": "How to Write Test Cases in Software Testing with Examples",
+            "url": "https://www.guru99.com/test-case.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "RD0vRC-OL2ReYLT1leJMs",
+      "name": "Compatibility",
+      "resources": {
+        "description": "# Compatibility\n\nCompatibility is nothing but the capability of existing or living together. Compatibility Testing is a type of Software testing to check whether your software is capable of running on different hardware, operating systems, applications, network environments or Mobile devices.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Compatibility Testing? Forward & Backward Example",
+            "url": "https://www.guru99.com/compatibility-testing.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vP76hqx-8Pri7sxdJDGV5",
+      "name": "Verification and Validation",
+      "resources": {
+        "description": "# Verification and Validation\n\nVerification in Software Testing is a process of checking documents, design, code, and program in order to check if the software has been built according to the requirements or not. The main goal of verification process is to ensure quality of software application, design, architecture etc. The verification process involves activities like reviews, walk-throughs and inspection.\n\nValidation in Software Engineering is a dynamic mechanism of testing and validating if the software product actually meets the exact needs of the customer or not. The process helps to ensure that the software fulfills the desired use in an appropriate environment. The validation process involves activities like unit testing, integration testing, system testing and user acceptance testing.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Differences Between Verification and Validation",
+            "url": "https://www.guru99.com/verification-v-s-validation-in-a-software-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Design Verification & Validation Process",
+            "url": "https://www.guru99.com/design-verification-process.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pYkfl-4gMHRj9wIeH8RTP",
+      "name": "HTML, CSS, JavaScript",
+      "resources": {
+        "description": "# HTML/CSS/JavaScript Basics\n\nHTML stands for HyperText Markup Language. It is used on the front and gives structure to the webpage, which you can style using CSS and make interactive using JavaScript.\n\nCSS or Cascading Style Sheets is the language used to style the front end of any website. CSS is a cornerstone technology of the World Wide Web, alongside HTML and JavaScript.\n\nJavaScript allows you to add interactivity to your pages. You may have seen common examples on the websites: sliders, click interactions, popups, and so on.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Explore top posts about CSS",
+            "url": "https://app.daily.dev/tags/css?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cHI05cf8fLh3XB1Bt6jNP",
+      "name": "Browser / Dev Tools",
+      "resources": {
+        "description": "# Browser Devtools\n\nEvery modern web browser includes a powerful suite of developer tools. These tools do a range of things, from inspecting currently-loaded HTML, CSS and JavaScript to showing which assets the page has requested and how long they took to load. This article explains how to use the basic functions of your browser's devtools.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What are Browser Developer Tools?",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_are_browser_developer_tools"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about DevTools",
+            "url": "https://app.daily.dev/tags/devtools?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jn02FD5hjhZFVWaJjjNN3",
+      "name": "Ajax",
+      "resources": {
+        "description": "# Ajax\n\nAJAX stands for Asynchronous JavaScript And XML. In a nutshell, it is the use of the XMLHttpRequest object to communicate with servers. It can send and receive information in various formats, including JSON, XML, HTML, and text files.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Getting Started with AJAX",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX/Getting_Started"
+          },
+          {
+            "type": "video",
+            "title": "What Is Ajax?",
+            "url": "https://www.youtube.com/watch?v=3l13qGLTgNw"
+          }
+        ]
+      }
+    },
+    {
+      "id": "qvlA7iIOvoWMXm5MCAysZ",
+      "name": "Caching",
+      "resources": {
+        "description": "# Caching\n\nCaching ensures that the resources downloaded once are reused instead of doing a fresh fetch again. It is useful for increasing subsequent page load speed by reusing cached images, fonts, and other static assets. Caching should not be typically done on dynamic content. For example list of posts or comments. As part of the testing strategy, both caching and cache invalidation (not getting stale dynamic content) needs to be tested.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Caching and How it Works | AWS",
+            "url": "https://aws.amazon.com/caching/"
+          },
+          {
+            "type": "video",
+            "title": "Caching - Simply Explained",
+            "url": "https://www.youtube.com/watch?v=6FyXURRVmR0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "_2IwBNhB5SqbPRxGhZyhq",
+      "name": "SWAs, PWAs, JAMStack",
+      "resources": {
+        "description": "# SWAs, PWAs and JAMstack\n\n## SWAs\n\nA Static Web Application is any web application that can be delivered directly to an end user's browser without any server-side alteration of the HTML, CSS, or JavaScript content. While this can encompass very flat, unchanging sites like a corporate web site, static web applications generally refer to rich sites that utilize technologies in the browser instead of on the server to deliver dynamic content.\n\n## PWAs\n\nAt their heart, Progressive Web Apps are just web applications. Using progressive enhancement, new capabilities are enabled in modern browsers. Using service workers and a web app manifest, your web application becomes reliable and installable. If the new capabilities aren't available, users still get the core experience.\n\nProgressive Web Apps provide you with a unique opportunity to deliver a web experience your users will love. Using the latest web features to bring enhanced capabilities and reliability, Progressive Web Apps allow what you build to be installed by anyone, anywhere, on any device with a single codebase.\n\n## Jamstack\n\nJamstack is an architectural approach that decouples the web experience layer from data and business logic, improving flexibility, scalability, performance, and maintainability.\nJamstack removes the need for business logic to dictate the web experience. It enables a composable architecture for the web where custom logic and 3rd party services are consumed through APIs.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "SWA",
+            "url": "https://www.staticapps.org/"
+          },
+          {
+            "type": "article",
+            "title": "PWA",
+            "url": "https://web.dev/progressive-web-apps/"
+          },
+          {
+            "type": "course",
+            "title": "Jamstack",
+            "url": "https://jamstack.org/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about JAMstack",
+            "url": "https://app.daily.dev/tags/jamstack?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "-2RU50LUPwCQ8XRaMslY-",
+      "name": "CSR vs SSR",
+      "resources": {
+        "description": "# CSR vs SSR\n\nCSR stands for Client Side Rendering and SSR stands for Server Side Rendering. CSR pages are computed in your machine and then shown by your browser while in the case of SSR, the server sends ready to show Html content directly. Primarily React, Vue, and Angular apps are examples of CSR (technically it is possible for them to be executed in SSR mode too) and almost all older tech stacks are SSR like PHP, ruby on rails, java, dot net, etc. From the user's standpoint, CSR apps take higher time to render but compensate by avoiding page reloads later (SPA) while SSR apps often have faster initial load time but do a full page reload often.",
+        "resources": [
+          {
+            "type": "video",
+            "title": "Server Side Rendering vs Client Side Rendering",
+            "url": "https://www.youtube.com/watch?v=rNVcZklcmqU"
+          },
+          {
+            "type": "article",
+            "title": "SSR vs CSR vs SSG",
+            "url": "https://medium.com/@prashantramnyc/server-side-rendering-ssr-vs-client-side-rendering-csr-vs-pre-rendering-using-static-site-89f2d05182ef"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Web Development",
+            "url": "https://app.daily.dev/tags/webdev?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6cGPxfJ9ipij40hnmckxV",
+      "name": "Responsive vs Adaptive",
+      "resources": {
+        "description": "# Responsive vs adaptive\n\nThere are two approaches to ensuring a website is optimized for mobile, tablet, laptop and PC screens: responsive design and adaptive design. While both are intended to solve the same problem, they use different strategies.\n\n# What is responsive design?\n\nA website created with responsive design serves up the same site to every device, but that site is fluid and will change its layout and appearance based on the size and orientation of the device.\n\nDevelopers use CSS to ensure each page of the site can reformat based on the size of the user's viewport and only need to create one codebase for the site. They use something called breakpoints to tell the site when to adjust to accommodate different screen sizes.\n\nThe majority of new sites now use responsive, which has been made easier for less experienced designers and developers, thanks to the availability of themes accessible through CMS systems such as WordPress, Joomla, and Drupal.\n\nResponsive design does not offer as much control as adaptive, but takes much less work to both build and maintain. Responsive layouts are also fluid, and whilst adaptive can and do use percentages to give a more fluid feel when scaling, these can again cause a jump when a window is resized.\n\n# What is adaptive design?\n\nIn adaptive design, a different website layout is created for each device's screen. As it loads, the site recognizes the size of the screen and serves up the layout that was made for that viewport. In fact, you can create a different user experience for each of six common screen sizes from very small to very large: 320px, 480px, 760px, 960px, 1200px and 1600px.\n\nAdaptive is useful for retrofitting an existing site in order to make it more suitable for mobile phones. This allows you to take control of the design and web development for specific, multiple viewports. The number of viewports that you choose to design for is entirely up to you, your company, and your overall budget. It does, however, afford you a certain amount of control (for example over content and layout) that you will not necessarily have using responsive design.",
+        "resources": []
+      }
+    },
+    {
+      "id": "_3HfVT8IDlcgvUM4h6A0_",
+      "name": "Selenium IDE",
+      "resources": {
+        "description": "# Selenium IDE\n\nSelenium IDE is an open source web automation testing tool from the Selenium Suite used primarily for QA purposes. It functions as a Firefox extension and does not require any programming knowledge and test cases can be created simply by interacting with the browser.\n\nSelenium itself is an open-source, automated testing tool used to test web applications across various browsers. It's primarily built in Java and supports several browsers and programming languages. Selenium IDE was developed to speed up the creation of automation scripts. It’s a rapid prototyping tool and can be used by engineers with no programming knowledge whatsoever. Because of its simplicity, Selenium IDE is best used as a prototyping tool and not a complete solution for developing and maintaining complex test suites.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Selenium IDE",
+            "url": "https://www.selenium.dev/selenium-ide/"
+          },
+          {
+            "type": "article",
+            "title": "Selenium IDE Tutorial",
+            "url": "https://www.softwaretestinghelp.com/selenium-ide-script-selenium-tutorial-3/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Selenium",
+            "url": "https://app.daily.dev/tags/selenium?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mX7bNNP7WjFdlsRK6qIgy",
+      "name": "Ghost Inspector",
+      "resources": {
+        "description": "# Ghost Inspector\n\nGhost Inspector is a codeless automated testing tool that allows you to easily create and run automated browser tests for websites and web applications. These tests carry out actions in a web browser the same way a real user would to ensure that everything is working properly.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Ghost Inspector",
+            "url": "https://ghostinspector.com/"
+          },
+          {
+            "type": "article",
+            "title": "What Is Ghost Inspector? Overview & Tour Of Features",
+            "url": "https://theqalead.com/test-management/what-is-ghost-inspector-overview-tour-of-features/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wUq-qEIh-tazYhgQQUqGG",
+      "name": "Bug Magnet",
+      "resources": {
+        "description": "# Bug Magnet\n\nExploratory Testing is all about exploring the software by navigating random paths and discovering what it can do and what it can’t. In exploratory testing we try to verify how well system reacts to special/invalid inputs and edge cases. Bug Magnet will help you configure Data validations and variety input scenarios likely to cause issues.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Bug Magnet Website",
+            "url": "https://bugmagnet.org/"
+          },
+          {
+            "type": "article",
+            "title": "Bug Magnet: Chrome Extension for Exploratory Testing",
+            "url": "http://www.testingjournals.com/bug-magnet-extension-exploratory-testing/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cFhOYHgq1_MUSXjDI_fFN",
+      "name": "Webdriver.io",
+      "resources": {
+        "description": "# Webdriver.io\n\nWebdriverIO is a progressive automation framework built to automate modern web and mobile applications. It simplifies the interaction with your app and provides a set of plugins that help you create a scalable, robust and stable test suite.\n\nWebdriverIO leverages the power of the WebDriver protocol that is developed and supported by all browser vendors and guarantees a true cross-browser testing experience. While other automation tools require you to download modified browser that aren't used by actual users or emulate user behavior by injecting JavaScript, WebdriverIO relies on a common agreed standard for automation that is properly tested and ensures compatibility for decades to come.\n\nDuring the development of this automation standard the web has changed a lot and many of the requirements that developers have today to test their web application can not be fulfilled using WebDriver anymore. While some of the core contributors of this project help support the next generation of the WebDriver protocol, WebdriverIO provides an alternative automation solution based on the Chrome DevTools protocol. This allows the user to seamlessly switch between conventional commands based on WebDriver and powerful browser interactions through Puppeteer.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "WebdriverIO",
+            "url": "https://webdriver.io/"
+          },
+          {
+            "type": "course",
+            "title": "A brief overview of WebdriverIO",
+            "url": "https://webdriver.io/docs/what-is-webdriverio"
+          },
+          {
+            "type": "course",
+            "title": "Getting started with WebdriverIO",
+            "url": "https://webdriver.io/docs/gettingstarted"
+          },
+          {
+            "type": "video",
+            "title": "WebdriverIO Tutorial",
+            "url": "https://www.youtube.com/watch?v=e8goAKb6CC0&list=PL6AdzyjjD5HBbt9amjf3wIVMaobb28ZYN"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CHqfXjRRdS_c6XMnfVVx-",
+      "name": "Playwright",
+      "resources": {
+        "description": "# Playwright\n\nPlaywright Test was created specifically to accommodate the needs of end-to-end testing. Playwright supports all modern rendering engines including Chromium, WebKit, and Firefox. Test on Windows, Linux, and macOS, locally or on CI, headless or headed with native mobile emulation of Google Chrome for Android and Mobile Safari.Playwright leverages the DevTools protocol to write powerful, stable automated tests.Playwright can actually see into and control the browser rather than relying on a middle translation layer, it allows for the simulation of more insightful and relevant user scenarios.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Playwright",
+            "url": "https://playwright.dev/"
+          },
+          {
+            "type": "article",
+            "title": "Playwright Tutorial: Learn Basics and Setup",
+            "url": "https://www.browserstack.com/guide/playwright-tutorial"
+          }
+        ]
+      }
+    },
+    {
+      "id": "414xO4PX9rU0f39aC7awu",
+      "name": "QA Wolf",
+      "resources": {
+        "description": "# QA Wolf\n\nQA Wolf is a hybrid platform & service that helps software teams ship better software faster by taking QA completely off their plate.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "QA Wolf",
+            "url": "https://www.qawolf.com/"
+          },
+          {
+            "type": "course",
+            "title": "QA Wolf Docs",
+            "url": "https://app.qawolf.com/docs/why-qa-wolf"
+          },
+          {
+            "type": "article",
+            "title": "Getting started with QA Wolf",
+            "url": "https://app.qawolf.com/docs/create-a-test"
+          },
+          {
+            "type": "video",
+            "title": "QA Wolf Tutorial",
+            "url": "https://www.youtube.com/watch?v=BRxVu0De-4k\\&list=PL33T95M59Kkg1zKCU5NHc2g2XYXOs3-DU"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "iQ7xwiA6xmbLyRIkI7tXM",
+      "name": "Cypress",
+      "resources": {
+        "description": "# Cypress\n\nCypress framework is a JavaScript-based end-to-end testing framework built on top of Mocha – a feature-rich JavaScript test framework running on and in the browser, making asynchronous testing simple and convenient. It also uses a BDD/TDD assertion library and a browser to pair with any JavaScript testing framework.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Cypress",
+            "url": "https://www.cypress.io/"
+          },
+          {
+            "type": "course",
+            "title": "Cypress Documentation",
+            "url": "https://docs.cypress.io/guides/overview/why-cypress#Other"
+          },
+          {
+            "type": "course",
+            "title": "How it Works",
+            "url": "https://www.cypress.io/how-it-works"
+          },
+          {
+            "type": "video",
+            "title": "Cypress End-to-End Testing",
+            "url": "https://www.youtube.com/watch?v=7N63cMKosIE"
+          },
+          {
+            "type": "video",
+            "title": "Cypress Tips & Tricks",
+            "url": "https://www.youtube.com/watch?v=PZ2OsLBts1E\\&list=PLP9o9QNnQuAYYRpJzDNWpeuOVTwxmIxcI"
+          },
+          {
+            "type": "article",
+            "title": "Cypress - End to End Testing Framework",
+            "url": "https://dev.to/bushraalam/cypress-end-to-end-testing-framework-3naa"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Cypress",
+            "url": "https://app.daily.dev/tags/cypress?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HP55XWH18THmCNjCq-gBl",
+      "name": "Jasmine",
+      "resources": {
+        "description": "# Jasmine\n\nJasmine is a very popular JavaScript BDD (behavior-driven development) framework for unit testing JavaScript applications. It provides utilities that can be used to run automated tests for both synchronous and asynchronous code. It does not depend on any other JavaScript frameworks. It does not require a DOM.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Jasmines",
+            "url": "https://jasmine.github.io/"
+          },
+          {
+            "type": "article",
+            "title": "Easy and Practical Example of Angular Testing with Jasmine",
+            "url": "https://semaphoreci.com/community/tutorials/testing-components-in-angular-2-with-jasmine"
+          },
+          {
+            "type": "article",
+            "title": "Starting with Jasmine from Scratch",
+            "url": "https://www.testim.io/blog/jasmine-js-a-from-scratch-tutorial-to-start-testing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Ta1leBdu-Y9LryB-0U-CT",
+      "name": "Nightwatch",
+      "resources": {
+        "description": "# Nightwatch\n\nNightwatch.js is an open-source automated testing framework that is powered by Node.js and provides complete E2E (end to end) solutions to automation testing with Selenium Javascript be it for web apps, browser apps, and websites.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Nightwatch.js Website",
+            "url": "https://nightwatchjs.org/"
+          },
+          {
+            "type": "article",
+            "title": "NightwatchJS Tutorial: Get Started with Automation Testing",
+            "url": "https://www.browserstack.com/guide/nightwatch-framework-tutorial"
+          }
+        ]
+      }
+    },
+    {
+      "id": "nf76o_NYm0-pSIVBFm7IH",
+      "name": "Robot",
+      "resources": {
+        "description": "# Robot framework\n\nRobot Framework is a Python-based, extensible keyword-driven automation framework for acceptance testing, acceptance test driven development (ATDD), behavior driven development (BDD) and robotic process automation (RPA).\n\nRobot Framework is open and extensible. Robot Framework can be integrated with virtually any other tool to create powerful and flexible automation solutions.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Robot Framework Official Website",
+            "url": "https://robotframework.org/"
+          },
+          {
+            "type": "course",
+            "title": "Robot Framework Official User Guide",
+            "url": "https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html"
+          },
+          {
+            "type": "article",
+            "title": "Basic Step-by-step Robot Framework tutorial",
+            "url": "https://medium.com/swlh/robot-framework-the-basics-dfeadc025bea"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s3HMrqNEVogftCIOZYO61",
+      "name": "Selenium",
+      "resources": {
+        "description": "# Selenium\n\nSelenium is an open-source tool that automates web browsers. It provides a single interface that lets you write test scripts in programming languages like Ruby, Java, NodeJS, PHP, Perl, Python, and C#, among others.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Selenium",
+            "url": "https://www.selenium.dev/"
+          },
+          {
+            "type": "article",
+            "title": "Selenium Tutorial",
+            "url": "https://www.browserstack.com/selenium"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Selenium",
+            "url": "https://app.daily.dev/tags/selenium?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZeJSeYs8fkZLQ-Pc3TqEM",
+      "name": "Jest",
+      "resources": {
+        "description": "# Jest\n\nJest is a delightful JavaScript Testing Framework with a focus on simplicity.\nIt works with projects using: Babel, TypeScript, Node, React, Angular, Vue and more!",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Jest",
+            "url": "https://jestjs.io/"
+          },
+          {
+            "type": "course",
+            "title": "Jest Documentation",
+            "url": "https://jestjs.io/docs/getting-started"
+          },
+          {
+            "type": "video",
+            "title": "Jest Crash Course - Unit Testing in JavaScript",
+            "url": "https://www.youtube.com/watch?v=7r4xVDI2vho"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Jest",
+            "url": "https://app.daily.dev/tags/jest?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "YKHlLKIlL-Y4ZtHTLfApu",
+      "name": "Puppeteer",
+      "resources": {
+        "description": "# Puppeteer\n\nPuppeteer is a Node library which provides a high-level API to control headless Chrome or Chromium over the DevTools Protocol. It can also be configured to use full (non-headless) Chrome or Chromium.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Puppetter",
+            "url": "https://developer.chrome.com/docs/puppeteer/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Crawling",
+            "url": "https://app.daily.dev/tags/crawling?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hU5OCnEe3tG206xuGsVFd",
+      "name": "Frontend Automation",
+      "resources": {
+        "description": "# Frontend automation\n\nFront-end automation is a way to characterize automation that streamlines tasks focused on interactivity, websites, and attended processes. Robotic process automation, or RPA, is considered automation on the front end, or from the user-interface (UI) level. Benefits of front-end automation include quick task building with no programming knowledge, no required changes to existing programs or applications, and those individuals who know the keystrokes can easily build the automation task.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "How We do Automated Testing on our Frontend",
+            "url": "https://dev.to/davidz/how-we-do-automated-testing-on-our-frontend-b10"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Automation",
+            "url": "https://app.daily.dev/tags/automation?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mPaMQ5h8ZcXKOfcuSwB2-",
+      "name": "Backend Automation",
+      "resources": {
+        "description": "# Backend Automation\n\nBackend Testing is a testing method that checks the server side or database of web applications or software. Backend testing aims to test the application layer or database layer to ensure that the web application or software is free from database defects like deadlock, data corruption, or data loss.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Backend Testing Tutorial",
+            "url": "https://www.guru99.com/what-is-backend-testing.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Automation",
+            "url": "https://app.daily.dev/tags/automation?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5cMhZ-7YMQ6ccs-AaIi-0",
+      "name": "Cypress",
+      "resources": {
+        "description": "# Cypress\n\nCypress framework is a JavaScript-based end-to-end testing framework built on top of Mocha – a feature-rich JavaScript test framework running on and in the browser, making asynchronous testing simple and convenient. It also uses a BDD/TDD assertion library and a browser to pair with any JavaScript testing framework.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Cypress",
+            "url": "https://www.cypress.io/"
+          },
+          {
+            "type": "course",
+            "title": "Cypress Documentation",
+            "url": "https://docs.cypress.io/guides/overview/why-cypress#Other"
+          },
+          {
+            "type": "course",
+            "title": "How it Works",
+            "url": "https://www.cypress.io/how-it-works"
+          },
+          {
+            "type": "video",
+            "title": "Cypress End-to-End Testing",
+            "url": "https://www.youtube.com/watch?v=7N63cMKosIE"
+          },
+          {
+            "type": "video",
+            "title": "Cypress Tips & Tricks",
+            "url": "https://www.youtube.com/watch?v=PZ2OsLBts1E\\&list=PLP9o9QNnQuAYYRpJzDNWpeuOVTwxmIxcI"
+          },
+          {
+            "type": "article",
+            "title": "Cypress - End to End Testing Framework",
+            "url": "https://dev.to/bushraalam/cypress-end-to-end-testing-framework-3naa"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Cypress",
+            "url": "https://app.daily.dev/tags/cypress?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ZKOU7dWcrkKzTdt0wxwuO",
+      "name": "Playwright",
+      "resources": {
+        "description": "# Playwright\n\nPlaywright is an open-source library for automating web browsers built by Microsoft, similar to Selenium, it's commonly used for testing web applications. It's built on top of the .NET Core runtime and it provides bindings for C#, it allows developers to write tests for web applications in C# or other .NET languages. Playwright is designed to be fast and reliable and allows developers to run tests in multiple browsers.\n\nTo learn more, visit the following:\n\n- [@opensource@Playwright for .NET](https://github.com/microsoft/playwright-dotnet)\n- [@article@How to test Apps with Playwright and .NETs](https://www.twilio.com/blog/test-web-apps-with-playwright-and-csharp-dotnet)\n- [@article@End-to-End Tests With ASP.NET and Playwright](https://khalidabuhakmeh.com/end-to-end-test-with-aspnet-core-xunit-and-playwright)",
+        "resources": [
+          {
+            "type": "tutorial",
+            "title": "Playwright for .NET",
+            "url": "https://github.com/microsoft/playwright-dotnet"
+          },
+          {
+            "type": "article",
+            "title": "How to test Apps with Playwright and .NETs",
+            "url": "https://www.twilio.com/blog/test-web-apps-with-playwright-and-csharp-dotnet"
+          },
+          {
+            "type": "article",
+            "title": "End-to-End Tests With ASP.NET and Playwright",
+            "url": "https://khalidabuhakmeh.com/end-to-end-test-with-aspnet-core-xunit-and-playwright"
+          }
+        ]
+      }
+    },
+    {
+      "id": "eE9F3YviSpmgor6V5NMj5",
+      "name": "Soap UI",
+      "resources": {
+        "description": "# SoapUI\n\nSoapUI is the world's leading Functional Testing tool for SOAP and REST testing. With its easy-to-use graphical interface, and enterprise-class features, SoapUI allows you to easily and rapidly create and execute automated functional, regression, and load tests.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "SoapUI",
+            "url": "https://www.soapui.org/"
+          },
+          {
+            "type": "course",
+            "title": "SoapUI Docs",
+            "url": "https://www.soapui.org/getting-started/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8zXn8R9OGWTmreBpstj03",
+      "name": "Karateframework",
+      "resources": {
+        "description": "# Karate framework\n\nKarate is the only open-source tool to combine API test-automation, mocks, performance-testing and even UI automation into a single, unified framework. The BDD syntax popularized by Cucumber is language-neutral, and easy for even non-programmers. Assertions and HTML reports are built-in, and you can run tests in parallel for speed.\n\nThere's also a cross-platform stand-alone executable for teams not comfortable with Java. You don't have to compile code. Just write tests in a simple, readable syntax - carefully designed for HTTP, JSON, GraphQL and XML. And you can mix API and UI test-automation within the same test script.\n\nA Java API also exists for those who prefer to programmatically integrate Karate's rich automation and data-assertion capabilities.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Karate Framework",
+            "url": "https://www.karatelabs.io/"
+          },
+          {
+            "type": "tutorial",
+            "title": "karate architecture",
+            "url": "https://github.com/karatelabs/karate/blob/master/karate-core/src/test/resources/karate-map.jpg?raw=true"
+          },
+          {
+            "type": "video",
+            "title": "karate for beginner",
+            "url": "https://www.youtube.com/watch?v=1f6xtJpRx4k&list=PLhW3qG5bs-L-y5Q1zDXJAur1JNZVFB534"
+          }
+        ]
+      }
+    },
+    {
+      "id": "X_nLwzc1QmShivEjfy6v9",
+      "name": "Postman / Newman",
+      "resources": {
+        "description": "# Newman\n\nPostman is an API platform for building and using APIs. Postman simplifies each step of the API lifecycle and streamlines collaboration so you can create better APIs—faster. It is an API client that makes it easy for developers to create, share, test, and document APIs. With this open-source solution, users can create and save simple and complex HTTP/s requests and read their responses.\n\nNewman is a command-line Collection Runner for Postman. It enables you to run and test a Postman Collection directly from the command line. It's built with extensibility to integrate it with your continuous integration servers and build systems.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Postman",
+            "url": "https://www.postman.com"
+          },
+          {
+            "type": "article",
+            "title": "Learn Postman",
+            "url": "https://learning.postman.com/docs/getting-started/introduction/"
+          },
+          {
+            "type": "video",
+            "title": "API Testing with Postman",
+            "url": "https://www.youtube.com/watch?v=VywxIQ2ZXw4"
+          },
+          {
+            "type": "article",
+            "title": "Newman CLI",
+            "url": "https://learning.postman.com/docs/running-collections/using-newman-cli/command-line-integration-with-newman/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Postman",
+            "url": "https://app.daily.dev/tags/postman?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gECIgOii7C5MzilSbQP9t",
+      "name": "REST Assured",
+      "resources": {
+        "description": "# REST Assured\n\nRest-assured helps developers and test engineers to test REST APIs in Java ease by using techniques used in dynamic languages such as Groovy and Ruby.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "REST-assured Website",
+            "url": "https://rest-assured.io"
+          },
+          {
+            "type": "article",
+            "title": "REST Assured Tutorial: How to test API with Example",
+            "url": "https://www.guru99.com/rest-assured.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about REST API",
+            "url": "https://app.daily.dev/tags/rest-api?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ITtBvrJ8dsW-5LQV8tWgO",
+      "name": "Mobile Automation",
+      "resources": {
+        "description": "# Mobile Automation\n\nMobile automation, as the name suggests, refers to 'automation' that is done on mobile devices. Mobile Automation can test a WAP site or an app. As we know, mobile devices consist of hardware and software components, while a mobile application is simply the software. Testing the mobile device is also connected to evaluating the hardware component and the software part.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Mobile Automation Testing Steps and Process",
+            "url": "https://u-tor.com/topic/mobile-automation-steps"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Automation",
+            "url": "https://app.daily.dev/tags/automation?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stMeB1U3SfuefZ-yS8wGF",
+      "name": "Espresso",
+      "resources": {
+        "description": "# Espresso\n\nEspresso is a native testing framework for Android to write reliable UI tests. Google released the Espresso framework in October 2013 and, as of release version 2.0, Espresso is part of the Android Support Repository. One of the important features in Espresso is that it automatically synchronizes your test actions with the user interface of your application. The framework also ensures that your activity is started before the test runs. It can also force a test to wait until all observer background activities have finished, which is sometimes a problem with other testing frameworks.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Espresso Documentation",
+            "url": "https://developer.android.com/training/testing/espresso#kotlin"
+          },
+          {
+            "type": "article",
+            "title": "Espresso Testing Tutorial",
+            "url": "https://www.tutorialspoint.com/espresso_testing/index.htm"
+          },
+          {
+            "type": "tutorial",
+            "title": "Espresso Code Samples on GitHub",
+            "url": "https://github.com/android/testing-samples"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gZnNHDjFMI003Od7u2RNa",
+      "name": "Detox",
+      "resources": {
+        "description": "# Detox\n\nDetox is a JavaScript mobile testing framework that is built into the application and the test execution starts with app launch. This makes test execution really fast and robust as no external additional tools are needed to orchestrate and synchronize during the test execution.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Detox",
+            "url": "https://wix.github.io/Detox/"
+          },
+          {
+            "type": "course",
+            "title": "Getting Started with Detox",
+            "url": "https://wix.github.io/Detox/docs/introduction/getting-started"
+          },
+          {
+            "type": "article",
+            "title": "Test Automation Tools: Detox",
+            "url": "https://www.spritecloud.com/test-automation-tools-detox/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "UIKUiCfSw5MkrRJZ3Ah3x",
+      "name": "Appium",
+      "resources": {
+        "description": "# Appium\n\nAppium is an open-source framework that allows QAs to conduct automated app testing on different platforms like Android, iOS, and Windows. It is developed and supported by Sauce Labs to automate native and hybrid mobile apps. It is a cross-platform mobile automation tool, which means that it allows the same test to be run on multiple platforms.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Appium",
+            "url": "https://appium.io/"
+          },
+          {
+            "type": "course",
+            "title": "Appium Documentation",
+            "url": "https://appium.io/docs/en/2.0/intro/"
+          },
+          {
+            "type": "article",
+            "title": "Appium Tutorial for Mobile Application Testing",
+            "url": "https://www.browserstack.com/guide/appium-tutorial-for-testing"
+          },
+          {
+            "type": "tutorial",
+            "title": "Appium example tests on GitHub",
+            "url": "https://github.com/appium/appium/tree/1.x/sample-code"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Q6eNkuRI6dPa9X44pwrea",
+      "name": "XCUITest",
+      "resources": {
+        "description": "# XCUITest\n\nMobile app testing, and more specifically, app UI testing involves checking how the interface behaves when user actions are performed and then compares results with expected outcomes. Here, testers try to replicate exactly how a user would interact with the application and validate the state of the UI. XCUITest allows them to write test cases for these purposes using two fundamental concepts.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "XCUITest Documentation",
+            "url": "https://developer.apple.com/documentation/xctest/"
+          },
+          {
+            "type": "article",
+            "title": "Getting Started with XCUITest",
+            "url": "https://www.browserstack.com/guide/getting-started-xcuitest-framework"
+          },
+          {
+            "type": "article",
+            "title": "Xcuitest - End to End Testing",
+            "url": "https://testautomationu.applitools.com/learningpaths.html?id=mobile-swift-path"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mmDIqSD6MU3ZhWREGI5E2",
+      "name": "Accessibility Tests",
+      "resources": {
+        "description": "# Accessibility testing\n\nIn software QA, accessibility testing is the practice of confirming that an application is usable for as many people as possible, including people with disabilities such as vision impairment, hearing problems and cognitive conditions.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Explore top posts about Accessibility",
+            "url": "https://app.daily.dev/tags/accessibility?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Lb1ctvpMcKIvsC0WQ5q43",
+      "name": "Wave",
+      "resources": {
+        "description": "# Wave\n\nWave is a suite of evaluation tools that helps authors make their web content more accessible to individuals with disabilities. WAVE can identify many accessibility and Web Content Accessibility Guideline (WCAG) errors, but also facilitates human evaluation of web content.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Wave",
+            "url": "https://wave.webaim.org/"
+          },
+          {
+            "type": "article",
+            "title": "WAVE Accessibility Testing Tool Tutorial",
+            "url": "https://www.softwaretestinghelp.com/web-accessibility-testing-tools/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "_4jJ8YQeLcaT-z38kxRRR",
+      "name": "AXE",
+      "resources": {
+        "description": "# Axe\n\nAxe is a fast and lightweight accessibility testing tool that checks the entire document against the rules and generates a report with all violations, passes, etc.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Axe Website",
+            "url": "https://www.deque.com/axe/"
+          },
+          {
+            "type": "article",
+            "title": "Accessibility testing using the axe-core library",
+            "url": "https://www.browserstack.com/docs/automate/selenium/accessibility-testing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Xadg2WZTz6Cc_Ir9FsbgY",
+      "name": "Chrome DevTools",
+      "resources": {
+        "description": "# Chrome dev tools\n\nThese are a set of tools built into the browser to aid frontend developers diagnose and solve various issues in their applications — such as JavaScript and logical bugs, CSS styling issues or even just making quick temporary alterations to the DOM.\n\nTo enter the dev tools, right click and click **Inspect** (or press `ctrl+shift+c`/`cmd+opt+c`) to enter the Elements panel. Here you can debug CSS and HTML issues. If you want to see logged messages or interact with javascript, enter the **Console** tab from the tabs above (or press `ctrl+shift+j`/`cmd+opt+j` to enter it directly). Another very useful feature in the Chrome dev tools is the Lighthouse (for checking performance) — more on this later.\n\nNOTE: This isn't a chrome-specific feature, and most browsers (Chromium based or otherwise) will have their own, largely-similar set of devtools.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Chrome Dev Tools",
+            "url": "https://developer.chrome.com/docs/devtools/overview/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about DevTools",
+            "url": "https://app.daily.dev/tags/devtools?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wTfvbS62eyitDT8pLsVhj",
+      "name": "Load & Performance Testing",
+      "resources": {
+        "description": "# Load and Performance Testing\n\nPerformance Testing is a subset of Performance Engineering. It is a process of evaluating a system’s behavior under various extreme conditions. The main intent of performance testing is to monitor and improve key performance indicators such as response time, throughput, memory, CPU utilization, and more.\n\nThere are three objectives (three S) of Performance testing to observe and evaluate: `Speed`, `Scalability` and `Stability`. Following are the commonly used performance testing types, but not limited to:\n\n- Load Testing\n- Stress Testing\n- Spike Testing\n- Endurance Testing\n- Volume Testing\n- Scalability Testing\n- Capacity Testing\n\nLoad Testing is one type of performance testing. It helps to evaluate the application under tests' behaviors such as response time, throughput, pass/fail transactions, and more under the normal workload. e.g., cart checkout response time is 500 milliseconds under typical business hours.",
+        "resources": []
+      }
+    },
+    {
+      "id": "fkUxhrP3LhtIVgIP9Dxar",
+      "name": "Lighthouse",
+      "resources": {
+        "description": "# Lighthouse\n\nLighthouse is an open-source, automated tool for improving the quality of web pages. You can run it against any web page, public or requiring authentication. It has audits for performance, accessibility, progressive web apps, SEO, and more. You can run Lighthouse in Chrome DevTools, from the command line, or as a Node module. You give Lighthouse a URL to audit, run a series of audits against the page, and then generate a report on how well the page did. From there, use the failing audits as indicators on how to improve the page. Each audit has a reference doc explaining why the audit is important and how to fix it.",
+        "resources": [
+          {
+            "type": "tutorial",
+            "title": "Lighthouse Source",
+            "url": "https://github.com/GoogleChrome/lighthouse/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Lighthouse",
+            "url": "https://app.daily.dev/tags/lighthouse?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "igbQfUpmMSKYyAOVkSCLM",
+      "name": "Webpage Test",
+      "resources": {
+        "description": "# WebPageTest\n\nWebPageTest is a web performance tool providing deep diagnostic information about how a page performs under a variety of conditions.\n\nEach test can be run from different locations around the world, on real browsers, over any number of customizable network conditions.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "WebPageTest",
+            "url": "https://www.webpagetest.org/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "J1Yx1VcO20Lc3r3PdGpUW",
+      "name": "Gatling",
+      "resources": {
+        "description": "# Gatling\n\nGatling is a highly capable load testing tool. It is designed for ease of use, maintainability and high performance. Out of the box, Gatling comes with excellent support of the HTTP protocol that makes it a tool of choice for load testing any HTTP server. As the core engine is actually protocol agnostic, it is perfectly possible to implement support for other protocols. For example, Gatling currently also ships JMS support.\n\nGatling’s architecture is asynchronous as long as the underlying protocol, such as HTTP, can be implemented in a non blocking way. This kind of architecture lets us implement virtual users as messages instead of dedicated threads, making them very resource cheap. Thus, running thousands of concurrent virtual users is not an issue.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Gatling",
+            "url": "https://gatling.io/"
+          },
+          {
+            "type": "video",
+            "title": "Learn Gatling",
+            "url": "https://www.youtube.com/playlist?list=PLJ9A48W0kpRJE6s8I1MjWm-z8BGbUYNCw"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Jcp29_ASj9QZ_DjDBIapJ",
+      "name": "K6",
+      "resources": {
+        "description": "# k6\n\nGrafana k6 is an open-source load testing tool that makes performance testing easy and productive for engineering teams. k6 is free, developer-centric, and extensible.\n\nUsing k6, you can test the reliability and performance of your systems and catch performance regressions and problems earlier. k6 will help you to build resilient and performant applications that scale.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Grafana k6 Website",
+            "url": "https://k6.io/"
+          },
+          {
+            "type": "video",
+            "title": "Learn k6",
+            "url": "https://www.youtube.com/playlist?list=PLJ9A48W0kpRJKmVeurt7ltKfrOdr8ZBdt"
+          }
+        ]
+      }
+    },
+    {
+      "id": "j1DYOQbIUT1tw_9WIPBkE",
+      "name": "Artillery",
+      "resources": {
+        "description": "# Artillery\n\nArtillery is a modern, powerful & easy-to-use performance testing toolkit. Use it to ship scalable applications that stay performant & resilient under high load.\n\nArtillery prioritizes developer productivity and happiness, and follows the \"batteries-included\" philosophy.\n\n## Features\n\n- Emulate complex user behavior with scenarios\n- Load testing and smoke testing\n- Batteries included\n- Extensible & hackable\n- Integrations and add-ons\n- Designed for cross-team collaboration\n- Planet-scale testing",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Artillery",
+            "url": "https://www.artillery.io/"
+          },
+          {
+            "type": "video",
+            "title": "Learn Artillery",
+            "url": "https://www.youtube.com/playlist?list=PLJ9A48W0kpRJh1_uW2mVNhSIVCMYmNlm7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "LGZlOPNYQp0O_vapnciEI",
+      "name": "Vegeta",
+      "resources": {
+        "description": "# Vegeta\n\nVegeta is a versatile HTTP load testing tool built out of a need to drill HTTP services with a constant request rate. It can be used both as a command line utility and a library.",
+        "resources": [
+          {
+            "type": "tutorial",
+            "title": "Vegeta",
+            "url": "https://github.com/tsenart/vegeta"
+          }
+        ]
+      }
+    },
+    {
+      "id": "UeeDNUPZ61_HHgcaF9-__",
+      "name": "JMeter",
+      "resources": {
+        "description": "# JMeter\n\nApache JMeter is an Apache project that can be used as a load testing tool for analyzing and measuring the performance of a variety of services, with a focus on web applications.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Apache JMeter",
+            "url": "https://jmeter.apache.org/"
+          },
+          {
+            "type": "video",
+            "title": "Learn JMeter",
+            "url": "https://www.youtube.com/playlist?list=PLJ9A48W0kpRIjLkZ32Do9yDZXnnm7_uj_"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Testing",
+            "url": "https://app.daily.dev/tags/testing?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "QjAJIfSQe7WjbyYdGWSP8",
+      "name": "Locust",
+      "resources": {
+        "description": "# Locust\n\nLocust is an easy-to-use, scriptable and scalable performance testing tool. You define the behavior of your users in regular Python code instead of being stuck in a UI or restrictive domain-specific language. This makes Locust infinitely expandable and very developer friendly. Given below are some of the features of Locust.\n\n- Write test scenarios in plain old Python\n- Distributed and scalable - supports hundreds of thousands of concurrent users\n- Web-based UI\n- Can test any system\n- Hackable",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Locust",
+            "url": "https://locust.io/"
+          },
+          {
+            "type": "video",
+            "title": "Learn Locust",
+            "url": "https://www.youtube.com/playlist?list=PLJ9A48W0kpRKMCzJARCObgJs3SinOewp5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wsJXMvRbOTh_VXKhmhPmQ",
+      "name": "Security Testing",
+      "resources": {
+        "description": "# Security Testing\n\nSecurity testing is a process intended to reveal flaws in the security mechanisms of an information system that protect data and maintain functionality as intended. Due to the logical limitations of security testing, passing the security testing process is not an indication that no flaws exist or that the system adequately satisfies the security requirements.\n\nTypical security requirements may include specific elements of confidentiality, integrity, authentication, availability, authorization and non-repudiation. Actual security requirements tested depend on the security requirements implemented by the system. Security testing as a term has a number of different meanings and can be completed in a number of different ways. As such, a Security Taxonomy helps us to understand these different approaches and meanings by providing a base level to work from.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Security Testing Wiki",
+            "url": "https://en.wikipedia.org/wiki/Security_testing"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Security",
+            "url": "https://app.daily.dev/tags/security?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "75-XdVA4BL6UrcvpC9grx",
+      "name": "Authentication / Authorization",
+      "resources": {
+        "description": "# Authentication authorization\n\n`Authentication` is the process of verifying that an individual, entity or website is whom it claims to be. Authentication in the context of web applications is commonly performed by submitting a username or ID and one or more items of private information that only a given user should know.\n\n`Authorization` may be defined as \"the process of verifying that a requested action or service is approved for a specific entity\" (NIST). `Authorization` is distinct from authentication which is the process of verifying an entity's identity. When designing and developing a software solution, it is important to keep these distinctions in mind. A user who has been authenticated (perhaps by providing a username and password) is often not authorized to access every resource and perform every action that is technically possible through a system.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "OWASP Website",
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Authentication",
+            "url": "https://app.daily.dev/tags/authentication?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mKM27KrX1CEViOwz1EDtQ",
+      "name": "Vulnerability Scanning",
+      "resources": {
+        "description": "# Vulnerability Scanning\n\nVulnerability scanning identifies hosts and host attributes (e.g., operating systems, applications, open ports), but it also attempts to identify vulnerabilities rather than relying on human interpretation of the scanning results. Many vulnerability scanners are equipped to accept results from network discovery and network port and service identification, which reduces the amount of work needed for vulnerability scanning.\n\nAlso, some scanners can perform their own network discovery and network port and service identification. Vulnerability scanning can help identify outdated\nsoftware versions, missing patches, and misconfigurations, and validate compliance with or deviations from an organization’s security policy.\n\nThis is done by identifying the operating systems and major software applications running on the hosts and matching them with information on known vulnerabilities\nstored in the scanners’ vulnerability databases.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "NIST Website",
+            "url": "https://csrc.nist.gov/glossary/term/vulnerability_scanning"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Vulnerability",
+            "url": "https://app.daily.dev/tags/vulnerability?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "YV6ST78AH4J0i2Rw9zhZj",
+      "name": "Secrets Management",
+      "resources": {
+        "description": "# Secrets Management\n\nSecrets Management is a systematic way of in managing, storing, securing, and retrieving credentials for any systems, database, and other services. Credentials such as passwords, SSH keys, certificates, API keys, backup codes, and more.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "AWS Secrets Management Website",
+            "url": "https://aws.amazon.com/secrets-manager/"
+          },
+          {
+            "type": "article",
+            "title": "Vault Website",
+            "url": "https://www.vaultproject.io/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Secrets Management",
+            "url": "https://app.daily.dev/tags/secrets-management?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "JR-MkszNvv96-S3DpyLeX",
+      "name": "OWASP 10",
+      "resources": {
+        "description": "# OWASP 10\n\nThe Open Web Application Security Project, or OWASP, is an international non-profit organization dedicated to web application security.\n\nThe OWASP Top 10 is a regularly-updated report outlining security concerns for web application security, focusing on the 10 most critical risks. The report is put together by a team of security experts from all over the world. OWASP refers to the Top 10 as an ‘awareness document’ and they recommend that all companies incorporate the report into their processes in order to minimize and/or mitigate security risks.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "OWASP Top 10",
+            "url": "https://owasp.org/www-project-top-ten/"
+          },
+          {
+            "type": "article",
+            "title": "What is the OWASP Top 10?",
+            "url": "https://www.cloudflare.com/learning/security/threats/owasp-top-10/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "x3HEti8-xF9Mxe5ELBM9T",
+      "name": " Attack Vectors",
+      "resources": {
+        "description": "# Attack vectors\n\nThis metric reflects the context by which vulnerability exploitation is possible. This metric value (and consequently the Base Score) will be larger the more remote (logically, and physically) an attacker can be in order to exploit the vulnerable component. The assumption is that the number of potential attackers for a vulnerability that could be exploited from across a network is larger than the number of potential attackers that could exploit a vulnerability requiring physical access to a device, and therefore warrants a greater Base Score.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "FIRST.org Website",
+            "url": "https://www.first.org/cvss/v3.1/specification-document"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Security",
+            "url": "https://app.daily.dev/tags/security?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G-F6jQTOAZ2kQ36F-VrBB",
+      "name": "Email Testing",
+      "resources": {
+        "description": "# Email Testing\n\nEmail testing allows you to view your email before sending it out to your subscriber list to verify links, design, spelling errors, and more.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "About Email Testing",
+            "url": "https://www.campaignmonitor.com/blog/email-marketing/how-email-testing-and-rendering-works-and-why-its-important/"
+          },
+          {
+            "type": "article",
+            "title": "Checklist: How to Test and QA an Email",
+            "url": "https://sponge.io/checklist-how-to-test-and-qa-an-email/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rFjtp3-cnaUmHiKfjPZBn",
+      "name": "Mailinator",
+      "resources": {
+        "description": "# Mailinator\n\nMailinator allows Developers and QA Testing teams to automatically test their SMS and Email workflows like 2FA verifications, sign-ups, and password resets with trillions of inboxes at your fingertips. Whether you do Manual Testing, use an API, or a framework like Selenium, Cypress, Playwright, or Puppeteer - Mailinator will close the loop on email/SMS testing.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Mailinator",
+            "url": "https://www.mailinator.com/"
+          },
+          {
+            "type": "course",
+            "title": "Mailinator Official Docs",
+            "url": "https://www.mailinator.com/docs/index.html#mailinator"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mIM9ausl_tSUNPUerIfEr",
+      "name": "Gmail Tester",
+      "resources": {
+        "description": "# Gmail Tester\n\nGmail-tester is a simple Node.js Gmail client which checks/returns email message(s) straight from any Gmail-powered account (both private and company).",
+        "resources": [
+          {
+            "type": "tutorial",
+            "title": "Gmail-tester Package",
+            "url": "https://www.npmjs.com/package/gmail-tester"
+          },
+          {
+            "type": "article",
+            "title": "Using the gmail-tester + Puppeteer to poll Gmail inbox",
+            "url": "https://medium.com/@sergtimosh/using-gmail-tester-puppeteer-to-poll-gmail-inbox-65bbee17618c"
+          }
+        ]
+      }
+    },
+    {
+      "id": "MyAAsHteSr4JCPEpqjsy9",
+      "name": "Reporting",
+      "resources": {
+        "description": "# QA reporting\n\nThe International Software Testing Qualifications Board (ISTQB) glossary defines a QA report as: _Documentation summarizing test activities and results_.\nBy documenting the testing that was conducted and the results that were achieved, QA reports provide valuable insight into the health of the code base and critical metrics. As such, they should be generated on a regular basis to ensure the quality standards are being met.\nSo basically, test reports should document all of the test cases that were performed during software testing, as well as the results of those tests. They should also deliver relevant information about the product and highlight any areas where improvements can be made.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "How do you write a QA report?",
+            "url": "https://www.netguru.com/blog/how-to-write-qa-report"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "o4nkmhEDGwi8yE6DSwZi5",
+      "name": "TestRail",
+      "resources": {
+        "description": "# Test Rail\n\nTestRail is a web-based test management tool used by testers, developers and other stake holders to manage, track and organize software testing efforts. It follows a centralized test management concept that helps in easy communication and enables rapid development of task across QA team and other stakeholders .",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Testrail",
+            "url": "https://www.gurock.com/testrail/"
+          },
+          {
+            "type": "course",
+            "title": "Testrail Official Docs",
+            "url": "https://support.gurock.com/hc/en-us/"
+          },
+          {
+            "type": "course",
+            "title": "Testrail Tutorial Docs",
+            "url": "https://www.tutorialspoint.com/testrail/testrail_introduction.htm"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jaHOo-vZGjTnABxQKMT3_",
+      "name": "Allure",
+      "resources": {
+        "description": "# Allure\n\nAllure Report is a flexible, lightweight multi-language test reporting tool. It provides clear graphical reports and allows everyone involved in the development process to extract the maximum of information from the everyday testing process.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Allure",
+            "url": "https://qameta.io/"
+          },
+          {
+            "type": "course",
+            "title": "Allure Docs",
+            "url": "https://docs.qameta.io/allure-report/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "5bNdrymdzqL0VbTqWt8r2",
+      "name": "jUnit",
+      "resources": {
+        "description": "# JUnit\n\nJUnit is known as a unit testing framework used for the Java programming language. JUnit has been playing a crucial in the development of test-driven development and is one of a family of unit testing frameworks. JUnit is useful to write repeatable tests for your application code units. JUnit stimulates the idea of “testing first, then coding,”. The test approach explicates –test a little + code a little = JUnit. JUnit helps the programmer by increasing the productivity and the stability of the program’s code snippets.That will helps in reducing the time of the tester, which is spent on debugging of the code.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is JUnit?",
+            "url": "https://www.tutorialspoint.com/junit/junit_test_framework.htm"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pJvijtG-a0vOq16EFu3Gr",
+      "name": "Monitoring & Logs",
+      "resources": {
+        "description": "# Monitoring and Logs\n\nDevOps monitoring entails overseeing the entire development process from planning, development, integration and testing, deployment, and operations. It involves a complete and real-time view of the status of applications, services, and infrastructure in the production environment. Features such as real-time streaming, historical replay, and visualizations are critical components of application and service monitoring.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Two Pillars of Modern QA - Errors and Logs",
+            "url": "https://medium.com/@mohsenny/the-two-pillars-of-modern-qa-from-error-prevention-to-post-release-monitoring-4c11cc99fe14"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8CztIu0BOPZZRZsqR9asW",
+      "name": "Grafana",
+      "resources": {
+        "description": "# Grafana\n\nGrafana is the open-source platform for monitoring and observability. It allows you to query, visualize, alert on and understand your metrics no matter where they are stored.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Grafana",
+            "url": "https://grafana.com/"
+          },
+          {
+            "type": "course",
+            "title": "Grafana Documentation",
+            "url": "https://grafana.com/docs/"
+          },
+          {
+            "type": "article",
+            "title": "Grafana Community",
+            "url": "https://community.grafana.com/"
+          },
+          {
+            "type": "course",
+            "title": "Grafana Webinars and Videos",
+            "url": "https://grafana.com/videos/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Grafana",
+            "url": "https://app.daily.dev/tags/grafana?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "QnNUZQlQ2Jhv34daeIuW8",
+      "name": "New Relic",
+      "resources": {
+        "description": "# New Relic\n\nNew Relic is an observability platform that helps you build better software. You can bring in data from any digital source so that you can fully understand your system and how to improve it.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "New Relic",
+            "url": "https://newrelic.com/"
+          },
+          {
+            "type": "course",
+            "title": "Learn New Relic",
+            "url": "https://learn.newrelic.com/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about DevOps",
+            "url": "https://app.daily.dev/tags/devops?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "iceaqeXRYXoGtagWn_B7b",
+      "name": "RunScope",
+      "resources": {
+        "description": "# Run scope\n\nA Simple Tool for Monitoring Complex APIs. Verify that the structure and content of your API calls meets your expectations. Powerful and flexible assertions give you total control over defining a successful API call.\n\nCreate simple monitors with dynamic data for even the most complex use cases. More than simple string matching, build API validations without any code and use them across local dev, staging and production environments.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Runscope",
+            "url": "https://www.runscope.com"
+          }
+        ]
+      }
+    },
+    {
+      "id": "H-2wWlKxD_Q1xVv99GlBj",
+      "name": "Sentry",
+      "resources": {
+        "description": "# Sentry\n\nSentry tracks your software performance, measuring metrics like throughput and latency, and displaying the impact of errors across multiple systems. Sentry captures distributed traces consisting of transactions and spans, which measure individual services and individual operations within those services.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Sentry",
+            "url": "https://sentry.io"
+          },
+          {
+            "type": "course",
+            "title": "Sentry Documentation",
+            "url": "https://docs.sentry.io/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "DCZyXcx8H2MTPcyKOhn2_",
+      "name": "Kibana",
+      "resources": {
+        "description": "# Kibana\n\nKibana is a free and open user interface that lets you visualize your Elasticsearch data and navigate the Elastic Stack. Do anything from tracking query load to understanding the way requests flow through your apps.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Elastic Kibana",
+            "url": "https://www.elastic.co/kibana/"
+          },
+          {
+            "type": "article",
+            "title": "Learn Kibana",
+            "url": "https://www.elastic.co/training/free"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about ELK",
+            "url": "https://app.daily.dev/tags/elk?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Y2I_dcVZb4xZremXoajjx",
+      "name": "Datadog",
+      "resources": {
+        "description": "# Datadog\n\nDatadog is a monitoring and analytics platform for large-scale applications. It encompasses infrastructure monitoring, application performance monitoring, log management, and user-experience monitoring. Datadog aggregates data across your entire stack with 400+ integrations for troubleshooting, alerting, and graphing.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Datadog",
+            "url": "https://www.datadoghq.com/"
+          },
+          {
+            "type": "course",
+            "title": "Datadog Documentation",
+            "url": "https://docs.datadoghq.com/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "DJDegO78Elo83eHjq8IHN",
+      "name": "Pager Duty",
+      "resources": {
+        "description": "# PagerDuty\n\nThrough its SaaS-based platform, PagerDuty empowers developers, DevOps, IT operations and business leaders to prevent and resolve business-impacting incidents for exceptional customer experience. When revenue and brand reputation depends on customer satisfaction, PagerDuty arms organizations with the insight to proactively manage events that may impact customers across their IT environment. With hundreds of native integrations, on-call scheduling and escalations, machine learning, business-wide response orchestration, analytics, and much more, PagerDuty gets the right data in the hands of the right people in real time, every time.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "PagerDuty Website",
+            "url": "https://www.pagerduty.com/"
+          },
+          {
+            "type": "article",
+            "title": "Learn PagerDuty",
+            "url": "https://university.pagerduty.com/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s8o5fXu3XHrMduh8snLwu",
+      "name": "Version Control System",
+      "resources": {
+        "description": "# Version Control Systems\n\nVersion control/source control systems allow developers to track and control changes to code over time. These services often include the ability to make atomic revisions to code, branch/fork off of specific points, and to compare versions of code. They are useful in determining the who, what, when, and why code changes were made.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Git",
+            "url": "https://git-scm.com/"
+          },
+          {
+            "type": "course",
+            "title": "Mercurial",
+            "url": "https://www.mercurial-scm.org/"
+          },
+          {
+            "type": "article",
+            "title": "What is Version Control?",
+            "url": "https://www.atlassian.com/git/tutorials/what-is-version-control"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "WrqKdOTRUiOnc1aIhTZeB",
+      "name": "Git",
+      "resources": {
+        "description": "# Git\n\nGit is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Git",
+            "url": "https://git-scm.com/"
+          },
+          {
+            "type": "video",
+            "title": "Git & GitHub Crash Course For Beginners",
+            "url": "https://www.youtube.com/watch?v=SWYqp7iY_Tc"
+          },
+          {
+            "type": "video",
+            "title": "Complete Git and GitHub Tutorial",
+            "url": "https://www.youtube.com/watch?v=apGV9Kg7ics"
+          },
+          {
+            "type": "article",
+            "title": "Learn Git with Tutorials, News and Tips - Atlassian",
+            "url": "https://www.atlassian.com/git"
+          },
+          {
+            "type": "article",
+            "title": "Git Cheat Sheet",
+            "url": "https://cs.fyi/guide/git-cheatsheet"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Git",
+            "url": "https://app.daily.dev/tags/git?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "M6v8VUpVtw5blU2gi4F2r",
+      "name": "Repo Hosting Services",
+      "resources": {}
+    },
+    {
+      "id": "v4gjV1qolrFXdESrY9bzG",
+      "name": "GitHub",
+      "resources": {
+        "description": "# GitHub\n\nGitHub is a provider of Internet hosting for software development and version control using Git. It offers the distributed version control and source code management functionality of Git, plus its own features.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Visit Dedicated GitHub Roadmap",
+            "url": "https://roadmap.sh/git-github"
+          },
+          {
+            "type": "course",
+            "title": "GitHub",
+            "url": "https://github.com"
+          },
+          {
+            "type": "course",
+            "title": "GitHub Documentation",
+            "url": "https://docs.github.com/en/get-started/quickstart"
+          },
+          {
+            "type": "video",
+            "title": "What is GitHub?",
+            "url": "https://www.youtube.com/watch?v=w3jLJU7DT5E"
+          },
+          {
+            "type": "video",
+            "title": "Git vs. GitHub: Whats the difference?",
+            "url": "https://www.youtube.com/watch?v=wpISo9TNjfU"
+          },
+          {
+            "type": "video",
+            "title": "Git and GitHub for Beginners",
+            "url": "https://www.youtube.com/watch?v=RGOj5yH7evk"
+          },
+          {
+            "type": "video",
+            "title": "Git and GitHub - CS50 Beyond 2019",
+            "url": "https://www.youtube.com/watch?v=eulnSXkhE7I"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about GitHub",
+            "url": "https://app.daily.dev/tags/github?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4xlbvY7NS3cemSZsEQAkD",
+      "name": "Bitbucket",
+      "resources": {
+        "description": "# Bitbucket\n\nBitbucket is a Git based hosting and source code repository service that is Atlassian's alternative to other products like GitHub, GitLab etc.\n\nBitbucket offers hosting options via Bitbucket Cloud (Atlassian's servers), Bitbucket Server (customer's on-premise) or Bitbucket Data Centre (number of servers in customers on-premise or cloud environment)",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Bitbucket",
+            "url": "https://bitbucket.org/product"
+          },
+          {
+            "type": "course",
+            "title": "A brief overview of Bitbucket",
+            "url": "https://bitbucket.org/product/guides/getting-started/overview#a-brief-overview-of-bitbucket"
+          },
+          {
+            "type": "course",
+            "title": "Getting started with Bitbucket",
+            "url": "https://bitbucket.org/product/guides/basics/bitbucket-interface"
+          },
+          {
+            "type": "article",
+            "title": "Using Git with Bitbucket Cloud",
+            "url": "https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud"
+          },
+          {
+            "type": "video",
+            "title": "How to Use Bitbucket Cloud",
+            "url": "https://www.youtube.com/watch?v=M44nEyd_5To"
+          },
+          {
+            "type": "video",
+            "title": "Bitbucket Tutorial | Bitbucket for Beginners",
+            "url": "https://www.youtube.com/watch?v=i5T-DB8tb4A"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Bitbucket",
+            "url": "https://app.daily.dev/tags/bitbucket?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "RfwyTgwfb_xu5H9N-8_s9",
+      "name": "GitLab",
+      "resources": {
+        "description": "# GitLab\n\nGitLab is a provider of internet hosting for software development and version control using Git. It offers the distributed version control and source code management functionality of Git, plus its own features.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "GitLab",
+            "url": "https://gitlab.com/"
+          },
+          {
+            "type": "course",
+            "title": "GitLab Documentation",
+            "url": "https://docs.gitlab.com/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about GitLab",
+            "url": "https://app.daily.dev/tags/gitlab?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "-n2yAprKdWg3YVi2vp25d",
+      "name": "CI / CD",
+      "resources": {
+        "description": "# CI / CD\n\nContinuous Integration is a software development method where team members integrate their work at least once daily. An automated build checks every integration to detect errors in this method. In Continuous Integration, the software is built and tested immediately after a code commit. In a large project with many developers, commits are made many times during the day. With each commit, code is built and tested.\n\nContinuous Delivery is a software engineering method in which a team develops software products in a short cycle. It ensures that software can be easily released at any time. The main aim of continuous delivery is to build, test, and release software with good speed and frequency. It helps reduce the cost, time, and risk of delivering changes by allowing for frequent updates in production.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is CI/CD? Continuous Integration and Continuous Delivery",
+            "url": "https://www.guru99.com/continuous-integration.html"
+          },
+          {
+            "type": "article",
+            "title": "Continuous Integration vs Delivery vs Deployment",
+            "url": "https://www.guru99.com/continuous-integration-vs-delivery-vs-deployment.html"
+          },
+          {
+            "type": "article",
+            "title": "CI/CD Pipeline: Learn with Example",
+            "url": "https://www.guru99.com/ci-cd-pipeline.html"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "z1kZkWTL_RRPZY59aWylU",
+      "name": "Circle CI",
+      "resources": {
+        "description": "# CircleCI\n\nCircleCI is a CI/CD service that can be integrated with GitHub, BitBucket and GitLab repositories. The service that can be used as a SaaS offering or self-managed using your own resources.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "CircleCI",
+            "url": "https://circleci.com/"
+          },
+          {
+            "type": "course",
+            "title": "CircleCI Documentation",
+            "url": "https://circleci.com/docs"
+          },
+          {
+            "type": "course",
+            "title": "Configuration Tutorial",
+            "url": "https://circleci.com/docs/config-intro"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about CI/CD",
+            "url": "https://app.daily.dev/tags/cicd?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3oDyxhhbCCqxuCh1sT9VC",
+      "name": "Drone",
+      "resources": {
+        "description": "# Drone\n\nDrone is a CI/CD service offering by Harness. Each build runs on an isolated Docker container, and Drone integrates with many popular source code management repositories like GitHub, BitBucket and GitLab",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Drone",
+            "url": "https://www.drone.io/"
+          },
+          {
+            "type": "course",
+            "title": "Drone Documentation",
+            "url": "https://docs.drone.io/"
+          },
+          {
+            "type": "course",
+            "title": "Drone Getting Started Guide",
+            "url": "https://docs.drone.io/server/overview/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3l2dkN1vBy9johFhAgZhT",
+      "name": "Jenkins",
+      "resources": {
+        "description": "# Jenkins\n\nJenkins is an open-source CI/CD automation server. Jenkins is primarily used for building projects, running tests, static code analysis and deployments.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Jenkins",
+            "url": "https://www.jenkins.io/"
+          },
+          {
+            "type": "course",
+            "title": "Official Jenkins Handbook",
+            "url": "https://www.jenkins.io/doc/book/"
+          },
+          {
+            "type": "course",
+            "title": "Jenkins Getting Started Guide",
+            "url": "https://www.jenkins.io/doc/pipeline/tour/getting-started/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Jenkins",
+            "url": "https://app.daily.dev/tags/jenkins?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Rz1E97EQCxESu44dTQd5t",
+      "name": "Travis CI",
+      "resources": {
+        "description": "# Travis CI\n\nTravis CI is a CI/CD service that is primarily used for building and testing projects that are hosted on BitBucket and GitHub. Open source projects can utilized Travis CI for free.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Travis CI Website",
+            "url": "https://www.travis-ci.com/"
+          },
+          {
+            "type": "course",
+            "title": "Travis CI Documentation",
+            "url": "https://docs.travis-ci.com/"
+          },
+          {
+            "type": "course",
+            "title": "Travis CI Tutorial",
+            "url": "https://docs.travis-ci.com/user/tutorial/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about CI/CD",
+            "url": "https://app.daily.dev/tags/cicd?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "iW3oaTl7c3a1kNlCKy-13",
+      "name": "GitLab CI",
+      "resources": {
+        "description": "# GitLab CI\n\nGitLab offers a CI/CD service that can be used as a SaaS offering or self-managed using your own resources. You can use GitLab CI with any GitLab hosted repository, or any BitBucket Cloud or GitHub repository in the GitLab Premium self-managed, GitLab Premium SaaS and higher tiers.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "GitLab",
+            "url": "https://gitlab.com/"
+          },
+          {
+            "type": "course",
+            "title": "GitLab Documentation",
+            "url": "https://docs.gitlab.com/"
+          },
+          {
+            "type": "course",
+            "title": "Get Started with GitLab CI",
+            "url": "https://docs.gitlab.com/ee/ci/quick_start/"
+          },
+          {
+            "type": "course",
+            "title": "Learn GitLab Tutorials",
+            "url": "https://docs.gitlab.com/ee/tutorials/"
+          },
+          {
+            "type": "course",
+            "title": "GitLab CI/CD Examples",
+            "url": "https://docs.gitlab.com/ee/ci/examples/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about GitLab",
+            "url": "https://app.daily.dev/tags/gitlab?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "j4J5OhHEf7t-LVNkNVW3M",
+      "name": "Bamboo",
+      "resources": {
+        "description": "# Bamboo\n\nBamboo is a CI/CD service provided by Atlassian. Bamboo is primarily used for automating builds, tests and releases in a single workflow.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Bamboo",
+            "url": "https://www.atlassian.com/software/bamboo"
+          },
+          {
+            "type": "course",
+            "title": "Bamboo Documentation",
+            "url": "https://confluence.atlassian.com/bamboo/bamboo-documentation-289276551.html"
+          },
+          {
+            "type": "article",
+            "title": "Bamboo Getting Started Guide",
+            "url": "https://confluence.atlassian.com/bamboo/getting-started-with-bamboo-289277283.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "k3TBVtepeQEGzKGceDkPJ",
+      "name": "TeamCity",
+      "resources": {
+        "description": "# TeamCity\n\nTeamCity is a CI/CD service provided by JetBrains. TeamCity can be used as a SaaS offering or self-managed using your own resources.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "TeamCity",
+            "url": "https://www.jetbrains.com/teamcity/"
+          },
+          {
+            "type": "course",
+            "title": "TeamCity Documentation ",
+            "url": "https://www.jetbrains.com/help/teamcity/teamcity-documentation.html"
+          },
+          {
+            "type": "article",
+            "title": "TeamCity Tutorials",
+            "url": "https://www.jetbrains.com/teamcity/tutorials/"
+          },
+          {
+            "type": "article",
+            "title": "TeamCity Learning Portal",
+            "url": "https://www.jetbrains.com/teamcity/learn/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "u0tKd7HZVN2gGv9Cz3jHz",
+      "name": "Azure DevOps Services",
+      "resources": {
+        "description": "# Azure DevOps\n\nAzure DevOps is developed by Microsoft as a full scale application lifecycle management and CI/CD service. Azure DevOps provides developer services for allowing teams to plan work, collaborate on code development, and build and deploy applications.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Azure DevOps",
+            "url": "https://azure.microsoft.com/en-us/services/devops/#overview"
+          },
+          {
+            "type": "course",
+            "title": "Azure Documentation",
+            "url": "https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops\\&viewFallbackFrom=vsts"
+          },
+          {
+            "type": "article",
+            "title": "Azure DevOps Getting Started Guide",
+            "url": "https://docs.microsoft.com/en-us/azure/devops/user-guide/sign-up-invite-teammates?view=azure-devops"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Azure",
+            "url": "https://app.daily.dev/tags/azure?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pm-Wx7Z3jCUFcafetsQYi",
+      "name": "Headless Testing",
+      "resources": {
+        "description": "# Headless Testing\n\nHeadless testing is when end-to-end tests are performed without loading the browser's user interface. Since the browser operates as a typical browser would but does not make use of the user interface, it is considered highly suitable for automated testing.\n\nA few example cases where one may use headless browser testing include:\n\n- Automating HTML event responses, such as form submission, keyboard events, mouse-clicking, etc.\n- Web scraping\n- Generating screenshots of webpages",
+        "resources": [
+          {
+            "type": "article",
+            "title": "What is Headless Browser Testing and Why is it Important?",
+            "url": "https://www.browserstack.com/guide/what-is-headless-browser-testing"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "XoYsStVqfMeCHkGBlbRhD",
+      "name": "Repo Hosting Services",
+      "resources": {
+        "description": "# Repo Hosting Services\n\nThere are different repository hosting services with the most famous one being GitHub, GitLab and BitBucket. I would recommend creating an account on GitHub because that is where most of the OpenSource work is done and most of the developers are.",
+        "resources": [
+          {
+            "type": "tutorial",
+            "title": "GitHub: Where the world builds software",
+            "url": "https://github.com"
+          },
+          {
+            "type": "tutorial",
+            "title": "GitLab: Iterate faster, innovate together",
+            "url": "https://gitlab.com"
+          },
+          {
+            "type": "article",
+            "title": "BitBucket: The Git solution for professional teams",
+            "url": "https://bitbucket.com"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about QA",
+            "url": "https://app.daily.dev/tags/qa?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "m0gT774b59xsSJKrrjTxq",
+      "name": "Zombie.js",
+      "resources": {
+        "description": "# Zombie.js\n\nZombie.js allows you to run Unit or Integration tests without a real web browser. Instead, it uses a simulated browser where it stores the HTML code and runs the JavaScript you may have in your HTML page. This means that an HTML page doesn’t need to be displayed, saving precious time that would otherwise be occupied rendering it.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Zombie.js",
+            "url": "http://zombie.js.org/"
+          },
+          {
+            "type": "article",
+            "title": "Getting Started with Zombie.js",
+            "url": "https://www.packt.com/getting-started-zombiejs/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about JavaScript",
+            "url": "https://app.daily.dev/tags/javascript?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sHyFCf7XQKxGxchaYxp2B",
+      "name": "Puppeteer",
+      "resources": {
+        "description": "# Puppeteer\n\nPuppeteer is a Node library that provides a high-level API to control headless Chrome or Chromium browsers over the DevTools Protocol. It can also be configured to use full (non-headless) Chrome or Chromium.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Puppeteer",
+            "url": "https://pptr.dev/"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Crawling",
+            "url": "https://app.daily.dev/tags/crawling?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "0TUq4KRbWTLsLuYI9sgi0",
+      "name": "Playwright",
+      "resources": {
+        "description": "# Playwright\n\nPlaywright is an open-source test automation library initially developed by Microsoft contributors. It supports programming languages such as Java, Python, C#, and NodeJS. Playwright comes with Apache 2.0 License and is most popular with NodeJS with Javascript/Typescript.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Playwright Website",
+            "url": "https://playwright.dev/"
+          },
+          {
+            "type": "article",
+            "title": "Playwright Tutorial: Learn Basics and Setup",
+            "url": "https://www.browserstack.com/guide/playwright-tutorial"
+          }
+        ]
+      }
+    },
+    {
+      "id": "D7zGshmgwqWluF-W7OTWe",
+      "name": "Cypress",
+      "resources": {
+        "description": "# Cypress\n\nCypress framework is a JavaScript-based end-to-end testing framework built on top of Mocha – a feature-rich JavaScript test framework running on and in the browser, making asynchronous testing simple and convenient. It also uses a BDD/TDD assertion library and a browser to pair with any JavaScript testing framework.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "Cypress",
+            "url": "https://www.cypress.io/"
+          },
+          {
+            "type": "course",
+            "title": "Cypress Documentation",
+            "url": "https://docs.cypress.io/guides/overview/why-cypress#Other"
+          },
+          {
+            "type": "course",
+            "title": "How it Works",
+            "url": "https://www.cypress.io/how-it-works"
+          },
+          {
+            "type": "video",
+            "title": "Cypress End-to-End Testing",
+            "url": "https://www.youtube.com/watch?v=7N63cMKosIE"
+          },
+          {
+            "type": "video",
+            "title": "Cypress Tips & Tricks",
+            "url": "https://www.youtube.com/watch?v=PZ2OsLBts1E\\&list=PLP9o9QNnQuAYYRpJzDNWpeuOVTwxmIxcI"
+          },
+          {
+            "type": "article",
+            "title": "Cypress - End to End Testing Framework",
+            "url": "https://dev.to/bushraalam/cypress-end-to-end-testing-framework-3naa"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Cypress",
+            "url": "https://app.daily.dev/tags/cypress?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "JO--NVMs3saUNjh3mcd7z",
+      "name": "Headless Chrome",
+      "resources": {
+        "description": "# Headless Chrome\n\nHeadless Chrome is a way to run the Chrome browser in a headless environment without the full browser UI. One of the benefits of using Headless Chrome (as opposed to testing directly in Node) is that your JavaScript tests will be executed in the same environment as users of your site.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Headless Chromium",
+            "url": "https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about Google Chrome",
+            "url": "https://app.daily.dev/tags/google-chrome?ref=roadmapsh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ryoSezFNeiunCAZygCbaQ",
+      "name": "Headless Fox",
+      "resources": {
+        "description": "# Headless Fox\n\nHeadless Browser Testing is a process of running the browser tests without the type of browser UI or GUI. In headless browser testing, to conduct cross-browser testing the tester can run test cases accurately and successfully without requiring the browser on which application needs to be tested.",
+        "resources": [
+          {
+            "type": "article",
+            "title": "Using Headless Mode in Firefox",
+            "url": "https://hacks.mozilla.org/2017/12/using-headless-mode-in-firefox/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "-Sf7DLr8Ywoorrmsx3bfd",
+      "name": "HTML Unit",
+      "resources": {
+        "description": "# HtmlUnit\n\nHtmlUnit is a \"GUI-Less browser for Java programs\". It models HTML documents and provides an API that allows you to invoke pages, fill out forms, click links, etc... just like you do in your \"normal\" browser. It has fairly good JavaScript support (which is constantly improving) and is able to work even with quite complex AJAX libraries, simulating Chrome, Firefox or Internet Explorer depending on the configuration used.\n\nHtmlUnit is not a generic unit testing framework. It is specifically a way to simulate a browser for testing purposes and is intended to be used within another testing framework such as JUnit or TestNG.",
+        "resources": [
+          {
+            "type": "course",
+            "title": "HtmlUnit",
+            "url": "https://htmlunit.sourceforge.io/"
+          },
+          {
+            "type": "article",
+            "title": "Introduction to HtmlUnit",
+            "url": "https://www.baeldung.com/htmlunit"
+          },
+          {
+            "type": "article",
+            "title": "Explore top posts about HTML",
+            "url": "https://app.daily.dev/tags/html?ref=roadmapsh"
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "m1wX27XBWKXZcTMH2U1xp",
+      "target": "Zja25damM2vXMOYCyRZiq"
+    },
+    {
+      "source": "m1wX27XBWKXZcTMH2U1xp",
+      "target": "1976f2-opqLqV4ImPJlt0"
+    },
+    {
+      "source": "m1wX27XBWKXZcTMH2U1xp",
+      "target": "JInFH3JRvAxjvpIFKjUiP"
+    },
+    {
+      "source": "m1wX27XBWKXZcTMH2U1xp",
+      "target": "vZv4Ow5bg_PbKoF557G9S"
+    },
+    {
+      "source": "m1wX27XBWKXZcTMH2U1xp",
+      "target": "uFOVuenPyOKZGgoJXkwRZ"
+    },
+    {
+      "source": "iogwMmOvub2ZF4zgg6WyF",
+      "target": "m1wX27XBWKXZcTMH2U1xp"
+    },
+    {
+      "source": "gQLbDFP00itL260i1BiDe",
+      "target": "o4xmFhw_ilWdhpCiEotck"
+    },
+    {
+      "source": "m1wX27XBWKXZcTMH2U1xp",
+      "target": "Pb3QkhSCgRByJHuPxVAlU"
+    },
+    {
+      "source": "Pb3QkhSCgRByJHuPxVAlU",
+      "target": "47NXgbc1OTGE06qXxlQoh"
+    },
+    {
+      "source": "Pb3QkhSCgRByJHuPxVAlU",
+      "target": "daUEq4xlh4PIltSdiD4F2"
+    },
+    {
+      "source": "daUEq4xlh4PIltSdiD4F2",
+      "target": "2U8WRKkuF-YCEWtpgTspF"
+    },
+    {
+      "source": "daUEq4xlh4PIltSdiD4F2",
+      "target": "ELnCFVRkO_s5qI_3Yzf5U"
+    },
+    {
+      "source": "daUEq4xlh4PIltSdiD4F2",
+      "target": "RD0vRC-OL2ReYLT1leJMs"
+    },
+    {
+      "source": "daUEq4xlh4PIltSdiD4F2",
+      "target": "vP76hqx-8Pri7sxdJDGV5"
+    },
+    {
+      "source": "daUEq4xlh4PIltSdiD4F2",
+      "target": "gxn-m-4pDAD2J6406pbs8"
+    },
+    {
+      "source": "gxn-m-4pDAD2J6406pbs8",
+      "target": "hU5OCnEe3tG206xuGsVFd"
+    },
+    {
+      "source": "gxn-m-4pDAD2J6406pbs8",
+      "target": "mPaMQ5h8ZcXKOfcuSwB2-"
+    },
+    {
+      "source": "gxn-m-4pDAD2J6406pbs8",
+      "target": "FV7PKwt5KWIdERpQFAi-2"
+    },
+    {
+      "source": "FV7PKwt5KWIdERpQFAi-2",
+      "target": "mmDIqSD6MU3ZhWREGI5E2"
+    },
+    {
+      "source": "a4N9onrJn6bey5bVwCRAO",
+      "target": "wTfvbS62eyitDT8pLsVhj"
+    },
+    {
+      "source": "wTfvbS62eyitDT8pLsVhj",
+      "target": "wsJXMvRbOTh_VXKhmhPmQ"
+    },
+    {
+      "source": "wsJXMvRbOTh_VXKhmhPmQ",
+      "target": "G-F6jQTOAZ2kQ36F-VrBB"
+    },
+    {
+      "source": "G-F6jQTOAZ2kQ36F-VrBB",
+      "target": "rFjtp3-cnaUmHiKfjPZBn"
+    },
+    {
+      "source": "G-F6jQTOAZ2kQ36F-VrBB",
+      "target": "MyAAsHteSr4JCPEpqjsy9"
+    },
+    {
+      "source": "MyAAsHteSr4JCPEpqjsy9",
+      "target": "jaHOo-vZGjTnABxQKMT3_"
+    },
+    {
+      "source": "MyAAsHteSr4JCPEpqjsy9",
+      "target": "o4nkmhEDGwi8yE6DSwZi5"
+    },
+    {
+      "source": "MyAAsHteSr4JCPEpqjsy9",
+      "target": "5bNdrymdzqL0VbTqWt8r2"
+    },
+    {
+      "source": "MyAAsHteSr4JCPEpqjsy9",
+      "target": "pJvijtG-a0vOq16EFu3Gr"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "QnNUZQlQ2Jhv34daeIuW8"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "iceaqeXRYXoGtagWn_B7b"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "DCZyXcx8H2MTPcyKOhn2_"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "Y2I_dcVZb4xZremXoajjx"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "DJDegO78Elo83eHjq8IHN"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "8CztIu0BOPZZRZsqR9asW"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "H-2wWlKxD_Q1xVv99GlBj"
+    },
+    {
+      "source": "pJvijtG-a0vOq16EFu3Gr",
+      "target": "s8o5fXu3XHrMduh8snLwu"
+    },
+    {
+      "source": "s8o5fXu3XHrMduh8snLwu",
+      "target": "WrqKdOTRUiOnc1aIhTZeB"
+    },
+    {
+      "source": "s8o5fXu3XHrMduh8snLwu",
+      "target": "M6v8VUpVtw5blU2gi4F2r"
+    },
+    {
+      "source": "M6v8VUpVtw5blU2gi4F2r",
+      "target": "-n2yAprKdWg3YVi2vp25d"
+    },
+    {
+      "source": "-n2yAprKdWg3YVi2vp25d",
+      "target": "k3TBVtepeQEGzKGceDkPJ"
+    },
+    {
+      "source": "-n2yAprKdWg3YVi2vp25d",
+      "target": "Pm-Wx7Z3jCUFcafetsQYi"
+    },
+    {
+      "source": "Pm-Wx7Z3jCUFcafetsQYi",
+      "target": "m0gT774b59xsSJKrrjTxq"
+    },
+    {
+      "source": "Pm-Wx7Z3jCUFcafetsQYi",
+      "target": "D7zGshmgwqWluF-W7OTWe"
+    },
+    {
+      "source": "Pm-Wx7Z3jCUFcafetsQYi",
+      "target": "JO--NVMs3saUNjh3mcd7z"
+    },
+    {
+      "source": "Pm-Wx7Z3jCUFcafetsQYi",
+      "target": "ryoSezFNeiunCAZygCbaQ"
+    },
+    {
+      "source": "Pm-Wx7Z3jCUFcafetsQYi",
+      "target": "-Sf7DLr8Ywoorrmsx3bfd"
+    },
+    {
+      "source": "",
+      "target": "GV_zWF6rSWg5bqgiXhOEf"
+    },
+    {
+      "source": "",
+      "target": "GV_zWF6rSWg5bqgiXhOEf"
+    },
+    {
+      "source": "",
+      "target": "GV_zWF6rSWg5bqgiXhOEf"
+    },
+    {
+      "source": "Pm-Wx7Z3jCUFcafetsQYi",
+      "target": "GV_zWF6rSWg5bqgiXhOEf"
+    }
+  ]
+}

@@ -11,6 +11,7 @@
     <button onclick="resetLayout()">Reset Layout</button>
     <button onclick="toggleLabels()">Toggle Labels</button>
     <button onclick="fitToScreen()">Fit to Screen</button>
+    <button onclick="showDAtoAgentsPath()">Path: Data Analyst → AI Agents</button>
     <div class="mt-2">
         <small class="text-muted">Click and drag to explore • Scroll to zoom</small>
     </div>
@@ -307,10 +308,18 @@
                         }
                     },
                     {
+                        selector: 'node.highlighted',
+                        style: {
+                            'border-color': '#2563eb',
+                            'border-width': 4,
+                            'background-color': '#bfdbfe'
+                        }
+                    },
+                    {
                         selector: 'edge',
                         style: {
                             'width': 3,
-                            'line-color': '#9aa1a9',
+                            'line-color': '#2563eb',
                             'target-arrow-shape': 'none',
                             'curve-style': 'bezier',
                             'opacity': 0.7
@@ -324,6 +333,26 @@
                             'target-arrow-shape': 'none',
                             'curve-style': 'bezier',
                             'opacity': 0.8
+                        }
+                    },
+                    {
+                        selector: 'edge.highlighted',
+                        style: {
+                            'line-color': '#22c55e',
+                            'width': 5,
+                            'opacity': 1
+                        }
+                    },
+                    {
+                        selector: 'node.not-path',
+                        style: {
+                            'opacity': 0.15
+                        }
+                    },
+                    {
+                        selector: 'edge.not-path',
+                        style: {
+                            'opacity': 0.08
                         }
                     }
                 ],
@@ -341,17 +370,8 @@
             if (levelData && levelData.level_names) {
                 levelData.level_names.forEach((levelName, index) => {
                     const color = lineColors[index % lineColors.length];
-                    
-                    // Color edges for this level (like subway lines)
-                    cy.edges().forEach(edge => {
-                        const sourceLevel = edge.source().data('level');
-                        const targetLevel = edge.target().data('level');
-                        
-                        if (sourceLevel === levelName || targetLevel === levelName) {
-                            edge.style('line-color', color);
-                        }
-                    });
-                    
+
+                    // Keep default edge color so path highlights are visible
                     // Color nodes for this level (like subway stations)
                     cy.nodes(`[level="${levelName}"]`)
                         .style('background-color', '#FFFFFF')
@@ -389,6 +409,49 @@
         } catch (error) {
             console.error('❌ Error loading roadmap data:', error);
             document.getElementById('loading').textContent = 'Error loading roadmap data: ' + error.message;
+        }
+    }
+
+    async function showDAtoAgentsPath() {
+        try {
+            const res = await fetch('/api/skill-path?start=' + encodeURIComponent('data analyst') + '&end=' + encodeURIComponent('ai agents'));
+            const { path, edges } = await res.json();
+            if (!cy || !path || path.length === 0) return;
+
+            // Clear previous state
+            cy.elements().removeClass('highlighted not-path');
+            cy.nodes().unselect();
+
+            // Dim everything first
+            cy.elements().addClass('not-path');
+
+            // Highlight nodes on the path
+            path.forEach(id => {
+                const n = cy.getElementById(id);
+                if (n) {
+                    n.addClass('highlighted');
+                    n.removeClass('not-path');
+                    n.select();
+                }
+            });
+
+            // Highlight edges on the path
+            edges.forEach(e => {
+                const edgeId = `${e.source}-${e.target}`;
+                const ed = cy.getElementById(edgeId);
+                if (ed) {
+                    ed.addClass('highlighted');
+                    ed.removeClass('not-path');
+                }
+            });
+
+            // Fit to highlighted elements
+            const highlighted = cy.elements('.highlighted');
+            if (highlighted && highlighted.length > 0) {
+                cy.fit(highlighted, 80);
+            }
+        } catch (e) {
+            console.error('Failed to load path', e);
         }
     }
 

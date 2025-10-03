@@ -1,0 +1,2154 @@
+{
+  "nodes": [
+    {
+      "id": "jVXwlHRGgVpcoWCYzSB5W",
+      "name": "What is BI?",
+      "resources": {
+        "description": "# Business Intelligence (BI)\n\nBusiness Intelligence (BI) involves using data to understand past and present business performance and to predict future trends. It encompasses the processes and technologies used to collect, analyze, and visualize data, ultimately helping organizations make better, data-driven decisions. This includes reporting, online analytical processing (OLAP), data mining, process mining, complex event processing, business performance management, benchmarking, and predictive analytics.",
+        "resources": []
+      }
+    },
+    {
+      "id": "iRgtog5A13CTNDxnbGN9x",
+      "name": "Skills",
+      "resources": {
+        "description": "# Skills for a BI Analyst\n\nA BI Analyst needs a mix of technical and soft skills to effectively gather, analyze, and present data insights. This includes proficiency in data analysis tools like SQL and Excel, data visualization software such as Tableau or Power BI, and statistical analysis techniques. Strong communication skills are also essential for translating complex data findings into understandable reports and presentations for stakeholders. Furthermore, problem-solving, critical thinking, and a solid understanding of business principles are crucial for identifying trends, patterns, and opportunities within data.",
+        "resources": []
+      }
+    },
+    {
+      "id": "NX-YaB_FVjoHYsR6z9QIL",
+      "name": "Why BI Matters?",
+      "resources": {
+        "description": "# Why BI Matters\n\nIn today's data-driven world, organizations need to make informed decisions quickly and efficiently. Business Intelligence (BI) analysis and the role of a Business Analyst are crucial for transforming raw data into actionable insights. By identifying trends, patterns, and anomalies, BI helps organizations understand their performance, optimize processes, and gain a competitive edge. A skilled Business Analyst bridges the gap between data and business strategy, ensuring that insights are translated into tangible improvements and strategic advantages.",
+        "resources": []
+      }
+    },
+    {
+      "id": "Q-GmBJiRdBS_xLeOjef2R",
+      "name": "Responsibilities",
+      "resources": {
+        "description": "# Responsibilities of a BI Analyst\n\nA BI Analyst is responsible for analyzing data to identify trends, patterns, and insights that can help organizations make better business decisions. This involves collecting data from various sources, cleaning and transforming it into a usable format, and then using statistical techniques and data visualization tools to interpret the data and communicate findings to stakeholders. Ultimately, the goal is to provide actionable recommendations that improve performance, efficiency, and profitability.",
+        "resources": []
+      }
+    },
+    {
+      "id": "JFNCITtE1YtcYmLfGfF5T",
+      "name": "BI Analyst vs Other Roles",
+      "resources": {
+        "description": "# BI Analyst vs. Other Roles\n\nA BI Analyst focuses on analyzing data to provide insights and recommendations for business improvements. This role differs from other data-related roles like Data Scientists, who build predictive models, or Data Engineers, who focus on building and maintaining data infrastructure. While a BI Analyst uses data to understand past and current performance, other roles might focus on predicting future outcomes or ensuring the data is readily available for analysis.",
+        "resources": []
+      }
+    },
+    {
+      "id": "PxOEfMSQYA2jy3zrMZXjZ",
+      "name": "Introduction",
+      "resources": {
+        "description": "# BI Analyst\n\nA Business Intelligence (BI) Analyst interprets data to identify patterns and trends, providing insights that help organizations make better decisions. They work with data from various sources, clean and transform it, and then use tools and techniques to analyze it. The goal is to translate complex data into actionable recommendations for improving business performance.",
+        "resources": []
+      }
+    },
+    {
+      "id": "c0ywBrs9u7MciWAXSgVVg",
+      "name": "Metrics and KPIs",
+      "resources": {
+        "description": "# Metrics and KPIs\n\nMetrics are quantifiable measurements used to track and assess the status of a specific business process. Key Performance Indicators (KPIs) are a subset of metrics that are critical to the success of an organization and are used to measure progress toward strategic goals. For example, website traffic is a metric, while the conversion rate of website visitors into paying customers is a KPI. Another example is that the number of customer service calls is a metric, while the average resolution time for those calls is a KPI.",
+        "resources": []
+      }
+    },
+    {
+      "id": "LjeipkY01Hlkp22kmlAMh",
+      "name": "Types of BI Operations",
+      "resources": {
+        "description": "# Types of BI Operations",
+        "resources": []
+      }
+    },
+    {
+      "id": "e3SdmNpVcvy3k_-JIO6OK",
+      "name": "Stakeholder Identification",
+      "resources": {
+        "description": "# Stakeholder Identification",
+        "resources": []
+      }
+    },
+    {
+      "id": "PkzUqwT21Owk_TfepFPDm",
+      "name": "Key Business Functions",
+      "resources": {
+        "description": "# Key Business Functions",
+        "resources": []
+      }
+    },
+    {
+      "id": "vTW3jSZ1bvc0OrP_bl22t",
+      "name": "Descriptive Analysis",
+      "resources": {
+        "description": "# Descriptive Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "4zpVE3R0lLyWpHePdBVpl",
+      "name": "Predictive Analysis",
+      "resources": {
+        "description": "# Predictive Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "m5aC9aNy9mwLXz0xXBp40",
+      "name": "Diagnostic Analysis",
+      "resources": {
+        "description": "# Diagnostic Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "NnbtaO2MiqsHeJ-ds0Q5m",
+      "name": "Prescriptive Analysis",
+      "resources": {
+        "description": "# Prescriptive Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "3DVF8zo-_WM_9GTuzQFO8",
+      "name": "Types of Data Analysis",
+      "resources": {
+        "description": "# Types of Data Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "yXz6MkU3-HnlkmRmYh-Ev",
+      "name": "Categorical vs Numerical",
+      "resources": {
+        "description": "# Categorical vs Numerical",
+        "resources": []
+      }
+    },
+    {
+      "id": "YSxvg2HrfGoGtpkwY0kGc",
+      "name": "Discrete vs Continuous",
+      "resources": {
+        "description": "# Discrete vs Continuous",
+        "resources": []
+      }
+    },
+    {
+      "id": "HM1w6JJquaV6Vq4mjxM7p",
+      "name": "Variables and Data Types",
+      "resources": {
+        "description": "# Variables and Data Types",
+        "resources": []
+      }
+    },
+    {
+      "id": "DQtznxvW5x4s-zGLpUpNY",
+      "name": "Mode",
+      "resources": {
+        "description": "# Mode",
+        "resources": []
+      }
+    },
+    {
+      "id": "S4XEOd2-PHIHOiiGgKVLJ",
+      "name": "Mean",
+      "resources": {
+        "description": "# Mean",
+        "resources": []
+      }
+    },
+    {
+      "id": "mfLRVcxvAjqmSG-KBpJ4J",
+      "name": "Median",
+      "resources": {
+        "description": "# Median",
+        "resources": []
+      }
+    },
+    {
+      "id": "xc1hm_XTyiMUVtWiTKXWG",
+      "name": "Descriptive Statistics",
+      "resources": {
+        "description": "# Descriptive Statistics",
+        "resources": []
+      }
+    },
+    {
+      "id": "JXYmXAYuA-zxrkl4PRLQd",
+      "name": "Correlation vs Causation",
+      "resources": {
+        "description": "# Correlation vs Causation",
+        "resources": []
+      }
+    },
+    {
+      "id": "ASHk2LOjlhwpwpWSRs_Bi",
+      "name": "Correlation Analysis",
+      "resources": {
+        "description": "# Correlation Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "xgP3zIiSEr9dtYcCQikPb",
+      "name": "Confidence Intervals",
+      "resources": {
+        "description": "# Confidence Intervals",
+        "resources": []
+      }
+    },
+    {
+      "id": "7DNtRMBZ_F0K1FQk-UCM4",
+      "name": "Inferential Statistics",
+      "resources": {
+        "description": "# Inferential Statistics",
+        "resources": []
+      }
+    },
+    {
+      "id": "kb216tShKrRPWv7mE9sVa",
+      "name": "Analog vs Digital Data",
+      "resources": {
+        "description": "# Analog vs Digital Data",
+        "resources": []
+      }
+    },
+    {
+      "id": "qHcRrxenhogymMQ6EPiMa",
+      "name": "Semistructured",
+      "resources": {
+        "description": "# Semistructured",
+        "resources": []
+      }
+    },
+    {
+      "id": "H1s1PQj8CHQ_VBQIy1VtJ",
+      "name": "Types of data",
+      "resources": {
+        "description": "# Types of data",
+        "resources": []
+      }
+    },
+    {
+      "id": "DJKXgelIxuahxJiqvwP6I",
+      "name": "Unstructured",
+      "resources": {
+        "description": "# Unstructured",
+        "resources": []
+      }
+    },
+    {
+      "id": "jnIn3_2fI2k97oALPZkt7",
+      "name": "Structured",
+      "resources": {
+        "description": "# Structured",
+        "resources": []
+      }
+    },
+    {
+      "id": "g5j_mbjx2yZUIK5lfN3eT",
+      "name": "What is Data?",
+      "resources": {
+        "description": "# What is Data?",
+        "resources": []
+      }
+    },
+    {
+      "id": "g44bQY90HOeI_dZ8gK2Uj",
+      "name": "Databases",
+      "resources": {
+        "description": "# Databases",
+        "resources": []
+      }
+    },
+    {
+      "id": "xQLsuJ3uohVzOxGfFLyFw",
+      "name": "Web",
+      "resources": {
+        "description": "# Web",
+        "resources": []
+      }
+    },
+    {
+      "id": "1cC6LKxcncaKg4Jm53pUy",
+      "name": "Mobile Apps",
+      "resources": {
+        "description": "# Mobile Apps",
+        "resources": []
+      }
+    },
+    {
+      "id": "WXk0-vebMUQC25he2lmbh",
+      "name": "Cloud",
+      "resources": {
+        "description": "# Cloud",
+        "resources": []
+      }
+    },
+    {
+      "id": "xQDGmVwUkrmGdviOdG8Hu",
+      "name": "APIs",
+      "resources": {
+        "description": "# APIs",
+        "resources": []
+      }
+    },
+    {
+      "id": "GrwdQldCWu2zWAaNj6LFk",
+      "name": "IoT",
+      "resources": {
+        "description": "# IoT",
+        "resources": []
+      }
+    },
+    {
+      "id": "VUgxDDkoxkOcLxqpTDXzt",
+      "name": "Data Sources",
+      "resources": {
+        "description": "# Data Sources",
+        "resources": []
+      }
+    },
+    {
+      "id": "LcLfC6BiOxJAkk2p424wL",
+      "name": "CSV",
+      "resources": {
+        "description": "# CSV",
+        "resources": []
+      }
+    },
+    {
+      "id": "ytgK7van84j5DsfD0JyZ3",
+      "name": "XML",
+      "resources": {
+        "description": "# XML",
+        "resources": []
+      }
+    },
+    {
+      "id": "Dh62zxyyUHh0galD472p8",
+      "name": "Excel",
+      "resources": {
+        "description": "# Excel",
+        "resources": []
+      }
+    },
+    {
+      "id": "k80q5FPNiIUdxn5A8R3Hu",
+      "name": "Other formats",
+      "resources": {
+        "description": "# Other formats",
+        "resources": []
+      }
+    },
+    {
+      "id": "p21d2mEUnTQgWhKFTGS9F",
+      "name": "JSON",
+      "resources": {
+        "description": "# JSON",
+        "resources": []
+      }
+    },
+    {
+      "id": "GsZWvJPNzN6XLDp2G1db4",
+      "name": "Data Formats",
+      "resources": {
+        "description": "# Data Formats",
+        "resources": []
+      }
+    },
+    {
+      "id": "s8LZgRwrlm1V4meGM7gj0",
+      "name": "SQL Fundamentals",
+      "resources": {
+        "description": "# SQL Fundamentals",
+        "resources": []
+      }
+    },
+    {
+      "id": "gJBaVERU3prru-qRksxN4",
+      "name": "Popular Databases",
+      "resources": {
+        "description": "# Popular Databases",
+        "resources": []
+      }
+    },
+    {
+      "id": "ETT9eATuyLHQe2jPqaF5I",
+      "name": "Exploratory Data Analysis (EDA)",
+      "resources": {
+        "description": "# Exploratory Data Analysis (EDA)",
+        "resources": []
+      }
+    },
+    {
+      "id": "xjgqmJmetKpWXSWZHPwaL",
+      "name": "Duplicates",
+      "resources": {
+        "description": "# Duplicates",
+        "resources": []
+      }
+    },
+    {
+      "id": "fhreEuoT8ZBRwJqbSGrEZ",
+      "name": "Missing Values",
+      "resources": {
+        "description": "# Missing Values",
+        "resources": []
+      }
+    },
+    {
+      "id": "OqolfBQRQvwg6PI_t8Mrt",
+      "name": "Outliers",
+      "resources": {
+        "description": "# Outliers",
+        "resources": []
+      }
+    },
+    {
+      "id": "hrkMVMYWCedRxhNd2N9wE",
+      "name": "Data Transformation Techniques",
+      "resources": {
+        "description": "# Data Transformation Techniques",
+        "resources": []
+      }
+    },
+    {
+      "id": "sltVKaKKjmzu17jDv9OFF",
+      "name": "Visualization Fundamentals",
+      "resources": {
+        "description": "# Visualization Fundamentals",
+        "resources": []
+      }
+    },
+    {
+      "id": "BUizLtQ7vpdyBRjS8KyIl",
+      "name": "Barplot",
+      "resources": {
+        "description": "# Barplot",
+        "resources": []
+      }
+    },
+    {
+      "id": "SNkYi2VZsCRG31v63v8_x",
+      "name": "Heatmap",
+      "resources": {
+        "description": "# Heatmap",
+        "resources": []
+      }
+    },
+    {
+      "id": "BVDaFmDat48nN3hj5NE71",
+      "name": "Lineplot",
+      "resources": {
+        "description": "# Lineplot",
+        "resources": []
+      }
+    },
+    {
+      "id": "hCSZo7jT9arBLUbtCVFfD",
+      "name": "Scatterplot",
+      "resources": {
+        "description": "# Scatterplot",
+        "resources": []
+      }
+    },
+    {
+      "id": "7_5PBCrsukv81mm7yTpDf",
+      "name": "Map",
+      "resources": {
+        "description": "# Map",
+        "resources": []
+      }
+    },
+    {
+      "id": "wqLcUFVsLa_l9yQIee9MG",
+      "name": "Histogram",
+      "resources": {
+        "description": "# Histogram",
+        "resources": []
+      }
+    },
+    {
+      "id": "SJGEkoTSPK2ck4IvaK6Gz",
+      "name": "Color theory",
+      "resources": {
+        "description": "# Color theory",
+        "resources": []
+      }
+    },
+    {
+      "id": "qGVDuU9RA9Y5g5vlPd-xq",
+      "name": "Misleading charts",
+      "resources": {
+        "description": "# Misleading charts",
+        "resources": []
+      }
+    },
+    {
+      "id": "wtEzdO_ZNu9jHJrFS3CrG",
+      "name": "Accessibility",
+      "resources": {
+        "description": "# Accessibility",
+        "resources": []
+      }
+    },
+    {
+      "id": "7t0WfLLqrD5VJQwIAmXMo",
+      "name": "Mobile-responsiveness",
+      "resources": {
+        "description": "# Mobile-responsiveness",
+        "resources": []
+      }
+    },
+    {
+      "id": "EDQjtoTd01ftwXxYkV9it",
+      "name": "Design principles",
+      "resources": {
+        "description": "# Design principles",
+        "resources": []
+      }
+    },
+    {
+      "id": "eqGsO6ZGk2jdG0z9-cHzz",
+      "name": "Power BI",
+      "resources": {
+        "description": "# Power BI",
+        "resources": []
+      }
+    },
+    {
+      "id": "GoMIAQwusbT7fqJ-VnCrq",
+      "name": "Qlik",
+      "resources": {
+        "description": "# Qlik",
+        "resources": []
+      }
+    },
+    {
+      "id": "WzPj94lYxQCjFx5YW4X9x",
+      "name": "Tableau",
+      "resources": {
+        "description": "# Tableau",
+        "resources": []
+      }
+    },
+    {
+      "id": "f4MDT1RUfaICAWzyG2E6T",
+      "name": "Looker",
+      "resources": {
+        "description": "# Looker",
+        "resources": []
+      }
+    },
+    {
+      "id": "kpRqKLtAd3IO3nbs8Yxrh",
+      "name": "BI Platforms",
+      "resources": {
+        "description": "# BI Platforms",
+        "resources": []
+      }
+    },
+    {
+      "id": "vQQSYPpcGO7ri0RFSWi0h",
+      "name": "Python",
+      "resources": {
+        "description": "# Python",
+        "resources": []
+      }
+    },
+    {
+      "id": "0OTmTRHlR3ImNU0zyLt8G",
+      "name": "R",
+      "resources": {
+        "description": "# R",
+        "resources": []
+      }
+    },
+    {
+      "id": "KSxjcWV6C325kZITzAhWs",
+      "name": "Programming Languages",
+      "resources": {
+        "description": "# Programming Languages",
+        "resources": []
+      }
+    },
+    {
+      "id": "JHGV0V78GXubiSY9P3nTw",
+      "name": "Risk Analytics",
+      "resources": {
+        "description": "# Risk Analytics",
+        "resources": []
+      }
+    },
+    {
+      "id": "OqHNW0PzIRsw7IBgh5U5Q",
+      "name": "CLV",
+      "resources": {
+        "description": "# CLV",
+        "resources": []
+      }
+    },
+    {
+      "id": "j-GXKpMnsVuUUUdRxAXLe",
+      "name": "Compliance Reporting",
+      "resources": {
+        "description": "# Compliance Reporting",
+        "resources": []
+      }
+    },
+    {
+      "id": "aJLGan5dkMefvkspFlcYo",
+      "name": "Fraud Detection",
+      "resources": {
+        "description": "# Fraud Detection",
+        "resources": []
+      }
+    },
+    {
+      "id": "xftv5BiyoVrFjpSN0tjsw",
+      "name": "Finance",
+      "resources": {
+        "description": "# Finance",
+        "resources": []
+      }
+    },
+    {
+      "id": "VPu8vn7-baZQ5ORJ6ViW0",
+      "name": "Sales Performance",
+      "resources": {
+        "description": "# Sales Performance",
+        "resources": []
+      }
+    },
+    {
+      "id": "0qRm81lJX_Eb6aJkJMjeL",
+      "name": "Marketing Campaigns",
+      "resources": {
+        "description": "# Marketing Campaigns",
+        "resources": []
+      }
+    },
+    {
+      "id": "LkbB0rpS3Du2K7_ogoc34",
+      "name": "Inventory Optimization",
+      "resources": {
+        "description": "# Inventory Optimization",
+        "resources": []
+      }
+    },
+    {
+      "id": "7jrzQogTOc6lHXfpYLCsx",
+      "name": "Supply Chain Analytics",
+      "resources": {
+        "description": "# Supply Chain Analytics",
+        "resources": []
+      }
+    },
+    {
+      "id": "7LbhfkmS7oFoSF1k5ZR1U",
+      "name": "Retail & E-commerce",
+      "resources": {
+        "description": "# Retail & E-commerce",
+        "resources": []
+      }
+    },
+    {
+      "id": "LI09SvvUUCQxLZZee_j0n",
+      "name": "Patient management",
+      "resources": {
+        "description": "# Patient management",
+        "resources": []
+      }
+    },
+    {
+      "id": "omvGuhou7_63k-Fwcc7Mu",
+      "name": "Compliance Reporting",
+      "resources": {
+        "description": "# Compliance Reporting",
+        "resources": []
+      }
+    },
+    {
+      "id": "ku3m0ZmNg23F0Z5CEb4JI",
+      "name": "Hospital Efficiency",
+      "resources": {
+        "description": "# Hospital Efficiency",
+        "resources": []
+      }
+    },
+    {
+      "id": "VpGVezYr9O6puhAF12PN2",
+      "name": "Healthcare",
+      "resources": {
+        "description": "# Healthcare",
+        "resources": []
+      }
+    },
+    {
+      "id": "L50rpcgGjsQU3S0zRn6xh",
+      "name": "Production Efficiency",
+      "resources": {
+        "description": "# Production Efficiency",
+        "resources": []
+      }
+    },
+    {
+      "id": "yimCxOdNtyGcbd6ZxHsBQ",
+      "name": "Predictive Maintenance",
+      "resources": {
+        "description": "# Predictive Maintenance",
+        "resources": []
+      }
+    },
+    {
+      "id": "Xe9zK8xhkkr4fsh3HOzAY",
+      "name": "Quality Control",
+      "resources": {
+        "description": "# Quality Control",
+        "resources": []
+      }
+    },
+    {
+      "id": "-hNguvT6SQCqAgVpoQByr",
+      "name": "Supply chain optimization",
+      "resources": {
+        "description": "# Supply chain optimization",
+        "resources": []
+      }
+    },
+    {
+      "id": "zEGmDHaFa-F81tWqa3i9E",
+      "name": "Manufacturing",
+      "resources": {
+        "description": "# Manufacturing",
+        "resources": []
+      }
+    },
+    {
+      "id": "qKlo90-Cy8t_off5Qv8-6",
+      "name": "A/B Testing",
+      "resources": {
+        "description": "# A/B Testing",
+        "resources": []
+      }
+    },
+    {
+      "id": "R2zg0Ql-RsnIkV5Gmc1vN",
+      "name": "Cohort Analysis",
+      "resources": {
+        "description": "# Cohort Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "ExHCSUDxDBwsJtTelvxjP",
+      "name": "Forecasting",
+      "resources": {
+        "description": "# Forecasting",
+        "resources": []
+      }
+    },
+    {
+      "id": "yseEaLsEzIcqJ0YIoGujl",
+      "name": "Time Series Analysis",
+      "resources": {
+        "description": "# Time Series Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "ZGazuCNruu09bd7C-aSFC",
+      "name": "Basic Machine Learning",
+      "resources": {
+        "description": "# Basic Machine Learning",
+        "resources": []
+      }
+    },
+    {
+      "id": "t_J0MZTMWMnrImGHjXYov",
+      "name": "Storytelling Framework",
+      "resources": {
+        "description": "# Storytelling Framework",
+        "resources": []
+      }
+    },
+    {
+      "id": "KXhNou5nlekbSTfLYPs_8",
+      "name": "Dashboard Design",
+      "resources": {
+        "description": "# Dashboard Design",
+        "resources": []
+      }
+    },
+    {
+      "id": "9G-pI5NsRCq4p0FLfaMR_",
+      "name": "Presentation Design",
+      "resources": {
+        "description": "# Presentation Design",
+        "resources": []
+      }
+    },
+    {
+      "id": "Slg3fXGPTa-Z4sdZY86XK",
+      "name": "Writing Executive Summaries",
+      "resources": {
+        "description": "# Writing Executive Summaries",
+        "resources": []
+      }
+    },
+    {
+      "id": "r-m88g8xrUnuEpV2lHJfN",
+      "name": "Stakeholder Management",
+      "resources": {
+        "description": "# Stakeholder Management",
+        "resources": []
+      }
+    },
+    {
+      "id": "vDQF2oaybSewNu3EMs6zG",
+      "name": "Change Management",
+      "resources": {
+        "description": "# Change Management",
+        "resources": []
+      }
+    },
+    {
+      "id": "NFKiPXrkjRre1yUZc27gl",
+      "name": "Critical Thinking",
+      "resources": {
+        "description": "# Critical Thinking",
+        "resources": []
+      }
+    },
+    {
+      "id": "OmhvVSTtzH5sxOIZRVYfQ",
+      "name": "Business Acumen",
+      "resources": {
+        "description": "# Business Acumen",
+        "resources": []
+      }
+    },
+    {
+      "id": "r8NoX426-ngu6ZQZe06oK",
+      "name": "Project Management",
+      "resources": {
+        "description": "# Project Management",
+        "resources": []
+      }
+    },
+    {
+      "id": "UhcniUDKmi7KNuXlolf5O",
+      "name": "Relevance",
+      "resources": {
+        "description": "# Relevance",
+        "resources": []
+      }
+    },
+    {
+      "id": "5USjYdAVJs0gSXxE1j8Xu",
+      "name": "Timeliness",
+      "resources": {
+        "description": "# Timeliness",
+        "resources": []
+      }
+    },
+    {
+      "id": "BiyrAHB34evej_0cnDzOa",
+      "name": "Accesibility",
+      "resources": {
+        "description": "# Accesibility",
+        "resources": []
+      }
+    },
+    {
+      "id": "uP8MWZqM9Z0i3eDF4Ldxv",
+      "name": "Interpretability",
+      "resources": {
+        "description": "# Interpretability",
+        "resources": []
+      }
+    },
+    {
+      "id": "M1H3Fh09v8udCJIPSJPic",
+      "name": "Accuracy",
+      "resources": {
+        "description": "# Accuracy",
+        "resources": []
+      }
+    },
+    {
+      "id": "4U66ZrBZqg7-ckOTmxAQj",
+      "name": "Coherence",
+      "resources": {
+        "description": "# Coherence",
+        "resources": []
+      }
+    },
+    {
+      "id": "F21ypKzpziLCXkiKG1S5Z",
+      "name": "Data Lineage",
+      "resources": {
+        "description": "# Data Lineage",
+        "resources": []
+      }
+    },
+    {
+      "id": "fuxGZx3WGjP2TzzVV29ux",
+      "name": "Privacy",
+      "resources": {
+        "description": "# Privacy",
+        "resources": []
+      }
+    },
+    {
+      "id": "9aNVqEyygNGeicdce5X8b",
+      "name": "Bias Recognition",
+      "resources": {
+        "description": "# Bias Recognition",
+        "resources": []
+      }
+    },
+    {
+      "id": "Vb06K0D2vWAlSe95QJrth",
+      "name": "Ethical Data Use",
+      "resources": {
+        "description": "# Ethical Data Use",
+        "resources": []
+      }
+    },
+    {
+      "id": "wJiKBbTMLhIzelUtKn7jl",
+      "name": "Data Warehouse",
+      "resources": {
+        "description": "# Data Warehouse",
+        "resources": []
+      }
+    },
+    {
+      "id": "iqpVtvoebAaoB_Dj9-gdw",
+      "name": "Data Lake",
+      "resources": {
+        "description": "# Data Lake",
+        "resources": []
+      }
+    },
+    {
+      "id": "5x4NfuP6dAgjISlB-esIW",
+      "name": "Data Mart",
+      "resources": {
+        "description": "# Data Mart",
+        "resources": []
+      }
+    },
+    {
+      "id": "zGU6DyEm6xEYf1_73cbjL",
+      "name": "Cloud BI Ecosystem",
+      "resources": {
+        "description": "# Cloud BI Ecosystem",
+        "resources": []
+      }
+    },
+    {
+      "id": "Zxuvc9F3bINLTdfbsx_S_",
+      "name": "Data Architectures",
+      "resources": {
+        "description": "# Data Architectures",
+        "resources": []
+      }
+    },
+    {
+      "id": "iYe42G31fhkAO0MBaHutF",
+      "name": "Star vs Snowflake Schema",
+      "resources": {
+        "description": "# Star vs Snowflake Schema",
+        "resources": []
+      }
+    },
+    {
+      "id": "Prfa0LUmgxcp52IEObFom",
+      "name": "Normalization vs Denormalization",
+      "resources": {
+        "description": "# Normalization vs Denormalization",
+        "resources": []
+      }
+    },
+    {
+      "id": "hcbS18cpVxd55hVlUeLLT",
+      "name": "Fact vs Dimension Tables",
+      "resources": {
+        "description": "# Fact vs Dimension Tables",
+        "resources": []
+      }
+    },
+    {
+      "id": "fFzCnLfZ_vSbhQjdAKLlJ",
+      "name": "Calculated Fields & Measures",
+      "resources": {
+        "description": "# Calculated Fields & Measures",
+        "resources": []
+      }
+    },
+    {
+      "id": "Dk31XtS7wWRzO31sdsEDo",
+      "name": "Data Modeling for BI",
+      "resources": {
+        "description": "# Data Modeling for BI",
+        "resources": []
+      }
+    },
+    {
+      "id": "lAK9QVs97hL3ysjz2blp8",
+      "name": "ETL Tools",
+      "resources": {
+        "description": "# ETL Tools",
+        "resources": []
+      }
+    },
+    {
+      "id": "Du4GD-6pxbWYl4uSJRnOE",
+      "name": "ETL basics",
+      "resources": {
+        "description": "# ETL basics",
+        "resources": []
+      }
+    },
+    {
+      "id": "3xDVJwdl3uu5EcjlZ1ytA",
+      "name": "End-to-end Analytics Project",
+      "resources": {
+        "description": "# End-to-end Analytics Project",
+        "resources": []
+      }
+    },
+    {
+      "id": "yvSf7sGEd7QiaVoetalHc",
+      "name": "Data Pipeline Design",
+      "resources": {
+        "description": "# Data Pipeline Design",
+        "resources": []
+      }
+    },
+    {
+      "id": "qvPTiDbsY5ol_K-BNLmzk",
+      "name": "Dashboard Design",
+      "resources": {
+        "description": "# Dashboard Design",
+        "resources": []
+      }
+    },
+    {
+      "id": "UIdwl_KLELI8xL2VxYJmX",
+      "name": "Building Your Portfolio",
+      "resources": {
+        "description": "# Building Your Portfolio",
+        "resources": []
+      }
+    },
+    {
+      "id": "tUxwKTml2Go8zR9tR3cjn",
+      "name": "Professional Development",
+      "resources": {
+        "description": "# Professional Development",
+        "resources": []
+      }
+    },
+    {
+      "id": "X8U-NQD0rYqFr_xgDWL2s",
+      "name": "BI Communities",
+      "resources": {
+        "description": "# BI Communities",
+        "resources": []
+      }
+    },
+    {
+      "id": "YovS5Dbcr6g_8PMr8jp5t",
+      "name": "Open-Source Projects",
+      "resources": {
+        "description": "# Open-Source Projects",
+        "resources": []
+      }
+    },
+    {
+      "id": "aTGsJj7Ntv5BWIzjaqvu_",
+      "name": "BI Competitions",
+      "resources": {
+        "description": "# BI Competitions",
+        "resources": []
+      }
+    },
+    {
+      "id": "UDF8wyYT8127wfFHcq37P",
+      "name": "Conferences & Webinars",
+      "resources": {
+        "description": "# Conferences & Webinars",
+        "resources": []
+      }
+    },
+    {
+      "id": "Q98GaitxocEha4zZ9d254",
+      "name": "Networking",
+      "resources": {
+        "description": "# Networking",
+        "resources": []
+      }
+    },
+    {
+      "id": "m9EwcekZ_l0XHiKeQ8emr",
+      "name": "Resume optimization",
+      "resources": {
+        "description": "# Resume optimization",
+        "resources": []
+      }
+    },
+    {
+      "id": "4XM5ikPiHVehEtT4AB-Ea",
+      "name": "Interview preparation",
+      "resources": {
+        "description": "# Interview preparation",
+        "resources": []
+      }
+    },
+    {
+      "id": "qsCWo1CmR4mvy7E7qlPv5",
+      "name": "Portfolio presentation",
+      "resources": {
+        "description": "# Portfolio presentation",
+        "resources": []
+      }
+    },
+    {
+      "id": "k3F9Tdqo3XYgMLOKGjpxA",
+      "name": "Salary negotiation strategies",
+      "resources": {
+        "description": "# Salary negotiation strategies",
+        "resources": []
+      }
+    },
+    {
+      "id": "TojDB4o0i2rs7Qcb10k1r",
+      "name": "Job Preparation",
+      "resources": {
+        "description": "# Job Preparation",
+        "resources": []
+      }
+    },
+    {
+      "id": "jJukG4XxfFcID_VlQKqe-",
+      "name": "Tactical BI",
+      "resources": {
+        "description": "# Tactical BI",
+        "resources": []
+      }
+    },
+    {
+      "id": "3BxbkrBp8veZj38zdwN8s",
+      "name": "Strategic BI",
+      "resources": {
+        "description": "# Strategic BI",
+        "resources": []
+      }
+    },
+    {
+      "id": "GN6SnI7RXIeW8JeD-qORW",
+      "name": "Operational BI",
+      "resources": {
+        "description": "# Operational BI",
+        "resources": []
+      }
+    },
+    {
+      "id": "cxTriSZvrmXP4axKynIZW",
+      "name": "Finance",
+      "resources": {
+        "description": "# Finance",
+        "resources": []
+      }
+    },
+    {
+      "id": "s-wUPMaagyRupT2RdfHks",
+      "name": "Marketing",
+      "resources": {
+        "description": "# Marketing",
+        "resources": []
+      }
+    },
+    {
+      "id": "dJZqe47kzRqYIG-4AZTlz",
+      "name": "Operations",
+      "resources": {
+        "description": "# Operations",
+        "resources": []
+      }
+    },
+    {
+      "id": "KeGCHoJRHp-mBX-P5to4Y",
+      "name": "HR",
+      "resources": {
+        "description": "# HR",
+        "resources": []
+      }
+    },
+    {
+      "id": "F-fC2JWOuEeDbOHH1O6EB",
+      "name": "Central Tendency",
+      "resources": {
+        "description": "# Central Tendency",
+        "resources": []
+      }
+    },
+    {
+      "id": "1D98k1HNCaaiaI20euVwA",
+      "name": "Dispersion",
+      "resources": {
+        "description": "# Dispersion",
+        "resources": []
+      }
+    },
+    {
+      "id": "jll2iRbjdx7iiNwY13KYD",
+      "name": "Range",
+      "resources": {
+        "description": "# Range",
+        "resources": []
+      }
+    },
+    {
+      "id": "ZmSwDn0sP7HvLKYVzRwPJ",
+      "name": "Variance",
+      "resources": {
+        "description": "# Variance",
+        "resources": []
+      }
+    },
+    {
+      "id": "vqtzg9bydAqHMwZhPHo1a",
+      "name": "STD",
+      "resources": {
+        "description": "# STD",
+        "resources": []
+      }
+    },
+    {
+      "id": "LEHK7ohKIzKhlGebd0k_j",
+      "name": "IQR",
+      "resources": {
+        "description": "# IQR",
+        "resources": []
+      }
+    },
+    {
+      "id": "JSqwWsfojjZTe8ynmA7fc",
+      "name": "Distribution",
+      "resources": {
+        "description": "# Distribution",
+        "resources": []
+      }
+    },
+    {
+      "id": "X0DBG0mEWk25PEbLHhs7v",
+      "name": "Skewness",
+      "resources": {
+        "description": "# Skewness",
+        "resources": []
+      }
+    },
+    {
+      "id": "jvU1iu2M_y1IH62oUpAeU",
+      "name": "Kurtosis",
+      "resources": {
+        "description": "# Kurtosis",
+        "resources": []
+      }
+    },
+    {
+      "id": "7VDxA9bQ1P1fym4eQVKkN",
+      "name": "Population & Sample",
+      "resources": {
+        "description": "# Population & Sample",
+        "resources": []
+      }
+    },
+    {
+      "id": "01k_mfsp0eW6TX9yp8PDE",
+      "name": "Statistical tests",
+      "resources": {
+        "description": "# Statistical tests",
+        "resources": []
+      }
+    },
+    {
+      "id": "rkEdx_mZBoDjMhiluJl7O",
+      "name": "p-value",
+      "resources": {
+        "description": "# p-value",
+        "resources": []
+      }
+    },
+    {
+      "id": "SosOXxErMn0t2KCoHoxvS",
+      "name": "Types of Errors",
+      "resources": {
+        "description": "# Types of Errors",
+        "resources": []
+      }
+    },
+    {
+      "id": "6xfQic8dMwUsMQa7VtS8_",
+      "name": "Hypothesis Testing",
+      "resources": {
+        "description": "# Hypothesis Testing",
+        "resources": []
+      }
+    },
+    {
+      "id": "m9ejACzRBJza0v-fpdfkn",
+      "name": "Regression Analysis",
+      "resources": {
+        "description": "# Regression Analysis",
+        "resources": []
+      }
+    },
+    {
+      "id": "4-fpZx8p5iSNI3n4Qtacl",
+      "name": "Linear Regression",
+      "resources": {
+        "description": "# Linear Regression",
+        "resources": []
+      }
+    },
+    {
+      "id": "_QyIZ2_vH3e3yic5NTuak",
+      "name": "Beyond Linear Regression",
+      "resources": {
+        "description": "# Beyond Linear Regression",
+        "resources": []
+      }
+    },
+    {
+      "id": "nhl9FM79femgqENNR0HbE",
+      "name": "PostgreSQL",
+      "resources": {
+        "description": "# PostgreSQL",
+        "resources": []
+      }
+    },
+    {
+      "id": "uoQS4g-c6QndacUeiaWrq",
+      "name": "Oracle",
+      "resources": {
+        "description": "# Oracle",
+        "resources": []
+      }
+    },
+    {
+      "id": "eqnAEp2VT7FD2VDy5WVDP",
+      "name": "MySQL",
+      "resources": {
+        "description": "# MySQL",
+        "resources": []
+      }
+    },
+    {
+      "id": "lrksz861rE5m2XzOQPwgh",
+      "name": "SQLite",
+      "resources": {
+        "description": "# SQLite",
+        "resources": []
+      }
+    },
+    {
+      "id": "y9Fnjnbiqt7WkrhjPITpW",
+      "name": "Performance",
+      "resources": {
+        "description": "# Performance",
+        "resources": []
+      }
+    },
+    {
+      "id": "TuBJ2yUz1c5KMRGVHdvU5",
+      "name": "Basic Queries",
+      "resources": {
+        "description": "# Basic Queries",
+        "resources": []
+      }
+    },
+    {
+      "id": "-gbb16Wl--Rjx5aoM0krL",
+      "name": "Advanced Queries",
+      "resources": {
+        "description": "# Advanced Queries",
+        "resources": []
+      }
+    },
+    {
+      "id": "1toMuRZResgse1AtwEck6",
+      "name": "Window Functions",
+      "resources": {
+        "description": "# Window Functions",
+        "resources": []
+      }
+    },
+    {
+      "id": "Vo7LJ_W-DBvxvVrnz33BM",
+      "name": "Data Cleaning",
+      "resources": {
+        "description": "# Data Cleaning",
+        "resources": []
+      }
+    },
+    {
+      "id": "_iV_5O5Rq07P9qRGrraTM",
+      "name": "SQL",
+      "resources": {
+        "description": "# SQL",
+        "resources": []
+      }
+    },
+    {
+      "id": "ZAhjB_ghHukD4RPAtNDxh",
+      "name": "dplyr",
+      "resources": {
+        "description": "# dplyr",
+        "resources": []
+      }
+    },
+    {
+      "id": "9BWyA0b4WrmQetSMph_mY",
+      "name": "Excel",
+      "resources": {
+        "description": "# Excel",
+        "resources": []
+      }
+    },
+    {
+      "id": "25f76eB9-vy3Usta-Pbsi",
+      "name": "Pandas",
+      "resources": {
+        "description": "# Pandas",
+        "resources": []
+      }
+    },
+    {
+      "id": "GVgfPajmSqIgFZ6u2I1tK",
+      "name": "Chart Categories",
+      "resources": {
+        "description": "# Chart Categories",
+        "resources": []
+      }
+    },
+    {
+      "id": "eKBORkRU6HCH-D4GWHyKR",
+      "name": "Visualization Best Practices",
+      "resources": {
+        "description": "# Visualization Best Practices",
+        "resources": []
+      }
+    },
+    {
+      "id": "TCYG6vmFqq1zAPNQWoOH8",
+      "name": "Standardisation",
+      "resources": {
+        "description": "# Standardisation",
+        "resources": []
+      }
+    },
+    {
+      "id": "LLK3_hudKDX5d-fd98vlx",
+      "name": "Excel",
+      "resources": {
+        "description": "# Excel",
+        "resources": []
+      }
+    },
+    {
+      "id": "1T2PyytlmndHreWgueD55",
+      "name": "Financial Performance",
+      "resources": {
+        "description": "# Financial Performance",
+        "resources": []
+      }
+    },
+    {
+      "id": "Cydlrtg_FClBUkjezqGie",
+      "name": "Public Health",
+      "resources": {
+        "description": "# Public Health",
+        "resources": []
+      }
+    },
+    {
+      "id": "On6kznZxLTCpBPskdZtgT",
+      "name": "Trends",
+      "resources": {
+        "description": "# Trends",
+        "resources": []
+      }
+    },
+    {
+      "id": "moWrEfuKE06QwbznsH3V-",
+      "name": "Seasonality",
+      "resources": {
+        "description": "# Seasonality",
+        "resources": []
+      }
+    },
+    {
+      "id": "eZN_ty8VDX9mi5KtCWTFL",
+      "name": "Supervised Learning",
+      "resources": {
+        "description": "# Supervised Learning",
+        "resources": []
+      }
+    },
+    {
+      "id": "6l_tHC1R5zgABHMc_G6RD",
+      "name": "Unsupervised Learning",
+      "resources": {
+        "description": "# Unsupervised Learning",
+        "resources": []
+      }
+    },
+    {
+      "id": "KFONHuJNnCuSOH7-8Ndvm",
+      "name": "Reinforcement Learning",
+      "resources": {
+        "description": "# Reinforcement Learning",
+        "resources": []
+      }
+    },
+    {
+      "id": "TBcLXYtKs7_j_h_m2pAyh",
+      "name": "Communication & Storytelling",
+      "resources": {
+        "description": "# Communication & Storytelling",
+        "resources": []
+      }
+    },
+    {
+      "id": "mi88uLdJBXaxJ2yVOSqqo",
+      "name": "Soft Skills",
+      "resources": {
+        "description": "# Soft Skills",
+        "resources": []
+      }
+    },
+    {
+      "id": "bGCMAgaenZ0t3WeO5joyP",
+      "name": "Data Quality",
+      "resources": {
+        "description": "# Data Quality",
+        "resources": []
+      }
+    },
+    {
+      "id": "CWf_vL78f8-mSUQbPnU8e",
+      "name": "GDPR",
+      "resources": {
+        "description": "# GDPR",
+        "resources": []
+      }
+    },
+    {
+      "id": "IwnXDA-f3FHK4EEeFuToC",
+      "name": "CCPA",
+      "resources": {
+        "description": "# CCPA",
+        "resources": []
+      }
+    },
+    {
+      "id": "_uLtsnyNNNRcz5A29Zpjl",
+      "name": "Algorithmic Bias",
+      "resources": {
+        "description": "# Algorithmic Bias",
+        "resources": []
+      }
+    },
+    {
+      "id": "5MUwKGfSTKlam8KCG0A1U",
+      "name": "Mitigation Strategies",
+      "resources": {
+        "description": "# Mitigation Strategies",
+        "resources": []
+      }
+    },
+    {
+      "id": "qnUHw2f2VmTPU3-NMnoLl",
+      "name": "Airflow",
+      "resources": {
+        "description": "# Airflow",
+        "resources": []
+      }
+    },
+    {
+      "id": "-KzusmyDQ1NgqOADpqmEX",
+      "name": "dbt",
+      "resources": {
+        "description": "# dbt",
+        "resources": []
+      }
+    },
+    {
+      "id": "hqpFbDhAvyT9_4hcoSLhC",
+      "name": "Certifications",
+      "resources": {
+        "description": "# Certifications",
+        "resources": []
+      }
+    },
+    {
+      "id": "_KYKLd-RNhVy-Sn1A-G5j",
+      "name": "Cloud Computing Basics",
+      "resources": {
+        "description": "# Cloud Computing Basics",
+        "resources": []
+      }
+    },
+    {
+      "id": "D94743lQ1fAerVSpJWXfP",
+      "name": "Cloud data warehouses",
+      "resources": {
+        "description": "# Cloud data warehouses",
+        "resources": []
+      }
+    },
+    {
+      "id": "Z4pAe4FpnCkUJt8RuOhC6",
+      "name": "Providers: AWS, GCP, Azure",
+      "resources": {
+        "description": "# Providers: AWS, GCP, Azure",
+        "resources": []
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "kTMXaNS4W8X2g1qtMUEOO",
+      "target": "PxOEfMSQYA2jy3zrMZXjZ"
+    },
+    {
+      "source": "PxOEfMSQYA2jy3zrMZXjZ",
+      "target": "hXrtRBNlstSBzn1WkIr37"
+    },
+    {
+      "source": "hXrtRBNlstSBzn1WkIr37",
+      "target": "c0ywBrs9u7MciWAXSgVVg"
+    },
+    {
+      "source": "LjeipkY01Hlkp22kmlAMh",
+      "target": "GN6SnI7RXIeW8JeD-qORW"
+    },
+    {
+      "source": "LjeipkY01Hlkp22kmlAMh",
+      "target": "PkzUqwT21Owk_TfepFPDm"
+    },
+    {
+      "source": "PkzUqwT21Owk_TfepFPDm",
+      "target": "3DVF8zo-_WM_9GTuzQFO8"
+    },
+    {
+      "source": "3DVF8zo-_WM_9GTuzQFO8",
+      "target": "HzuJzjnJQga51df1WUn4t"
+    },
+    {
+      "source": "HzuJzjnJQga51df1WUn4t",
+      "target": "HM1w6JJquaV6Vq4mjxM7p"
+    },
+    {
+      "source": "3DVF8zo-_WM_9GTuzQFO8",
+      "target": "NnbtaO2MiqsHeJ-ds0Q5m"
+    },
+    {
+      "source": "3DVF8zo-_WM_9GTuzQFO8",
+      "target": "4zpVE3R0lLyWpHePdBVpl"
+    },
+    {
+      "source": "3DVF8zo-_WM_9GTuzQFO8",
+      "target": "m5aC9aNy9mwLXz0xXBp40"
+    },
+    {
+      "source": "3DVF8zo-_WM_9GTuzQFO8",
+      "target": "vTW3jSZ1bvc0OrP_bl22t"
+    },
+    {
+      "source": "PxOEfMSQYA2jy3zrMZXjZ",
+      "target": "jVXwlHRGgVpcoWCYzSB5W"
+    },
+    {
+      "source": "PxOEfMSQYA2jy3zrMZXjZ",
+      "target": "NX-YaB_FVjoHYsR6z9QIL"
+    },
+    {
+      "source": "PxOEfMSQYA2jy3zrMZXjZ",
+      "target": "JFNCITtE1YtcYmLfGfF5T"
+    },
+    {
+      "source": "PxOEfMSQYA2jy3zrMZXjZ",
+      "target": "Q-GmBJiRdBS_xLeOjef2R"
+    },
+    {
+      "source": "HM1w6JJquaV6Vq4mjxM7p",
+      "target": "YSxvg2HrfGoGtpkwY0kGc"
+    },
+    {
+      "source": "HM1w6JJquaV6Vq4mjxM7p",
+      "target": "xc1hm_XTyiMUVtWiTKXWG"
+    },
+    {
+      "source": "xc1hm_XTyiMUVtWiTKXWG",
+      "target": "F-fC2JWOuEeDbOHH1O6EB"
+    },
+    {
+      "source": "F-fC2JWOuEeDbOHH1O6EB",
+      "target": "1D98k1HNCaaiaI20euVwA"
+    },
+    {
+      "source": "1D98k1HNCaaiaI20euVwA",
+      "target": "JSqwWsfojjZTe8ynmA7fc"
+    },
+    {
+      "source": "JSqwWsfojjZTe8ynmA7fc",
+      "target": "7DNtRMBZ_F0K1FQk-UCM4"
+    },
+    {
+      "source": "7DNtRMBZ_F0K1FQk-UCM4",
+      "target": "ASHk2LOjlhwpwpWSRs_Bi"
+    },
+    {
+      "source": "ASHk2LOjlhwpwpWSRs_Bi",
+      "target": "JXYmXAYuA-zxrkl4PRLQd"
+    },
+    {
+      "source": "ASHk2LOjlhwpwpWSRs_Bi",
+      "target": "m9ejACzRBJza0v-fpdfkn"
+    },
+    {
+      "source": "m9ejACzRBJza0v-fpdfkn",
+      "target": "_QyIZ2_vH3e3yic5NTuak"
+    },
+    {
+      "source": "m9ejACzRBJza0v-fpdfkn",
+      "target": "4-fpZx8p5iSNI3n4Qtacl"
+    },
+    {
+      "source": "m9ejACzRBJza0v-fpdfkn",
+      "target": "6xfQic8dMwUsMQa7VtS8_"
+    },
+    {
+      "source": "g5j_mbjx2yZUIK5lfN3eT",
+      "target": "kb216tShKrRPWv7mE9sVa"
+    },
+    {
+      "source": "kb216tShKrRPWv7mE9sVa",
+      "target": "H1s1PQj8CHQ_VBQIy1VtJ"
+    },
+    {
+      "source": "H1s1PQj8CHQ_VBQIy1VtJ",
+      "target": "VUgxDDkoxkOcLxqpTDXzt"
+    },
+    {
+      "source": "H1s1PQj8CHQ_VBQIy1VtJ",
+      "target": "jnIn3_2fI2k97oALPZkt7"
+    },
+    {
+      "source": "GsZWvJPNzN6XLDp2G1db4",
+      "target": "k80q5FPNiIUdxn5A8R3Hu"
+    },
+    {
+      "source": "GsZWvJPNzN6XLDp2G1db4",
+      "target": "ytgK7van84j5DsfD0JyZ3"
+    },
+    {
+      "source": "GsZWvJPNzN6XLDp2G1db4",
+      "target": "LcLfC6BiOxJAkk2p424wL"
+    },
+    {
+      "source": "VUgxDDkoxkOcLxqpTDXzt",
+      "target": "GsZWvJPNzN6XLDp2G1db4"
+    },
+    {
+      "source": "GsZWvJPNzN6XLDp2G1db4",
+      "target": "s8LZgRwrlm1V4meGM7gj0"
+    },
+    {
+      "source": "s8LZgRwrlm1V4meGM7gj0",
+      "target": "TuBJ2yUz1c5KMRGVHdvU5"
+    },
+    {
+      "source": "s8LZgRwrlm1V4meGM7gj0",
+      "target": "-gbb16Wl--Rjx5aoM0krL"
+    },
+    {
+      "source": "s8LZgRwrlm1V4meGM7gj0",
+      "target": "1toMuRZResgse1AtwEck6"
+    },
+    {
+      "source": "s8LZgRwrlm1V4meGM7gj0",
+      "target": "y9Fnjnbiqt7WkrhjPITpW"
+    },
+    {
+      "source": "6xfQic8dMwUsMQa7VtS8_",
+      "target": "kK-Z2hA1B6bV4yXYFY34V"
+    },
+    {
+      "source": "kK-Z2hA1B6bV4yXYFY34V",
+      "target": "g5j_mbjx2yZUIK5lfN3eT"
+    },
+    {
+      "source": "MlUILykYMJ69TPBxkeejT",
+      "target": "gJBaVERU3prru-qRksxN4"
+    },
+    {
+      "source": "gJBaVERU3prru-qRksxN4",
+      "target": "Vo7LJ_W-DBvxvVrnz33BM"
+    },
+    {
+      "source": "Vo7LJ_W-DBvxvVrnz33BM",
+      "target": "TCYG6vmFqq1zAPNQWoOH8"
+    },
+    {
+      "source": "Vo7LJ_W-DBvxvVrnz33BM",
+      "target": "ETT9eATuyLHQe2jPqaF5I"
+    },
+    {
+      "source": "GVgfPajmSqIgFZ6u2I1tK",
+      "target": "PbTGKum1l9AoxaUGOzsXP"
+    },
+    {
+      "source": "GVgfPajmSqIgFZ6u2I1tK",
+      "target": "SNkYi2VZsCRG31v63v8_x"
+    },
+    {
+      "source": "GVgfPajmSqIgFZ6u2I1tK",
+      "target": "wqLcUFVsLa_l9yQIee9MG"
+    },
+    {
+      "source": "GVgfPajmSqIgFZ6u2I1tK",
+      "target": "BUizLtQ7vpdyBRjS8KyIl"
+    },
+    {
+      "source": "hrkMVMYWCedRxhNd2N9wE",
+      "target": "QPYfdTwOFTyEE-iPLMDrz"
+    },
+    {
+      "source": "QPYfdTwOFTyEE-iPLMDrz",
+      "target": "sltVKaKKjmzu17jDv9OFF"
+    },
+    {
+      "source": "eKBORkRU6HCH-D4GWHyKR",
+      "target": "wtEzdO_ZNu9jHJrFS3CrG"
+    },
+    {
+      "source": "eKBORkRU6HCH-D4GWHyKR",
+      "target": "EDQjtoTd01ftwXxYkV9it"
+    },
+    {
+      "source": "eKBORkRU6HCH-D4GWHyKR",
+      "target": "qGVDuU9RA9Y5g5vlPd-xq"
+    },
+    {
+      "source": "eKBORkRU6HCH-D4GWHyKR",
+      "target": "7t0WfLLqrD5VJQwIAmXMo"
+    },
+    {
+      "source": "eKBORkRU6HCH-D4GWHyKR",
+      "target": "SJGEkoTSPK2ck4IvaK6Gz"
+    },
+    {
+      "source": "eKBORkRU6HCH-D4GWHyKR",
+      "target": "GHr_rPB2cus3p3fgwGMdR"
+    },
+    {
+      "source": "GHr_rPB2cus3p3fgwGMdR",
+      "target": "LLK3_hudKDX5d-fd98vlx"
+    },
+    {
+      "source": "LLK3_hudKDX5d-fd98vlx",
+      "target": "kpRqKLtAd3IO3nbs8Yxrh"
+    },
+    {
+      "source": "kpRqKLtAd3IO3nbs8Yxrh",
+      "target": "KSxjcWV6C325kZITzAhWs"
+    },
+    {
+      "source": "KSxjcWV6C325kZITzAhWs",
+      "target": "dY-TBN_bsJdnKPcsNX67Q"
+    },
+    {
+      "source": "dY-TBN_bsJdnKPcsNX67Q",
+      "target": "D94743lQ1fAerVSpJWXfP"
+    },
+    {
+      "source": "dY-TBN_bsJdnKPcsNX67Q",
+      "target": "Z4pAe4FpnCkUJt8RuOhC6"
+    },
+    {
+      "source": "dY-TBN_bsJdnKPcsNX67Q",
+      "target": "_KYKLd-RNhVy-Sn1A-G5j"
+    },
+    {
+      "source": "dY-TBN_bsJdnKPcsNX67Q",
+      "target": "6vLHalrdOPZIVFUyCM8gc"
+    },
+    {
+      "source": "6vLHalrdOPZIVFUyCM8gc",
+      "target": "xftv5BiyoVrFjpSN0tjsw"
+    },
+    {
+      "source": "xftv5BiyoVrFjpSN0tjsw",
+      "target": "1T2PyytlmndHreWgueD55"
+    },
+    {
+      "source": "xftv5BiyoVrFjpSN0tjsw",
+      "target": "aJLGan5dkMefvkspFlcYo"
+    },
+    {
+      "source": "xftv5BiyoVrFjpSN0tjsw",
+      "target": "j-GXKpMnsVuUUUdRxAXLe"
+    },
+    {
+      "source": "xftv5BiyoVrFjpSN0tjsw",
+      "target": "JHGV0V78GXubiSY9P3nTw"
+    },
+    {
+      "source": "xftv5BiyoVrFjpSN0tjsw",
+      "target": "7LbhfkmS7oFoSF1k5ZR1U"
+    },
+    {
+      "source": "7LbhfkmS7oFoSF1k5ZR1U",
+      "target": "7jrzQogTOc6lHXfpYLCsx"
+    },
+    {
+      "source": "7LbhfkmS7oFoSF1k5ZR1U",
+      "target": "0qRm81lJX_Eb6aJkJMjeL"
+    },
+    {
+      "source": "7LbhfkmS7oFoSF1k5ZR1U",
+      "target": "LkbB0rpS3Du2K7_ogoc34"
+    },
+    {
+      "source": "7LbhfkmS7oFoSF1k5ZR1U",
+      "target": "VPu8vn7-baZQ5ORJ6ViW0"
+    },
+    {
+      "source": "7LbhfkmS7oFoSF1k5ZR1U",
+      "target": "VpGVezYr9O6puhAF12PN2"
+    },
+    {
+      "source": "VpGVezYr9O6puhAF12PN2",
+      "target": "ku3m0ZmNg23F0Z5CEb4JI"
+    },
+    {
+      "source": "VpGVezYr9O6puhAF12PN2",
+      "target": "omvGuhou7_63k-Fwcc7Mu"
+    },
+    {
+      "source": "VpGVezYr9O6puhAF12PN2",
+      "target": "Cydlrtg_FClBUkjezqGie"
+    },
+    {
+      "source": "VpGVezYr9O6puhAF12PN2",
+      "target": "LI09SvvUUCQxLZZee_j0n"
+    },
+    {
+      "source": "VpGVezYr9O6puhAF12PN2",
+      "target": "zEGmDHaFa-F81tWqa3i9E"
+    },
+    {
+      "source": "zEGmDHaFa-F81tWqa3i9E",
+      "target": "L50rpcgGjsQU3S0zRn6xh"
+    },
+    {
+      "source": "zEGmDHaFa-F81tWqa3i9E",
+      "target": "Xe9zK8xhkkr4fsh3HOzAY"
+    },
+    {
+      "source": "zEGmDHaFa-F81tWqa3i9E",
+      "target": "-hNguvT6SQCqAgVpoQByr"
+    },
+    {
+      "source": "zEGmDHaFa-F81tWqa3i9E",
+      "target": "yimCxOdNtyGcbd6ZxHsBQ"
+    },
+    {
+      "source": "zEGmDHaFa-F81tWqa3i9E",
+      "target": "k8r0_6oOYgNyHfvZQvQVk"
+    },
+    {
+      "source": "k8r0_6oOYgNyHfvZQvQVk",
+      "target": "yseEaLsEzIcqJ0YIoGujl"
+    },
+    {
+      "source": "ExHCSUDxDBwsJtTelvxjP",
+      "target": "yseEaLsEzIcqJ0YIoGujl"
+    },
+    {
+      "source": "yseEaLsEzIcqJ0YIoGujl",
+      "target": "qKlo90-Cy8t_off5Qv8-6"
+    },
+    {
+      "source": "ZGazuCNruu09bd7C-aSFC",
+      "target": "eZN_ty8VDX9mi5KtCWTFL"
+    },
+    {
+      "source": "ZGazuCNruu09bd7C-aSFC",
+      "target": "eoLdywVPgNoGTHBQpLWRh"
+    },
+    {
+      "source": "eoLdywVPgNoGTHBQpLWRh",
+      "target": "TBcLXYtKs7_j_h_m2pAyh"
+    },
+    {
+      "source": "TBcLXYtKs7_j_h_m2pAyh",
+      "target": "Slg3fXGPTa-Z4sdZY86XK"
+    },
+    {
+      "source": "TBcLXYtKs7_j_h_m2pAyh",
+      "target": "mi88uLdJBXaxJ2yVOSqqo"
+    },
+    {
+      "source": "mi88uLdJBXaxJ2yVOSqqo",
+      "target": "r8NoX426-ngu6ZQZe06oK"
+    },
+    {
+      "source": "mi88uLdJBXaxJ2yVOSqqo",
+      "target": "vDQF2oaybSewNu3EMs6zG"
+    },
+    {
+      "source": "mi88uLdJBXaxJ2yVOSqqo",
+      "target": "r-m88g8xrUnuEpV2lHJfN"
+    },
+    {
+      "source": "mi88uLdJBXaxJ2yVOSqqo",
+      "target": "NFKiPXrkjRre1yUZc27gl"
+    },
+    {
+      "source": "mi88uLdJBXaxJ2yVOSqqo",
+      "target": "OmhvVSTtzH5sxOIZRVYfQ"
+    },
+    {
+      "source": "mi88uLdJBXaxJ2yVOSqqo",
+      "target": "Sy3AiIS9B845Ua4TTAFG7"
+    },
+    {
+      "source": "Sy3AiIS9B845Ua4TTAFG7",
+      "target": "bGCMAgaenZ0t3WeO5joyP"
+    },
+    {
+      "source": "bGCMAgaenZ0t3WeO5joyP",
+      "target": "F21ypKzpziLCXkiKG1S5Z"
+    },
+    {
+      "source": "F21ypKzpziLCXkiKG1S5Z",
+      "target": "Vb06K0D2vWAlSe95QJrth"
+    },
+    {
+      "source": "Vb06K0D2vWAlSe95QJrth",
+      "target": "9aNVqEyygNGeicdce5X8b"
+    },
+    {
+      "source": "9aNVqEyygNGeicdce5X8b",
+      "target": "5MUwKGfSTKlam8KCG0A1U"
+    },
+    {
+      "source": "9aNVqEyygNGeicdce5X8b",
+      "target": "fuxGZx3WGjP2TzzVV29ux"
+    },
+    {
+      "source": "fuxGZx3WGjP2TzzVV29ux",
+      "target": "VXtmQqoogFdzcnO_XU5uy"
+    },
+    {
+      "source": "fuxGZx3WGjP2TzzVV29ux",
+      "target": "lAcFmIlGbrKeNRR9wWFau"
+    },
+    {
+      "source": "lAcFmIlGbrKeNRR9wWFau",
+      "target": "Zxuvc9F3bINLTdfbsx_S_"
+    },
+    {
+      "source": "Zxuvc9F3bINLTdfbsx_S_",
+      "target": "iqpVtvoebAaoB_Dj9-gdw"
+    },
+    {
+      "source": "Zxuvc9F3bINLTdfbsx_S_",
+      "target": "wJiKBbTMLhIzelUtKn7jl"
+    },
+    {
+      "source": "Zxuvc9F3bINLTdfbsx_S_",
+      "target": "zGU6DyEm6xEYf1_73cbjL"
+    },
+    {
+      "source": "Zxuvc9F3bINLTdfbsx_S_",
+      "target": "Dk31XtS7wWRzO31sdsEDo"
+    },
+    {
+      "source": "fFzCnLfZ_vSbhQjdAKLlJ",
+      "target": "Du4GD-6pxbWYl4uSJRnOE"
+    },
+    {
+      "source": "lAK9QVs97hL3ysjz2blp8",
+      "target": "qnUHw2f2VmTPU3-NMnoLl"
+    },
+    {
+      "source": "UIdwl_KLELI8xL2VxYJmX",
+      "target": "qvPTiDbsY5ol_K-BNLmzk"
+    },
+    {
+      "source": "UIdwl_KLELI8xL2VxYJmX",
+      "target": "yvSf7sGEd7QiaVoetalHc"
+    },
+    {
+      "source": "UIdwl_KLELI8xL2VxYJmX",
+      "target": "3xDVJwdl3uu5EcjlZ1ytA"
+    },
+    {
+      "source": "Du4GD-6pxbWYl4uSJRnOE",
+      "target": "6kzp12lpxM1owSqKDwL5k"
+    },
+    {
+      "source": "6kzp12lpxM1owSqKDwL5k",
+      "target": "UIdwl_KLELI8xL2VxYJmX"
+    },
+    {
+      "source": "UIdwl_KLELI8xL2VxYJmX",
+      "target": "tUxwKTml2Go8zR9tR3cjn"
+    },
+    {
+      "source": "TojDB4o0i2rs7Qcb10k1r",
+      "target": "4XM5ikPiHVehEtT4AB-Ea"
+    },
+    {
+      "source": "TojDB4o0i2rs7Qcb10k1r",
+      "target": "qsCWo1CmR4mvy7E7qlPv5"
+    },
+    {
+      "source": "TojDB4o0i2rs7Qcb10k1r",
+      "target": "k3F9Tdqo3XYgMLOKGjpxA"
+    },
+    {
+      "source": "TojDB4o0i2rs7Qcb10k1r",
+      "target": "m9EwcekZ_l0XHiKeQ8emr"
+    },
+    {
+      "source": "Q98GaitxocEha4zZ9d254",
+      "target": "YovS5Dbcr6g_8PMr8jp5t"
+    },
+    {
+      "source": "Q98GaitxocEha4zZ9d254",
+      "target": "UDF8wyYT8127wfFHcq37P"
+    },
+    {
+      "source": "Q98GaitxocEha4zZ9d254",
+      "target": "aTGsJj7Ntv5BWIzjaqvu_"
+    },
+    {
+      "source": "Q98GaitxocEha4zZ9d254",
+      "target": "X8U-NQD0rYqFr_xgDWL2s"
+    }
+  ]
+}
