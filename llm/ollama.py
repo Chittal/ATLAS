@@ -5,7 +5,7 @@ from langchain_core.messages import (
     AIMessage,
 )
 from typing import Optional
-from config import config
+from config import app_config
 
 
 class OllamaClient:
@@ -13,7 +13,7 @@ class OllamaClient:
     
     def __init__(self, model: str = None):
         # Use provided model or fallback to config or default
-        self.model = model or config.model or "llama3.1:8b"
+        self.model = model or app_config.model or "llama3.1:8b"
         
         if not self.model:
             raise ValueError("Model name is required but not provided")

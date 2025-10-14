@@ -10,4 +10,4 @@ class Config:
         self.llm_provider = os.getenv("CUSTOM_LLM_PROVIDER")
 
 
-config = Config()
+app_config = Config()

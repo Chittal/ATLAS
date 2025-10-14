@@ -134,7 +134,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                 // Dim everything by default
                 cy.elements().addClass('not-path');
 
-                path.forEach(id => {
+                // Extract IDs from path objects (handle both object and string formats)
+                const pathIds = path.map(item => typeof item === 'object' ? item.id : item);
+
+                pathIds.forEach(id => {
                     const n = cy.getElementById(id);
                     if (n) {
                         n.addClass('highlighted');
@@ -144,7 +147,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 });
 
                 edges.forEach(e => {
-                    const edgeId = `${e.source}-${e.target}`;
+                    const sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                    const targetId = typeof e.target === 'object' ? e.target.id : e.target;
+                    const edgeId = `${sourceId}-${targetId}`;
                     const ed = cy.getElementById(edgeId);
                     if (ed) {
                         ed.addClass('highlighted');
@@ -156,6 +161,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (highlighted && highlighted.length > 0) {
                     cy.fit(highlighted, 80);
                 }
+
+                // Log path for debugging
+                console.log('Path from Data Analyst to AI Agents:', path);
             } catch (e) {
                 console.error('Failed to fetch path', e);
             }

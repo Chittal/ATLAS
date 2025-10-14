@@ -11,7 +11,7 @@
     <button onclick="resetLayout()">Reset Layout</button>
     <button onclick="toggleLabels()">Toggle Labels</button>
     <button onclick="fitToScreen()">Fit to Screen</button>
-    <button onclick="showDAtoAgentsPath()">Path: Data Analyst → AI Agents</button>
+    <button onclick="showSkillPath('data analyst', 'ai agents')">Path: Data Analyst → AI Agents</button>
     <div class="mt-2">
         <small class="text-muted">Click and drag to explore • Scroll to zoom</small>
     </div>
@@ -425,8 +425,11 @@
             // Dim everything first
             cy.elements().addClass('not-path');
 
+            // Extract IDs from path objects (handle both object and string formats)
+            const pathIds = path.map(item => typeof item === 'object' ? item.id : item);
+
             // Highlight nodes on the path
-            path.forEach(id => {
+            pathIds.forEach(id => {
                 const n = cy.getElementById(id);
                 if (n) {
                     n.addClass('highlighted');
@@ -437,7 +440,9 @@
 
             // Highlight edges on the path
             edges.forEach(e => {
-                const edgeId = `${e.source}-${e.target}`;
+                const sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                const targetId = typeof e.target === 'object' ? e.target.id : e.target;
+                const edgeId = `${sourceId}-${targetId}`;
                 const ed = cy.getElementById(edgeId);
                 if (ed) {
                     ed.addClass('highlighted');
@@ -450,8 +455,62 @@
             if (highlighted && highlighted.length > 0) {
                 cy.fit(highlighted, 80);
             }
+
+            // Log path for debugging
+            console.log('Path from Data Analyst to AI Agents:', path);
         } catch (e) {
             console.error('Failed to load path', e);
+        }
+    }
+
+    async function showSkillPath(start_skill, target_skill) {
+        try {
+            const res = await fetch('/api/skill-path?start=' + encodeURIComponent(start_skill.toLowerCase()) + '&end=' + encodeURIComponent(target_skill.toLowerCase()));
+            const { path, edges } = await res.json();
+            if (!cy || !path || path.length === 0) return;
+
+            // Clear previous state
+            cy.elements().removeClass('highlighted not-path');
+            cy.nodes().unselect();
+
+            // Dim everything first
+            cy.elements().addClass('not-path');
+
+            // Extract IDs from path objects (handle both object and string formats)
+            const pathIds = path.map(item => typeof item === 'object' ? item.id : item);
+
+            // Highlight nodes on the path
+            pathIds.forEach(id => {
+                const n = cy.getElementById(id);
+                if (n) {
+                    n.addClass('highlighted');
+                    n.removeClass('not-path');
+                    n.select();
+                }
+            });
+
+            // Highlight edges on the path
+            edges.forEach(e => {
+                const sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                const targetId = typeof e.target === 'object' ? e.target.id : e.target;
+                const edgeId = `${sourceId}-${targetId}`;
+                const ed = cy.getElementById(edgeId);
+                if (ed) {
+                    ed.addClass('highlighted');
+                    ed.removeClass('not-path');
+                }
+            });
+
+            // Fit to highlighted elements
+            const highlighted = cy.elements('.highlighted');
+            if (highlighted && highlighted.length > 0) {
+                cy.fit(highlighted, 80);
+            }
+
+            // Log path for debugging
+            console.log('Path from ' + start_skill + ' to ' + target_skill + ':', path);
+        } catch (e) {
+            console.error('Failed to load path from ' + start_skill + ' to ' + target_skill, e);
         }
     }
 

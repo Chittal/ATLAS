@@ -51,16 +51,6 @@ class ChatWidget {
             chatInput.addEventListener('input', () => this.updateSendButton());
         }
 
-        // Suggestion buttons
-        document.querySelectorAll('.suggestion-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const suggestion = e.target.getAttribute('data-suggestion');
-                if (suggestion) {
-                    this.setInputValue(suggestion);
-                    this.sendMessage();
-                }
-            });
-        });
 
         // Close chat when clicking outside
         document.addEventListener('click', (e) => {
@@ -179,7 +169,7 @@ class ChatWidget {
                 
                 const response = await fetch(`/api/skill-path?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
                 const data = await response.json();
-                
+                console.log('🔍 Path data:', data);
                 if (data.path && data.path.length > 0) {
                     this.highlightPath(data.path);
                     return this.formatPathResponse(data.path, start, end);
@@ -252,6 +242,54 @@ class ChatWidget {
             if (response.ok) {
                 const data = await response.json();
                 console.log('✅ Received response from API:', data);
+                
+                // Check if this is a route planning response with path data
+                console.log('🔍 Checking for route planning data:', {
+                    hasPathData: !!data.path_data,
+                    category: data.agent_metadata?.category,
+                    pathData: data.path_data,
+                    pathDataType: typeof data.path_data,
+                    pathDataKeys: data.path_data ? Object.keys(data.path_data) : 'N/A',
+                    agentMetadata: data.agent_metadata,
+                    agentMetadataType: typeof data.agent_metadata
+                });
+                
+                const hasPathData = data.path_data && data.path_data.path && data.path_data.path.length > 0;
+                const isRoutePlanning = data.agent_metadata && data.agent_metadata.category === 'ROUTE_PLANNING';
+                
+                console.log('🔍 Condition checks:', {
+                    hasPathData,
+                    isRoutePlanning,
+                    willHighlight: hasPathData && isRoutePlanning
+                });
+                
+                if (hasPathData && isRoutePlanning) {
+                    console.log('🗺️ Route planning detected, highlighting path:', data.path_data);
+                    
+                    // Try to trigger the existing Path button functionality
+                    // Check if we're on the roadmap page and the Path button exists
+                    const pathButton = document.getElementById('path-da-agents') || 
+                                      document.querySelector('button[onclick*="showDAtoAgentsPath"]');
+                    
+                    if (pathButton) {
+                        console.log('🎯 Found Path button, clicking it to highlight path');
+                        pathButton.click();
+                    } else {
+                        console.log('⚠️ Path button not found, trying direct highlighting');
+                        // Fallback to direct highlighting
+                        setTimeout(() => {
+                            this.highlightPath(data.path_data.path);
+                        }, 500);
+                    }
+                } else {
+                    console.log('❌ No path highlighting:', {
+                        reason: !hasPathData ? 'missing or empty path_data' : 'not route planning category',
+                        hasPathData,
+                        isRoutePlanning,
+                        category: data.agent_metadata?.category
+                    });
+                }
+                
                 return data.ai_response || this.getDefaultResponse(message);
             } else {
                 console.log('❌ API response not ok:', response.status);
@@ -318,7 +356,14 @@ class ChatWidget {
     }
 
     formatPathResponse(path, start, end) {
-        const skillNames = path.map(skillId => this.getSkillNameById(skillId)).filter(Boolean);
+        // Handle both object and string formats
+        const skillNames = path.map(item => {
+            if (typeof item === 'object' && item.name) {
+                return item.name;
+            } else {
+                return this.getSkillNameById(item);
+            }
+        }).filter(Boolean);
         
         if (skillNames.length > 0) {
             return `Here's your learning path from "${start}" to "${end}":\n\n${skillNames.join(' → ')}\n\nI've highlighted this path on the roadmap for you!`;
@@ -364,42 +409,148 @@ class ChatWidget {
         return skillMappings[skillId] || skillId;
     }
 
-    highlightPath(pathIds) {
-        // Try to highlight the path in the current graph
-        if (typeof cy !== 'undefined') {
-            // Reset previous highlights
-            cy.elements().removeClass('highlighted not-path');
-            cy.nodes().unselect();
+    highlightPath(pathData) {
+        console.log('🎯 highlightPath called with:', pathData);
+        console.log('🔍 Cytoscape available:', typeof cy !== 'undefined');
+        
+        // Helper function to actually perform highlighting
+        const performHighlighting = () => {
+            // Debug: Let's see what's actually available
+            console.log('🔍 Debugging Cytoscape access:');
+            console.log('- window object keys:', Object.keys(window).filter(key => key.toLowerCase().includes('cy')));
+            console.log('- cy in window:', 'cy' in window);
+            console.log('- window.cy:', window.cy);
+            console.log('- typeof window.cy:', typeof window.cy);
+            console.log('- window.cy methods:', window.cy ? Object.getOwnPropertyNames(Object.getPrototypeOf(window.cy)) : 'N/A');
+            
+            // Try to get Cytoscape instance from window
+            const cyInstance = window.cy || cy;
+            
+            // Use the same approach as the Path button - direct access to global cy
+            // The Path button works because it's in the same scope as Cytoscape initialization
+            // We replicate that approach here by accessing the global 'cy' variable directly
+            if (typeof cyInstance !== 'undefined' && cyInstance && typeof cyInstance.elements === 'function') {
+                try {
+                    const elements = cyInstance.elements();
+                    console.log('📊 Graph elements:', elements.length);
+                    
+                    // Check if graph has elements
+                    if (elements.length === 0) {
+                        console.log('❌ Graph has no elements yet - skipping highlighting');
+                        return;
+                    }
+            
+                    // Reset previous highlights
+                    elements.removeClass('highlighted not-path');
+                    cyInstance.nodes().unselect();
 
             // Dim everything by default
-            cy.elements().addClass('not-path');
+            cyInstance.elements().addClass('not-path');
+
+            // Handle both object and string formats
+            const pathIds = pathData.map(item => typeof item === 'object' ? item.id : item);
+            console.log('🆔 Path IDs to highlight:', pathIds);
 
             // Highlight path nodes
+            let highlightedNodes = 0;
             pathIds.forEach(id => {
-                const node = cy.getElementById(id);
+                const node = cyInstance.getElementById(id);
                 if (node) {
                     node.addClass('highlighted');
                     node.removeClass('not-path');
                     node.select();
+                    highlightedNodes++;
+                    console.log(`✅ Highlighted node: ${id}`);
+                } else {
+                    console.log(`❌ Node not found: ${id}`);
                 }
             });
 
             // Highlight path edges
+            let highlightedEdges = 0;
             for (let i = 0; i < pathIds.length - 1; i++) {
                 const edgeId = `${pathIds[i]}-${pathIds[i + 1]}`;
-                const edge = cy.getElementById(edgeId);
+                const edge = cyInstance.getElementById(edgeId);
                 if (edge) {
                     edge.addClass('highlighted');
                     edge.removeClass('not-path');
+                    highlightedEdges++;
+                    console.log(`✅ Highlighted edge: ${edgeId}`);
+                } else {
+                    console.log(`❌ Edge not found: ${edgeId}`);
                 }
             }
 
+            console.log(`📈 Highlighted ${highlightedNodes} nodes and ${highlightedEdges} edges`);
+
             // Fit to highlighted elements
-            const highlighted = cy.elements('.highlighted');
+            const highlighted = cyInstance.elements('.highlighted');
             if (highlighted && highlighted.length > 0) {
-                cy.fit(highlighted, 80);
+                cyInstance.fit(highlighted, 80);
+                console.log('🎯 Fitted view to highlighted elements');
+            } else {
+                console.log('❌ No elements highlighted, cannot fit view');
             }
+                } catch (error) {
+                    console.error('❌ Error during path highlighting:', error);
+                }
+            } else {
+                console.log('❌ Cytoscape not available - cannot highlight path');
+            }
+        };
+        
+        // Check if we're on a page with Cytoscape
+        const cyContainer = document.getElementById('cy');
+        if (!cyContainer) {
+            console.log('❌ No Cytoscape container found - not on graph page');
+            return;
         }
+        
+        // Check if we're in the middle of a page load or Cytoscape initialization
+        if (document.readyState !== 'complete') {
+            console.log('⏳ Page still loading, waiting...');
+            return;
+        }
+        
+        // Try to highlight with multiple retries
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        const attemptHighlighting = () => {
+            retryCount++;
+            console.log(`🔄 Highlighting attempt ${retryCount}/${maxRetries}`);
+            
+            performHighlighting();
+            
+            // If still not working and we haven't exceeded max retries, try again
+            const cyInstance = window.cy || cy;
+            const needsRetry = retryCount < maxRetries && 
+                (typeof cyInstance === 'undefined' || 
+                 !cyInstance || 
+                 typeof cyInstance.elements !== 'function' || 
+                 cyInstance.elements().length === 0);
+                 
+            console.log('🔍 Retry check:', {
+                retryCount,
+                maxRetries,
+                needsRetry,
+                cyInstanceType: typeof cyInstance,
+                cyInstanceExists: !!cyInstance,
+                cyInstanceElements: typeof cyInstance?.elements,
+                elementsLength: cyInstance?.elements ? cyInstance.elements().length : 'N/A'
+            });
+                 
+            if (needsRetry) {
+                const delay = retryCount * 1000; // Increasing delay: 1s, 2s, 3s
+                console.log(`⏳ Cytoscape not ready, retrying in ${delay}ms...`);
+                setTimeout(attemptHighlighting, delay);
+            } else if (retryCount >= maxRetries) {
+                console.log('❌ Max retries reached - giving up on highlighting');
+            }
+        };
+        
+        // Start the first attempt
+        attemptHighlighting();
     }
 
     addMessage(content, type) {

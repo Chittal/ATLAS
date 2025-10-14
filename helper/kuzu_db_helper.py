@@ -15,7 +15,7 @@ class KuzuSkillGraph:
         """Initialize KuzuDB connection and create schema."""
         self.db = kuzu.Database(db_path)
         self.conn = kuzu.Connection(self.db)
-        self._create_schema()
+        # self._create_schema()
     
     def _create_schema(self):
         """Create comprehensive graph schema for skills, nodes, and resources."""
@@ -480,7 +480,7 @@ class KuzuSkillGraph:
         # Get skill information
         result = self.conn.execute("""
             MATCH (s:Skill {name: $skill_name})
-            RETURN s.name as name, s.order_index as order_index
+            RETURN s.id as id, s.order_index as order_index
         """, parameters={"skill_name": skill_name})
         
         skill_info = result.get_next()
@@ -488,7 +488,7 @@ class KuzuSkillGraph:
             return {"error": f"Skill '{skill_name}' not found"}
         
         return {
-            "name": skill_info[0],
+            "id": skill_info[0],
             "order_index": skill_info[1]
         }
     
@@ -727,7 +727,7 @@ class KuzuSkillGraph:
             "total_levels": len(organized_skills)
         }
 
-    def find_learning_path(self, start_skill: str, end_skill: str) -> List[str]:
+    def find_learning_path(self, start_skill: str, end_skill: str) -> List[Dict[str, str]]:
         """Find a learning path between two skills using KuzuDB shortest path."""
         res = self.conn.execute(
             """
@@ -738,13 +738,13 @@ class KuzuSkillGraph:
             """,
             parameters={"start_skill": start_skill, "end_skill": end_skill}
         )
-        path: List[str] = []
+        path: List[Dict[str, str]] = []
         while res.has_next():
             row = res.get_next()
             for node in row[0]["_nodes"]:
-                path.append(node["id"])
+                path.append({"id": node["id"], "name": node["name"]})
         print("=================================")
-        print(path)
+        print("Path objects:", path)
         print("=================================")
         return path
     
@@ -838,6 +838,11 @@ class KuzuSkillGraph:
             })
         
         return skills
+
+    def execute_cypher_query(self, query: str, parameters: Dict = None) -> List[Dict]:
+        """Execute a Cypher query and return the results."""
+        result = self.conn.execute(query, parameters=parameters)
+        return result
     
     def close(self):
         """Close the database connection."""

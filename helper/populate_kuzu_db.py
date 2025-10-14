@@ -1,5 +1,3 @@
-from kuzu_db_helper import KuzuSkillGraph
-
 # Initialize the skill graph
 def initialize_skill_graph():
     """ Initialize and populate the KuzuDB skill graph with all roadmap data. """
@@ -29,7 +27,7 @@ def initialize_skill_graph():
         ["mlops", "ai engineer"], 
         ["ai data scientist", "ai agents"]
     ]
-    
+    from helper.kuzu_db_helper import KuzuSkillGraph
     # Create and populate the graph
     skill_graph = KuzuSkillGraph()
     skill_id_mapping = skill_graph.load_skills_from_files(skills)

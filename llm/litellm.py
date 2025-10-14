@@ -5,15 +5,15 @@ from langchain.schema import (
     HumanMessage,
     AIMessage,
 )
-from config import Config as config
+from config import app_config
 
 class LiteLLMClient:
     """LiteLLM client class for handling LLM interactions"""
     
-    def __init__(self, model: str = config.model):
-        self.api_key = config.api_key
-        self.api_base = config.api_base
-        self.llm_provider = config.llm_provider
+    def __init__(self, model: str = app_config.model):
+        self.api_key = app_config.api_key
+        self.api_base = app_config.api_base
+        self.llm_provider = app_config.llm_provider
         self.model = model
         # Initialize LangChain LiteLLM
         self.llm = ChatLiteLLM(
@@ -50,4 +50,17 @@ class LiteLLMClient:
         # Send the message to the model
         response = self.llm.invoke(chat_messages)
         print("LLM response:", response.content)
+        return response.content
+
+    def chat_simple(self, prompt: str) -> str:
+        """
+        Main chat function using LangChain LiteLLM
+        
+        Args:
+            prompt: The prompt to send to the model
+            
+        Returns:
+            LLM response content
+        """
+        response = self.llm.invoke([HumanMessage(content=prompt)])
         return response.content

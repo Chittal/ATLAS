@@ -14,4 +14,7 @@ class AgentState(TypedDict):
     status: str = "start"
     step: str = "classify_query"
     category: str = None
+    start_skill: str = None
+    target_skill: str = None
+    path_objects: list[dict] = []
     messages: list[dict] = []

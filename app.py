@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from llm.groq import call_groq_model
-from helper.populate_kuzu_db import KuzuSkillGraph
+from helper.kuzu_db_helper import KuzuSkillGraph
 from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
 
 from dotenv import load_dotenv
@@ -13,13 +13,24 @@ load_dotenv()  # take environment variables from .env.
 
 app = FastAPI(title="AI Learning Subway Map", description="Multi-user AI Learning Path Visualization")
 
-# Initialize agent once at startup
-try:
-    agent = PersonalizedRoutePlanningAgent()
-    print("✅ LangGraph agent initialized successfully")
-except Exception as e:
-    print(f"❌ Failed to initialize LangGraph agent: {e}")
-    agent = None
+# Initialize shared Kuzu manager and agent in startup events to avoid multi-process locks
+@app.on_event("startup")
+def on_startup():
+    try:
+        app.state.kuzu_manager = KuzuSkillGraph("skills_graph.db")
+        app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=app.state.kuzu_manager)
+        print("✅ LangGraph agent initialized successfully")
+    except Exception as e:
+        print(f"❌ Failed to initialize LangGraph agent: {e}")
+        app.state.agent = None
+
+@app.on_event("shutdown")
+def on_shutdown():
+    try:
+        if hasattr(app.state, "kuzu_manager") and app.state.kuzu_manager:
+            app.state.kuzu_manager.close()
+    except Exception:
+        pass
 
 # Add CORS middleware
 app.add_middleware(
@@ -54,13 +65,10 @@ async def skills_graph_flat_page(request: Request):
     })
 
 def get_kuzu_manager():
-    """Get or create Kuzu manager instance."""
-    try:
-        kuzu_manager = KuzuSkillGraph("skills_graph.db")
-    except Exception as e:
-        print(f"Warning: Could not connect to Kuzu database: {e}")
-        raise e
-    return kuzu_manager
+    """Return shared Kuzu manager instance."""
+    if not hasattr(app.state, "kuzu_manager") or app.state.kuzu_manager is None:
+        raise RuntimeError("Kuzu manager not initialized")
+    return app.state.kuzu_manager
 
 
 @app.get("/api/roadmap-progression")
@@ -197,15 +205,15 @@ async def get_skill_path(start: str, end: str):
     # try:
     manager = get_kuzu_manager()
     print(start, end, "start, end")
-    path_ids = manager.find_learning_path(start, end)
-    print(path_ids, "path_ids")
-    if not path_ids:
+    paths = manager.find_learning_path(start, end)
+    print(paths, "paths")
+    if not paths:
         return {"path": [], "edges": []}
 
     edges = []
-    for i in range(len(path_ids) - 1):
-        source = path_ids[i]
-        target = path_ids[i + 1]
+    for i in range(len(paths) - 1):
+        source = paths[i]["id"]
+        target = paths[i + 1]["id"]
         edges.append({
             "id": f"{source}-{target}",
             "source": source,
@@ -213,7 +221,7 @@ async def get_skill_path(start: str, end: str):
         })
 
     return {
-        "path": path_ids,
+        "path": paths,
         "edges": edges
     }
     # except Exception as e:
@@ -310,60 +318,72 @@ async def query_skills(message: dict):
 @app.get("/api/test")
 async def test_endpoint():
     """Simple test endpoint"""
-    print("🔥 TEST ENDPOINT HIT!")
+    print("TEST ENDPOINT HIT!")
     return {"message": "Test endpoint working!", "timestamp": "2024-01-01T00:00:00Z"}
 
 @app.post("/api/general/chat")
 async def general_chat(request: Request):
     """Handle general chat queries from the chat widget."""
-    print("🔥 ENDPOINT HIT! /api/skill/general/chat was called!")
-    try:
-        request_json = await request.json()
-        user_message = request_json.get("message", "")
-        print(f"🎯 API called with message: '{user_message}'")
-        print(f"📝 Full message dict: {request_json}")
-        
-        # Check if agent is available
-        # if agent is None:
-        #     print("⚠️ Agent not available, falling back to simple LLM")
-        #     # Fallback to simple Groq call
-        #     response = call_groq_model(
-        #         messages=[{"role": "user", "content": user_message}],
-        #         system_prompt="You are a helpful learning assistant.",
-        #         model="llama-3.1-8b-instant"
-        #     )
-        #     return {
-        #         "ai_response": response,
-        #         "timestamp": "2024-01-01T00:00:00Z",
-        #         "agent_metadata": {"fallback": True, "reason": "Agent not initialized"}
-        #     }
-        
-        # Use the global LangGraph agent
-        print("🤖 CALLING LANGGRAPH AGENT")
-        result = agent.execute_graph(user_message)
-        print("📊 Agent result:", result)
-        
-        # Extract the response from the agent result
-        if result.get("status") == "success" and result.get("messages"):
-            assistant_messages = [msg for msg in result["messages"] if msg["role"] == "assistant"]
-            if assistant_messages:
-                ai_response = assistant_messages[-1]["content"]
-            else:
-                ai_response = "I'm sorry, I couldn't process your request."
+    print("ENDPOINT HIT! /api/skill/general/chat was called!")
+    # try:
+    request_json = await request.json()
+    user_message = request_json.get("message", "")
+    print(f"API called with message: '{user_message}'")
+    print(f"Full message dict: {request_json}")
+    # Use the global LangGraph agent
+    print("CALLING LANGGRAPH AGENT")
+    result = app.state.agent.execute_graph(user_message)
+    print("Agent result:", result)
+    
+    # Extract the response from the agent result
+    if result.get("status") == "success" and result.get("messages"):
+        assistant_messages = [msg for msg in result["messages"] if msg["role"] == "assistant"]
+        if assistant_messages:
+            ai_response = assistant_messages[-1]["content"]
         else:
-            ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
-        
-        return {
-            "ai_response": ai_response,
-            "timestamp": "2024-01-01T00:00:00Z",
-            "agent_metadata": {
-                "category": result.get("category"),
-                "step": result.get("step"),
-                "status": result.get("status")
-            }
+            ai_response = "I'm sorry, I couldn't process your request."
+    else:
+        ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
+    
+    response_data = {
+        "ai_response": ai_response,
+        "timestamp": "2024-01-01T00:00:00Z",
+        "agent_metadata": {
+            "category": result.get("category"),
+            "step": result.get("step"),
+            "status": result.get("status")
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
+    }
+    
+    # If this is a route planning query, get the path data for highlighting
+    if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
+        try:
+            path_objects = result.get("path_objects")
+            print(f"Route planning path objects: {path_objects}")
+            
+            # Create edges for the path
+            edges = []
+            for i in range(len(path_objects) - 1):
+                source = path_objects[i]["id"]
+                target = path_objects[i + 1]["id"]
+                edges.append({
+                    "id": f"{source}-{target}",
+                    "source": source,
+                    "target": target
+                })
+            
+            path_data = {
+                "path": path_objects,
+                "edges": edges
+            }
+            print(f"Path data for highlighting: {path_data}")
+            response_data["path_data"] = path_data
+        except Exception as e:
+            print(f"Error creating path data: {e}")
+    
+    return response_data
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn
