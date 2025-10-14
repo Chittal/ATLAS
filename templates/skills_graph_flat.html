@@ -121,11 +121,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             cy.style().selector('node').style('label', labelsVisible ? 'data(name)' : '').update();
         });
 
-        document.getElementById('path-da-agents').addEventListener('click', async () => {
+        // Reusable function to highlight path between any two skills
+        async function highlightPathBetweenSkills(startSkill = 'data analyst', targetSkill = 'ai agents') {
             try {
-                const res = await fetch('/api/skill-path?start=' + encodeURIComponent('data analyst') + '&end=' + encodeURIComponent('ai agents'));
+                console.log(`🎯 Highlighting path from "${startSkill}" to "${targetSkill}"`);
+                const res = await fetch('/api/skill-path?start=' + encodeURIComponent(startSkill) + '&end=' + encodeURIComponent(targetSkill));
                 const { path, edges } = await res.json();
-                if (!path || path.length === 0) return;
+                if (!path || path.length === 0) {
+                    console.log(`❌ No path found from "${startSkill}" to "${targetSkill}"`);
+                    return;
+                }
 
                 // Reset previous state
                 cy.elements().removeClass('highlighted not-path');
@@ -163,10 +168,18 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
 
                 // Log path for debugging
-                console.log('Path from Data Analyst to AI Agents:', path);
+                console.log(`✅ Path from "${startSkill}" to "${targetSkill}":`, path);
             } catch (e) {
                 console.error('Failed to fetch path', e);
             }
+        }
+
+        // Make function globally available for external use
+        window.highlightPathBetweenSkills = highlightPathBetweenSkills;
+
+        // Path button with default values
+        document.getElementById('path-da-agents').addEventListener('click', async () => {
+            await highlightPathBetweenSkills(); // Uses default values: 'data analyst' and 'ai agents'
         });
 
         // Add click handler for nodes to show skill panel

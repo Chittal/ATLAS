@@ -48,7 +48,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/roadmap/progression", response_class=HTMLResponse)
 async def roadmap_progression_page(request: Request):
     """Roadmap progression visualization page"""
     return templates.TemplateResponse("roadmap_progression.html", {
@@ -56,7 +56,7 @@ async def roadmap_progression_page(request: Request):
         "title": "Roadmap"
     })
 
-@app.get("/roadmap/flat", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def skills_graph_flat_page(request: Request):
     """Flat skills graph (no levels) visualization page"""
     return templates.TemplateResponse("skills_graph_flat.html", {

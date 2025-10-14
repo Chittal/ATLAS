@@ -1,1 +1,0 @@
-# Fact vs Dimension Tables

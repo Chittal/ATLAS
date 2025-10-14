@@ -1,1 +1,0 @@
-# Star vs Snowflake Schema

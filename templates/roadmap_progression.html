@@ -412,11 +412,16 @@
         }
     }
 
-    async function showDAtoAgentsPath() {
+    // Reusable function to highlight path between any two skills
+    async function highlightPathBetweenSkills(startSkill = 'data analyst', targetSkill = 'ai agents') {
         try {
-            const res = await fetch('/api/skill-path?start=' + encodeURIComponent('data analyst') + '&end=' + encodeURIComponent('ai agents'));
+            console.log(`🎯 Highlighting path from "${startSkill}" to "${targetSkill}"`);
+            const res = await fetch('/api/skill-path?start=' + encodeURIComponent(startSkill) + '&end=' + encodeURIComponent(targetSkill));
             const { path, edges } = await res.json();
-            if (!cy || !path || path.length === 0) return;
+            if (!cy || !path || path.length === 0) {
+                console.log(`❌ No path found from "${startSkill}" to "${targetSkill}"`);
+                return;
+            }
 
             // Clear previous state
             cy.elements().removeClass('highlighted not-path');
@@ -457,10 +462,18 @@
             }
 
             // Log path for debugging
-            console.log('Path from Data Analyst to AI Agents:', path);
+            console.log(`✅ Path from "${startSkill}" to "${targetSkill}":`, path);
         } catch (e) {
             console.error('Failed to load path', e);
         }
+    }
+
+    // Make function globally available for external use
+    window.highlightPathBetweenSkills = highlightPathBetweenSkills;
+
+    // Keep the original function name for backward compatibility
+    async function showDAtoAgentsPath() {
+        await highlightPathBetweenSkills(); // Uses default values: 'data analyst' and 'ai agents'
     }
 
     async function showSkillPath(start_skill, target_skill) {

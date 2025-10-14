@@ -1,1 +1,0 @@
-# Types of BI Operations

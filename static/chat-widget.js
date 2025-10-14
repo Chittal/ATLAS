@@ -268,14 +268,19 @@ class ChatWidget {
                     
                     // Try to trigger the existing Path button functionality
                     // Check if we're on the roadmap page and the Path button exists
-                    const pathButton = document.getElementById('path-da-agents') || 
-                                      document.querySelector('button[onclick*="showDAtoAgentsPath"]');
-                    
+                    const startSkill = data.path_data.start_skill;
+                    const targetSkill = data.path_data.target_skill;
+                    const pathButton = document.getElementById('path-da-agents');
+
                     if (pathButton) {
-                        console.log('🎯 Found Path button, clicking it to highlight path');
-                        pathButton.click();
+                        console.log('Found Path button, clicking it to highlight path');
+                        console.log('Using global highlightPathBetweenSkills function');
+                        // Extract skill names from path data if available
+                        const pathStartSkill = data.path_data.path[0]?.name || startSkill || 'data analyst';
+                        const pathTargetSkill = data.path_data.path[data.path_data.path.length - 1]?.name || targetSkill || 'ai agents';
+                        window.highlightPathBetweenSkills(pathStartSkill, pathTargetSkill);
                     } else {
-                        console.log('⚠️ Path button not found, trying direct highlighting');
+                        console.log('⚠️ No path highlighting method found, trying direct highlighting');
                         // Fallback to direct highlighting
                         setTimeout(() => {
                             this.highlightPath(data.path_data.path);
