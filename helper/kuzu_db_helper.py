@@ -288,8 +288,8 @@ class KuzuSkillGraph:
     
     def _insert_edge(self, edge: Dict[str, Any], skill_id: str, learning_node_mapping: Dict[str, str]):
         """Insert an edge (relationship) between learning nodes."""
-        from_node_id = learning_node_mapping.get(edge.get("from"))
-        to_node_id = learning_node_mapping.get(edge.get("to"))
+        from_node_id = learning_node_mapping.get(edge.get("source"))
+        to_node_id = learning_node_mapping.get(edge.get("target"))
         audience_type = edge.get("audience_type", "")
         
         if from_node_id and to_node_id:
@@ -843,6 +843,76 @@ class KuzuSkillGraph:
         """Execute a Cypher query and return the results."""
         result = self.conn.execute(query, parameters=parameters)
         return result
+    
+    def get_learning_nodes_by_skill_name(self, skill_name: str) -> List[Dict[str, Any]]:
+        """Get learning nodes for a specific skill by name."""
+        try:
+            result = self.conn.execute(f"""
+                MATCH (s:Skill)<-[:BELONGS_TO]-(l:LearningNode)
+                WHERE s.name = $skill_name
+                OPTIONAL MATCH path = (start:LearningNode)-[:PREREQUISITE*0..]->(l)
+                WHERE (start)-[:BELONGS_TO]->(s)
+                AND NOT (start)<-[:PREREQUISITE]-(:LearningNode)-[:BELONGS_TO]->(s)
+                WITH l, MAX(length(path)) as depth
+                RETURN depth, l.id, l.name, l.description
+                ORDER BY depth, l.name;
+            """, parameters={"skill_name": skill_name})
+            learning_nodes: List[Dict[str, Any]] = []
+            while result.has_next():
+                row = result.get_next()
+                learning_nodes.append({
+                    "depth": row[0] if row[0] is not None else 0,
+                    "id": row[1],
+                    "name": row[2],
+                    "description": row[3] if row[3] is not None else ""
+                })
+            return learning_nodes
+        except Exception as e:
+            print(f"Error getting learning nodes by skill name: {e}")
+            return []
+
+    def get_resources_by_learning_node_id(self, learning_node_id: str) -> List[Dict[str, Any]]:
+        """Get resources for a specific learning node."""
+        try:
+            print(f"Getting resources for learning node id: {learning_node_id}")
+            result = self.conn.execute("""
+                MATCH (l:LearningNode {id: $learning_node_id})-[:HAS_RESOURCE]->(r:Resource)
+                RETURN r.id, r.title, r.url, r.type
+                ORDER BY r.title;
+            """, parameters={"learning_node_id": learning_node_id})
+            resources: List[Dict[str, Any]] = []
+            while result.has_next():
+                row = result.get_next()
+                resources.append({
+                    "id": row[0],
+                    "title": row[1],
+                    "url": row[2],
+                    "type": row[3]
+                })
+            return resources
+        except Exception as e:
+            print(f"Error getting resources by learning node id: {e}")
+            return []
+    
+    def get_skill_edges(self, skill_name: str) -> List[Dict[str, Any]]:
+        """Get skill edges for a specific skill."""
+        try:
+            result = self.conn.execute(f"""
+                MATCH (s:Skill {{name: $skill_name}})<-[:BELONGS_TO]-(from:LearningNode)
+                MATCH (from)-[:PREREQUISITE]->(to:LearningNode)-[:BELONGS_TO]->(s)
+                RETURN from.id as source, to.id as target;
+            """, parameters={"skill_name": skill_name})
+            edges: List[Dict[str, Any]] = []
+            while result.has_next():
+                row = result.get_next()
+                edges.append({
+                    "source": row[0],
+                    "target": row[1]
+                })
+            return edges
+        except Exception as e:
+            print(f"Error getting skill edges: {e}")
+            return []
     
     def close(self):
         """Close the database connection."""

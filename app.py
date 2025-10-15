@@ -64,6 +64,16 @@ async def skills_graph_flat_page(request: Request):
         "title": "Roadmap Kuzu Graph Style"
     })
 
+@app.get("/learning-path", response_class=HTMLResponse)
+async def learning_path_page(request: Request, start: str = "data analyst", end: str = "ai agents"):
+    """Focused learning path visualization page showing only the highlighted path"""
+    return templates.TemplateResponse("learning_path.html", {
+        "request": request,
+        "start_skill": start,
+        "end_skill": end,
+        "title": f"Learning Path: {start} → {end}"
+    })
+
 def get_kuzu_manager():
     """Return shared Kuzu manager instance."""
     if not hasattr(app.state, "kuzu_manager") or app.state.kuzu_manager is None:
@@ -227,6 +237,77 @@ async def get_skill_path(start: str, end: str):
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
 
+@app.get("/api/learning-path-info")
+async def get_learning_path_info(start: str, end: str):
+    """Get detailed learning path information for HTMX partial updates."""
+    try:
+        manager = get_kuzu_manager()
+        paths = manager.find_learning_path(start, end)
+        
+        if not paths:
+            raise HTTPException(status_code=404, detail="No learning path found between these skills")
+        
+        total_skills = len(paths)
+        estimated_time = f"{int(total_skills * 2)} weeks"
+        difficulty = "Beginner" if total_skills <= 3 else "Intermediate" if total_skills <= 6 else "Advanced"
+        
+        skill_names = [skill["name"] for skill in paths]
+        description = f"This learning path will take you through {total_skills} essential skills, from {skill_names[0]} to {skill_names[-1]}. Each skill builds upon the previous one, creating a solid foundation for your learning journey."
+        
+        return {
+            "total_skills": total_skills,
+            "estimated_time": estimated_time,
+            "difficulty": difficulty,
+            "description": description,
+            "skills": paths,
+            "start_skill": start,
+            "end_skill": end
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting learning path info: {str(e)}")
+
+@app.get("/api/learning-path-info-partial", response_class=HTMLResponse)
+async def get_learning_path_info_partial(request: Request, start: str, end: str):
+    """Get learning path information as HTML partial for HTMX."""
+    try:
+        manager = get_kuzu_manager()
+        paths = manager.find_learning_path(start, end)
+        
+        if not paths:
+            return templates.TemplateResponse("partials_learning_path_info.html", {
+                "request": request,
+                "total_skills": 0,
+                "estimated_time": "N/A",
+                "difficulty": "Unknown",
+                "description": "No learning path found between these skills.",
+                "skills": []
+            })
+        
+        total_skills = len(paths)
+        estimated_time = f"{int(total_skills * 2)} weeks"
+        difficulty = "Beginner" if total_skills <= 3 else "Intermediate" if total_skills <= 6 else "Advanced"
+        
+        skill_names = [skill["name"] for skill in paths]
+        description = f"This learning path will take you through {total_skills} essential skills, from {skill_names[0]} to {skill_names[-1]}. Each skill builds upon the previous one, creating a solid foundation for your learning journey."
+        
+        return templates.TemplateResponse("partials_learning_path_info.html", {
+            "request": request,
+            "total_skills": total_skills,
+            "estimated_time": estimated_time,
+            "difficulty": difficulty,
+            "description": description,
+            "skills": paths
+        })
+    except Exception as e:
+        return templates.TemplateResponse("partials_learning_path_info.html", {
+            "request": request,
+            "total_skills": 0,
+            "estimated_time": "Error",
+            "difficulty": "Unknown",
+            "description": f"Error loading path: {str(e)}",
+            "skills": []
+        })
+
 @app.get("/api/skill/{skill_id}")
 async def get_skill_details(skill_id: str):
     """Get detailed information about a specific skill."""
@@ -256,6 +337,54 @@ async def get_skill_details(skill_id: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error getting skill details: {str(e)}")
+
+@app.get("/api/skill/{skill_name}/learning-nodes")
+async def get_learning_nodes_by_skill(skill_name: str):
+    """Get learning nodes for a specific skill by name."""
+    try:
+        manager = get_kuzu_manager()
+        learning_nodes = manager.get_learning_nodes_by_skill_name(skill_name)
+        
+        return {
+            "skill_name": skill_name,
+            "learning_nodes": learning_nodes,
+            "total_nodes": len(learning_nodes)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting learning nodes: {str(e)}")
+
+@app.get("/api/skill/{skill_name}/learning-graph")
+async def get_learning_graph_by_skill(skill_name: str):
+    """Get learning nodes and edges for a specific skill by name to create a connected graph."""
+    try:
+        manager = get_kuzu_manager()
+        learning_nodes = manager.get_learning_nodes_by_skill_name(skill_name)
+        skill_edges = manager.get_skill_edges(skill_name)
+        
+        return {
+            "skill_name": skill_name,
+            "learning_nodes": learning_nodes,
+            "edges": skill_edges,
+            "total_nodes": len(learning_nodes),
+            "total_edges": len(skill_edges)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting learning graph: {str(e)}")
+
+@app.get("/api/learning-node/{learning_node_id}/resources")
+async def get_learning_node_resources(learning_node_id: str):
+    """Get resources for a specific learning node by ID."""
+    try:
+        manager = get_kuzu_manager()
+        resources = manager.get_resources_by_learning_node_id(learning_node_id)
+        
+        return {
+            "learning_node_id": learning_node_id,
+            "resources": resources,
+            "total_resources": len(resources)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting learning node resources: {str(e)}")
 
 @app.post("/api/skill/{skill_id}/chat")
 async def chat_about_skill(skill_id: str, message: dict):

@@ -1,0 +1,45 @@
+<!-- Learning Path Information Partial for HTMX -->
+<div class="learning-path-info" id="path-info">
+    <div class="path-stats">
+        <div class="stat-item">
+            <span class="stat-number">{{ total_skills }}</span>
+            <span class="stat-label">Skills</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ estimated_time }}</span>
+            <span class="stat-label">Estimated Time</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ difficulty }}</span>
+            <span class="stat-label">Difficulty</span>
+        </div>
+    </div>
+    
+    <div class="path-description">
+        {{ description }}
+    </div>
+    
+    <div class="path-skills">
+        {% for skill in skills %}
+        <div class="skill-badge">{{ skill.name }}</div>
+        {% if not loop.last %}
+        <div class="skill-arrow">→</div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    
+    <div class="learning-actions">
+        <button class="action-button" id="start-learning-action">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L13.09 8.26L12 2Z"/>
+            </svg>
+            Begin Learning
+        </button>
+        <button class="action-button secondary" id="chat-about-path">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z"/>
+            </svg>
+            Ask Questions
+        </button>
+    </div>
+</div>

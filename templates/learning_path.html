@@ -1,0 +1,1394 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Path: {{ start_skill }} → {{ end_skill }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/skill-panel.css">
+<style>
+    .learning-path-container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .learning-path-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .learning-path-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .learning-path-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .learning-path-nav {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-button {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+    }
+
+    .learning-path-content {
+        flex: 1;
+        position: relative;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .graph-container {
+        width: 100%;
+        max-width: 1000px;
+        height: 500px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid #dee2e6;
+        position: relative;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
+    #cy {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+
+    .learning-path-info {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        border: 1px solid #dee2e6;
+        max-width: 800px;
+        width: 100%;
+    }
+
+    .path-stats {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .stat-item {
+        flex: 1;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .path-description {
+        text-align: center;
+        color: #495057;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .path-skills {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .skill-badge {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .skill-arrow {
+        color: #667eea;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    #loading {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        margin-top: -0.5em;
+        font-size: 2em;
+        color: #6c757d;
+        z-index: 1000;
+    }
+
+    #loading.loaded { display: none; }
+
+    .learning-actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .action-button {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .action-button.secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    .action-button.secondary:hover {
+        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+    }
+
+    /* Expanded Learning Nodes Styles */
+    .expanded-learning-nodes {
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid #dee2e6;
+        overflow: hidden;
+        display: none;
+        z-index: 1000;
+        position: relative;
+    }
+
+    .expanded-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .expanded-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .close-expanded {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .close-expanded:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+    }
+
+     .learning-nodes-grid {
+         padding: 30px;
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+         gap: 20px;
+     }
+
+     .learning-nodes-graph-container {
+         height: 400px;
+         background: #f8f9fa;
+         border: 1px solid #dee2e6;
+         border-radius: 8px;
+         margin: 20px 30px;
+         position: relative;
+         overflow: hidden;
+     }
+
+     #learning-nodes-cy {
+         position: absolute;
+         left: 0;
+         top: 0;
+         right: 0;
+         bottom: 0;
+         background: #f8f9fa;
+     }
+
+     #learning-nodes-loading {
+         position: absolute;
+         left: 0;
+         top: 50%;
+         width: 100%;
+         text-align: center;
+         margin-top: -0.5em;
+         font-size: 1.5em;
+         color: #6c757d;
+         z-index: 1000;
+     }
+
+     #learning-nodes-loading.loaded { display: none; }
+
+     .learning-nodes-list-container {
+         padding: 30px;
+         display: flex;
+         flex-direction: column;
+         gap: 15px;
+         max-height: 500px;
+         overflow-y: auto;
+         z-index: 1000;
+         position: relative;
+     }
+
+     .learning-node-item {
+         display: flex;
+         align-items: center;
+         background: white;
+         border: 2px solid #e9ecef;
+         border-radius: 12px;
+         padding: 15px 20px;
+         transition: all 0.3s ease;
+         gap: 15px;
+     }
+
+     .learning-node-item:hover {
+         border-color: #667eea;
+         transform: translateY(-2px);
+         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+     }
+
+     .learning-node-item[data-depth="0"] {
+         border-left: 4px solid #28a745;
+     }
+
+     .learning-node-item[data-depth="1"] {
+         border-left: 4px solid #ffc107;
+     }
+
+     .learning-node-item[data-depth="2"] {
+         border-left: 4px solid #dc3545;
+     }
+
+     .node-step {
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-weight: bold;
+         font-size: 16px;
+         flex-shrink: 0;
+     }
+
+     .node-content {
+         flex: 1;
+         min-width: 0;
+     }
+
+     .node-name {
+         font-size: 1.1rem;
+         font-weight: 600;
+         color: #333;
+         margin-bottom: 5px;
+     }
+
+     .node-description {
+         color: #6c757d;
+         font-size: 14px;
+         line-height: 1.4;
+         margin-bottom: 8px;
+     }
+
+     .node-depth-badge {
+         background: #6c757d;
+         color: white;
+         padding: 4px 8px;
+         border-radius: 12px;
+         font-size: 12px;
+         font-weight: 500;
+         display: inline-block;
+     }
+
+     .node-actions {
+         display: flex;
+         gap: 8px;
+         flex-shrink: 0;
+     }
+
+     /* Resources Modal Styles */
+     .resources-modal {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: rgba(0, 0, 0, 0.5);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         z-index: 10000;
+         opacity: 0;
+         transform: scale(0.9);
+         transition: all 0.3s ease;
+     }
+
+     .resources-modal-content {
+         background: white;
+         border-radius: 15px;
+         max-width: 600px;
+         width: 90%;
+         max-height: 80vh;
+         overflow: hidden;
+         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+     }
+
+     .resources-modal-header {
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         padding: 20px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+     }
+
+     .resources-modal-header h3 {
+         margin: 0;
+         font-size: 1.3rem;
+         font-weight: 600;
+     }
+
+     .close-resources {
+         background: rgba(255, 255, 255, 0.2);
+         border: none;
+         color: white;
+         padding: 8px;
+         border-radius: 50%;
+         cursor: pointer;
+         transition: all 0.3s ease;
+     }
+
+     .close-resources:hover {
+         background: rgba(255, 255, 255, 0.3);
+         transform: scale(1.1);
+     }
+
+     .resources-list {
+         padding: 20px;
+         max-height: 60vh;
+         overflow-y: auto;
+     }
+
+     .resource-item {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         padding: 15px;
+         border: 1px solid #e9ecef;
+         border-radius: 8px;
+         margin-bottom: 10px;
+         transition: all 0.3s ease;
+     }
+
+     .resource-item:hover {
+         border-color: #667eea;
+         transform: translateY(-2px);
+         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+     }
+
+     .resource-info {
+         flex: 1;
+     }
+
+     .resource-title {
+         font-size: 1rem;
+         font-weight: 600;
+         color: #333;
+         margin-bottom: 5px;
+     }
+
+     .resource-type {
+         font-size: 0.9rem;
+         color: #6c757d;
+         background: #f8f9fa;
+         padding: 2px 8px;
+         border-radius: 12px;
+         display: inline-block;
+     }
+
+     .resource-actions {
+         margin-left: 15px;
+     }
+
+     .resource-link {
+         background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+         color: white;
+         text-decoration: none;
+         padding: 8px 16px;
+         border-radius: 20px;
+         font-size: 14px;
+         font-weight: 500;
+         display: inline-flex;
+         align-items: center;
+         gap: 5px;
+         transition: all 0.3s ease;
+     }
+
+     .resource-link:hover {
+         transform: translateY(-1px);
+         box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+         color: white;
+         text-decoration: none;
+     }
+
+    .learning-node-card {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .learning-node-card:hover {
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    }
+
+    .learning-node-card[data-depth="0"] {
+        border-left: 4px solid #28a745;
+    }
+
+    .learning-node-card[data-depth="1"] {
+        border-left: 4px solid #ffc107;
+    }
+
+    .learning-node-card[data-depth="2"] {
+        border-left: 4px solid #dc3545;
+    }
+
+    .node-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .node-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .node-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        flex: 1;
+    }
+
+    .node-depth {
+        background: #6c757d;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .node-description {
+        color: #6c757d;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .node-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+     .action-btn {
+         padding: 8px 16px;
+         border: none;
+         border-radius: 20px;
+         font-size: 14px;
+         font-weight: 500;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         flex: 1;
+         min-width: 120px;
+         display: inline-block;
+         text-align: center;
+         z-index: 1000;
+         position: relative;
+     }
+
+    .action-btn.primary {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+
+     .action-btn.primary:hover {
+         transform: translateY(-1px);
+         box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+         cursor: pointer;
+     }
+
+     .action-btn.primary:active {
+         transform: translateY(0);
+         cursor: pointer;
+     }
+
+    .action-btn.secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .action-btn.secondary:hover {
+        background: #5a6268;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .learning-path-title {
+            font-size: 1.5rem;
+        }
+        
+        .learning-path-subtitle {
+            font-size: 1rem;
+        }
+        
+        .learning-path-content {
+            padding: 10px;
+        }
+        
+        .learning-path-info {
+            padding: 20px;
+        }
+        
+        .path-stats {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .learning-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .action-button {
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+        }
+        
+        .learning-nodes-grid {
+            grid-template-columns: 1fr;
+            padding: 20px;
+        }
+        
+        .expanded-header {
+            padding: 15px;
+        }
+        
+        .expanded-header h3 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="learning-path-container">
+    <!-- Header Section -->
+    <div class="learning-path-header">
+        <h1 class="learning-path-title">🎯 Your Learning Journey</h1>
+        <p class="learning-path-subtitle" id="path-subtitle">Loading your personalized learning path...</p>
+        
+        <div class="learning-path-nav">
+            <a href="/" class="nav-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                Back to Full Map
+            </a>
+            <!-- <a href="/" class="nav-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                Full Map View
+            </a> -->
+            <!-- <button class="nav-button" onclick="window.location.reload()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
+                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+                Refresh Path
+            </button> -->
+        </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="learning-path-content">
+        <!-- Path Information -->
+        <div class="learning-path-info" id="path-info">
+            <div class="path-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-skills">-</span>
+                    <span class="stat-label">Skills</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="estimated-time">-</span>
+                    <span class="stat-label">Estimated Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="difficulty">-</span>
+                    <span class="stat-label">Difficulty</span>
+                </div>
+            </div>
+            
+            <div class="path-description" id="path-description">
+                Your personalized learning path will appear here...
+            </div>
+            
+            <div class="path-skills" id="path-skills">
+                <!-- Skills will be populated here -->
+            </div>
+            
+            <div class="learning-actions">
+                <button class="action-button" id="begin-learning-action">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L13.09 8.26L12 2Z"/>
+                    </svg>
+                    Begin Learning
+                </button>
+                <button class="action-button secondary" id="ask-questions-action">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z"/>
+                    </svg>
+                    Ask Questions
+                </button>
+            </div>
+        </div>
+
+        <!-- Graph Visualization -->
+        <div class="graph-container">
+            <div id="cy"></div>
+            <div id="loading">
+                <div class="spinner-border text-primary" role="status"></div>
+                <div style="margin-top: 10px;">Loading your learning path...</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    let cy;
+    
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const startSkill = urlParams.get('start') || 'data analyst';
+    const endSkill = urlParams.get('end') || 'ai agents';
+    
+    // Update page title and subtitle
+    document.getElementById('path-subtitle').textContent = `${startSkill} → ${endSkill}`;
+    document.title = `Learning Path: ${startSkill} → ${endSkill}`;
+    
+    async function init() {
+        try {
+            // Fetch path data
+            const pathResponse = await fetch(`/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`);
+            const pathData = await pathResponse.json();
+            
+            if (!pathData.path || pathData.path.length === 0) {
+                throw new Error('No learning path found between these skills');
+            }
+            
+            // Update path information
+            updatePathInfo(pathData);
+            
+             // Create focused graph with only the path skills
+             await createFocusedGraph(pathData);
+             
+             document.getElementById('loading').classList.add('loaded');
+             
+             // Fit to content with padding
+             setTimeout(() => {
+                 cy.fit(null, 50);
+             }, 100);
+            
+        } catch (e) {
+            console.error('Error loading learning path:', e);
+            document.getElementById('loading').innerHTML = `
+                <div style="color: #dc3545;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" style="margin-bottom: 10px;">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <div>Error: ${e.message}</div>
+                    <button onclick="window.location.reload()" style="margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+    }
+    
+    function updatePathInfo(pathData) {
+        const skills = pathData.path || [];
+        const totalSkills = skills.length;
+        
+        // Update stats
+        document.getElementById('total-skills').textContent = totalSkills;
+        document.getElementById('estimated-time').textContent = `${Math.ceil(totalSkills * 2)} weeks`;
+        document.getElementById('difficulty').textContent = totalSkills <= 3 ? 'Beginner' : totalSkills <= 6 ? 'Intermediate' : 'Advanced';
+        
+        // Update description
+        const skillNames = skills.map(skill => skill.name || skill.id);
+        document.getElementById('path-description').textContent = 
+            `This learning path will take you through ${totalSkills} essential skills, from ${skillNames[0]} to ${skillNames[skillNames.length - 1]}. Each skill builds upon the previous one, creating a solid foundation for your learning journey.`;
+        
+        // Update skills display
+        const skillsContainer = document.getElementById('path-skills');
+        skillsContainer.innerHTML = '';
+        
+        skills.forEach((skill, index) => {
+            const skillBadge = document.createElement('div');
+            skillBadge.className = 'skill-badge';
+            skillBadge.textContent = skill.name || skill.id;
+            skillsContainer.appendChild(skillBadge);
+            
+            if (index < skills.length - 1) {
+                const arrow = document.createElement('div');
+                arrow.className = 'skill-arrow';
+                arrow.innerHTML = '→';
+                skillsContainer.appendChild(arrow);
+            }
+        });
+    }
+    
+    async function createFocusedGraph(pathData) {
+        const skills = pathData.path || [];
+        
+        // Create nodes and edges for only the path skills
+        const nodes = skills.map(skill => ({
+            data: {
+                id: skill.id,
+                name: skill.name || skill.id,
+                description: skill.description || ''
+            },
+            classes: 'path-skill'
+        }));
+        
+        const edges = [];
+        for (let i = 0; i < skills.length - 1; i++) {
+            edges.push({
+                data: {
+                    id: `${skills[i].id}-${skills[i + 1].id}`,
+                    source: skills[i].id,
+                    target: skills[i + 1].id
+                },
+                classes: 'path-edge'
+            });
+        }
+        
+        // Get style from existing stylesheet (same as skills_graph_flat.html)
+        const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+        
+         cy = cytoscape({
+             container: document.getElementById('cy'),
+             elements: { nodes, edges },
+             style: styleText,
+             layout: { name: 'cose' },
+         });
+
+         bind();
+     }
+     
+     function bind() {
+         // Add click handlers for skill details - show expanded learning nodes
+        cy.on('tap', 'node', async function(evt) {
+            const node = evt.target;
+            const skillId = node.data('id');
+            const skillName = node.data('name');
+            
+            console.log(`🎯 Clicked on skill: ${skillName}`);
+            
+             try {
+                 // Fetch learning graph for this skill
+                 const response = await fetch(`/api/skill/${encodeURIComponent(skillName)}/learning-graph`);
+                 const data = await response.json();
+                 
+                 if (data.learning_nodes && data.learning_nodes.length > 0) {
+                     // Show expanded learning nodes as connected graph
+                     showExpandedLearningNodes(skillName, data.learning_nodes, data.edges);
+                 } else {
+                    // Fallback to chat widget
+                    if (window.chatWidget && window.chatWidget.isOpen) {
+                        window.chatWidget.setInputValue(`Tell me more about ${skillName}`);
+                    } else {
+                        window.chatWidget.openChat();
+                        setTimeout(() => {
+                            window.chatWidget.setInputValue(`Tell me more about ${skillName}`);
+                        }, 300);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching learning nodes:', error);
+                // Fallback to chat widget
+                if (window.chatWidget && window.chatWidget.isOpen) {
+                    window.chatWidget.setInputValue(`Tell me more about ${skillName}`);
+                } else {
+                    window.chatWidget.openChat();
+                    setTimeout(() => {
+                        window.chatWidget.setInputValue(`Tell me more about ${skillName}`);
+                    }, 300);
+                }
+            }
+        });
+
+         // Add hover effects for nodes (same as skills_graph_flat.html)
+         cy.on('mouseover', 'node', function(evt) {
+             const node = evt.target;
+             node.style('background-color', '#e3f2fd');
+             node.style('border-color', '#2196f3');
+         });
+
+         cy.on('mouseout', 'node', function(evt) {
+             const node = evt.target;
+             node.style('background-color', '');
+             node.style('border-color', '');
+         });
+     }
+    
+     // Function to show expanded learning nodes as a connected graph
+     async function showExpandedLearningNodes(skillName, learningNodes, edges) {
+         console.log(`🎯 Showing expanded learning nodes for: ${skillName}`, learningNodes, edges);
+         
+         // Create or update the expanded view
+         let expandedView = document.getElementById('expanded-learning-nodes');
+         if (!expandedView) {
+             expandedView = document.createElement('div');
+             expandedView.id = 'expanded-learning-nodes';
+             expandedView.className = 'expanded-learning-nodes';
+             document.querySelector('.learning-path-content').appendChild(expandedView);
+         }
+         
+         // Create HTML content with horizontal list
+         const listHTML = showLearningNodesList(learningNodes);
+         expandedView.innerHTML = `
+             <div class="expanded-header">
+                 <h3>📚 Learning Nodes for ${skillName}</h3>
+                 <button class="close-expanded" onclick="closeExpandedLearningNodes()">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                         <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"/>
+                     </svg>
+                 </button>
+             </div>
+             <div class="learning-nodes-list-container">
+                 ${listHTML}
+             </div>
+         `;
+         
+         // Show the expanded view with animation
+         expandedView.style.display = 'block';
+         expandedView.style.opacity = '0';
+         expandedView.style.transform = 'translateY(20px)';
+         
+         setTimeout(() => {
+             expandedView.style.transition = 'all 0.3s ease';
+             expandedView.style.opacity = '1';
+             expandedView.style.transform = 'translateY(0)';
+         }, 100);
+         
+         // Scroll to the expanded view
+         expandedView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+     }
+     
+     // Function to initialize the learning nodes graph (SAVED FOR FUTURE USE)
+     async function initializeLearningNodesGraph(learningNodes, edges) {
+         try {
+             // Create nodes for learning nodes
+             const nodes = learningNodes.map((node, index) => ({
+                 data: {
+                     id: node.id,
+                     name: node.name,
+                     description: node.description || '',
+                     depth: node.depth,
+                     step: index + 1
+                 },
+                 classes: `learning-node depth-${node.depth}`
+             }));
+             
+             // Create edges from the API data
+             const graphEdges = edges.map(edge => ({
+                 data: {
+                     id: `${edge.source}-${edge.target}`,
+                     source: edge.source,
+                     target: edge.target
+                 },
+                 classes: 'learning-edge'
+             }));
+             
+             // Get base styles
+             const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+             
+             // Add custom styles for learning nodes
+             const customStyles = `
+                 .learning-node {
+                     background-color: #17a2b8;
+                     border-color: #138496;
+                     border-width: 2px;
+                     label: data(name);
+                     font-size: 12px;
+                     text-valign: center;
+                     text-halign: center;
+                     width: 120px;
+                     height: 60px;
+                     shape: roundrectangle;
+                 }
+                 .learning-node.depth-0 {
+                     background-color: #28a745;
+                     border-color: #1e7e34;
+                 }
+                 .learning-node.depth-1 {
+                     background-color: #ffc107;
+                     border-color: #e0a800;
+                     color: #212529;
+                 }
+                 .learning-node.depth-2 {
+                     background-color: #dc3545;
+                     border-color: #c82333;
+                 }
+                 .learning-edge {
+                     line-color: #6c757d;
+                     line-width: 2px;
+                     target-arrow-color: #6c757d;
+                     target-arrow-shape: triangle;
+                 }
+             `;
+             
+             // Initialize Cytoscape for learning nodes
+             const learningCy = cytoscape({
+                 container: document.getElementById('learning-nodes-cy'),
+                 elements: { nodes, edges: graphEdges },
+                 style: styleText + customStyles,
+                 layout: { name: 'cose' },
+             });
+             
+             // Add event handlers
+             learningCy.on('tap', 'node', function(evt) {
+                 const node = evt.target;
+                 const nodeId = node.data('id');
+                 const nodeName = node.data('name');
+                 
+                 console.log(`🎯 Clicked learning node: ${nodeName}`);
+                 
+                 if (window.chatWidget) {
+                     const message = `I want to learn more about "${nodeName}". Can you provide detailed guidance on this learning node?`;
+                     
+                     if (!window.chatWidget.isOpen) {
+                         window.chatWidget.openChat();
+                         setTimeout(() => {
+                             window.chatWidget.setInputValue(message);
+                         }, 300);
+                     } else {
+                         window.chatWidget.setInputValue(message);
+                     }
+                 }
+             });
+             
+             // Add hover effects
+             learningCy.on('mouseover', 'node', function(evt) {
+                 const node = evt.target;
+                 node.style('background-color', '#e3f2fd');
+                 node.style('border-color', '#2196f3');
+             });
+
+             learningCy.on('mouseout', 'node', function(evt) {
+                 const node = evt.target;
+                 // Reset to original color based on depth
+                 const depth = node.data('depth');
+                 const colors = {
+                     0: '#28a745',
+                     1: '#ffc107', 
+                     2: '#dc3545'
+                 };
+                 const borderColors = {
+                     0: '#1e7e34',
+                     1: '#e0a800',
+                     2: '#c82333'
+                 };
+                 node.style('background-color', colors[depth] || '#17a2b8');
+                 node.style('border-color', borderColors[depth] || '#138496');
+             });
+             
+             // Hide loading indicator
+             document.getElementById('learning-nodes-loading').classList.add('loaded');
+             
+             // Fit to content
+             setTimeout(() => {
+                 learningCy.fit(null, 50);
+             }, 100);
+             
+         } catch (error) {
+             console.error('Error initializing learning nodes graph:', error);
+             document.getElementById('learning-nodes-loading').innerHTML = `
+                 <div style="color: #dc3545;">
+                     <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" style="margin-bottom: 10px;">
+                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                     </svg>
+                     <div>Error loading learning nodes graph</div>
+                 </div>
+             `;
+         }
+     }
+
+     // Function to show learning nodes as horizontal list
+     function showLearningNodesList(learningNodes) {
+         console.log(`🎯 Showing learning nodes list:`, learningNodes);
+         
+         // Sort learning nodes by depth and name for better organization
+         const sortedNodes = learningNodes.sort((a, b) => {
+             if (a.depth !== b.depth) return a.depth - b.depth;
+             return a.name.localeCompare(b.name);
+         });
+         
+         // Create horizontal list HTML
+         const listHTML = sortedNodes.map((node, index) => `
+             <div class="learning-node-item" data-depth="${node.depth}" data-node-id="${node.id}">
+                 <div class="node-step">${index + 1}</div>
+                 <div class="node-content">
+                     <div class="node-name">${node.name}</div>
+                     ${node.description ? `<div class="node-description">${node.description}</div>` : ''}
+                     <div class="node-depth-badge">Level ${node.depth}</div>
+                 </div>
+                 <div class="node-actions">
+                     <button class="action-btn primary" onclick="showResources('${node.id}', '${node.name}')">
+                         Resources
+                     </button>
+                 </div>
+             </div>
+         `).join('');
+         
+         return listHTML;
+     }
+     
+     // Function to close expanded learning nodes
+    function closeExpandedLearningNodes() {
+        const expandedView = document.getElementById('expanded-learning-nodes');
+        if (expandedView) {
+            expandedView.style.transition = 'all 0.3s ease';
+            expandedView.style.opacity = '0';
+            expandedView.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                expandedView.style.display = 'none';
+            }, 300);
+        }
+    }
+    
+     // Function to start learning a specific skill
+     function startLearningSkill(skillName) {
+         console.log(`🚀 Starting learning for skill: ${skillName}`);
+         
+         if (window.chatWidget) {
+             const message = `🚀 I want to start learning "${skillName}". Can you guide me through this skill and its learning nodes?`;
+             
+             if (!window.chatWidget.isOpen) {
+                 window.chatWidget.openChat();
+                 setTimeout(() => {
+                     window.chatWidget.setInputValue(message);
+                 }, 300);
+             } else {
+                 window.chatWidget.setInputValue(message);
+             }
+         }
+     }
+     
+     // Function to chat about a specific skill
+     function chatAboutSkill(skillName) {
+         console.log(`💬 Chatting about skill: ${skillName}`);
+         
+         if (window.chatWidget) {
+             const message = `I have questions about "${skillName}" and its learning nodes. Can you help me understand this skill better?`;
+             
+             if (!window.chatWidget.isOpen) {
+                 window.chatWidget.openChat();
+                 setTimeout(() => {
+                     window.chatWidget.setInputValue(message);
+                 }, 300);
+             } else {
+                 window.chatWidget.setInputValue(message);
+             }
+         }
+     }
+
+     // Function to show resources for a specific learning node
+     async function showResources(nodeId, nodeName) {
+         console.log(`📚 Showing resources for node: ${nodeName}`);
+         
+         try {
+             const response = await fetch(`/api/learning-node/${encodeURIComponent(nodeId)}/resources`);
+             const data = await response.json();
+             
+             if (data.resources && data.resources.length > 0) {
+                 showResourcesModal(nodeName, data.resources);
+             } else {
+                 if (window.chatWidget) {
+                     const message = `I'm looking for resources about "${nodeName}". Can you help me find learning materials for this topic?`;
+                     
+                     if (!window.chatWidget.isOpen) {
+                         window.chatWidget.openChat();
+                         setTimeout(() => {
+                             window.chatWidget.setInputValue(message);
+                         }, 300);
+                     } else {
+                         window.chatWidget.setInputValue(message);
+                     }
+                 }
+             }
+         } catch (error) {
+             console.error('Error fetching resources:', error);
+             if (window.chatWidget) {
+                 const message = `I'm looking for resources about "${nodeName}". Can you help me find learning materials for this topic?`;
+                 
+                 if (!window.chatWidget.isOpen) {
+                     window.chatWidget.openChat();
+                     setTimeout(() => {
+                         window.chatWidget.setInputValue(message);
+                     }, 300);
+                 } else {
+                     window.chatWidget.setInputValue(message);
+                 }
+             }
+         }
+     }
+
+     // Function to show resources modal
+     function showResourcesModal(nodeName, resources) {
+         const modal = document.createElement('div');
+         modal.className = 'resources-modal';
+         modal.innerHTML = `
+             <div class="resources-modal-content">
+                 <div class="resources-modal-header">
+                     <h3>📚 Resources for ${nodeName}</h3>
+                     <button class="close-resources" onclick="closeResourcesModal()">
+                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                             <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"/>
+                         </svg>
+                     </button>
+                 </div>
+                 <div class="resources-list">
+                     ${resources.map(resource => `
+                         <div class="resource-item">
+                             <div class="resource-info">
+                                 <div class="resource-title">${resource.title}</div>
+                                 <div class="resource-type">${resource.type || 'Resource'}</div>
+                             </div>
+                             <div class="resource-actions">
+                                 <a href="${resource.url}" target="_blank" class="resource-link">
+                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                         <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
+                                     </svg>
+                                     Open
+                                 </a>
+                             </div>
+                         </div>
+                     `).join('')}
+                 </div>
+             </div>
+         `;
+         
+         document.body.appendChild(modal);
+         
+         // Show modal with animation
+         setTimeout(() => {
+             modal.style.opacity = '1';
+             modal.style.transform = 'scale(1)';
+         }, 100);
+     }
+
+     // Function to close resources modal
+     function closeResourcesModal() {
+         const modal = document.querySelector('.resources-modal');
+         if (modal) {
+             modal.style.opacity = '0';
+             modal.style.transform = 'scale(0.9)';
+             setTimeout(() => {
+                 modal.remove();
+             }, 300);
+         }
+     }
+    
+     // Make functions globally available
+     window.closeExpandedLearningNodes = closeExpandedLearningNodes;
+     window.startLearningSkill = startLearningSkill;
+     window.chatAboutSkill = chatAboutSkill;
+     window.showResources = showResources;
+     window.closeResourcesModal = closeResourcesModal;
+    
+    // Bind action buttons
+    document.getElementById('begin-learning-action').addEventListener('click', async function() {
+        // Automatically open learning nodes of first skill and scroll there
+        try {
+            const startSkill = urlParams.get('start') || 'data analyst';
+            
+            // Fetch learning graph for the first skill
+            const response = await fetch(`/api/skill/${encodeURIComponent(startSkill)}/learning-graph`);
+            const data = await response.json();
+            
+            if (data.learning_nodes && data.learning_nodes.length > 0) {
+                // Show expanded learning nodes for the first skill
+                showExpandedLearningNodes(startSkill, data.learning_nodes, data.edges);
+                
+                // Scroll to the expanded view
+                setTimeout(() => {
+                    const expandedView = document.getElementById('expanded-learning-nodes');
+                    if (expandedView) {
+                        expandedView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 500);
+            } else {
+                // Fallback to chat
+                if (window.chatWidget) {
+                    const message = `🚀 Let's begin your learning journey with ${startSkill}! I'm here to guide you through each step.`;
+                    
+                    if (!window.chatWidget.isOpen) {
+                        window.chatWidget.openChat();
+                        setTimeout(() => {
+                            window.chatWidget.addMessage(message, 'ai');
+                        }, 300);
+                    } else {
+                        window.chatWidget.addMessage(message, 'ai');
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error opening first skill learning nodes:', error);
+            // Fallback to chat
+            if (window.chatWidget) {
+                const startSkill = urlParams.get('start') || 'data analyst';
+                const message = `🚀 Let's begin your learning journey with ${startSkill}! I'm here to guide you through each step.`;
+                
+                if (!window.chatWidget.isOpen) {
+                    window.chatWidget.openChat();
+                    setTimeout(() => {
+                        window.chatWidget.addMessage(message, 'ai');
+                    }, 300);
+                } else {
+                    window.chatWidget.addMessage(message, 'ai');
+                }
+            }
+        }
+    });
+
+    document.getElementById('ask-questions-action').addEventListener('click', function() {
+        if (window.chatWidget) {
+            if (!window.chatWidget.isOpen) {
+                window.chatWidget.openChat();
+            }
+            
+            const startSkill = urlParams.get('start') || 'data analyst';
+            const endSkill = urlParams.get('end') || 'ai agents';
+            
+            setTimeout(() => {
+                window.chatWidget.setInputValue(`I have questions about the learning path from ${startSkill} to ${endSkill}`);
+            }, 300);
+        }
+    });
+    
+    init();
+});
+</script>
+{% endblock %}

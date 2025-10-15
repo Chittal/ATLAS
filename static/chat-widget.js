@@ -9,6 +9,7 @@ class ChatWidget {
         this.messageHistory = [];
         this.isTyping = false;
         this.currentSkill = null; // Track current skill context
+        this.currentPath = null; // Track current highlighted path
         
         this.init();
     }
@@ -17,6 +18,12 @@ class ChatWidget {
         this.bindEvents();
         this.loadMessageHistory();
         this.setupAutoResize();
+        
+        // Set initial z-index class
+        const chatWidget = document.querySelector('.chat-widget');
+        if (chatWidget) {
+            chatWidget.classList.add('closed');
+        }
     }
 
     bindEvents() {
@@ -68,6 +75,9 @@ class ChatWidget {
 
         // Handle skill panel integration
         this.setupSkillPanelIntegration();
+        
+        // Handle start learning button
+        this.setupStartLearningButton();
     }
 
     toggleChat() {
@@ -81,6 +91,7 @@ class ChatWidget {
     openChat() {
         const chatWindow = document.getElementById('chat-window');
         const toggleBtn = document.getElementById('chat-toggle');
+        const chatWidget = document.querySelector('.chat-widget');
         
         if (chatWindow) {
             chatWindow.classList.remove('hidden');
@@ -99,11 +110,18 @@ class ChatWidget {
         if (toggleBtn) {
             toggleBtn.style.transform = 'rotate(45deg)';
         }
+
+        // Update z-index classes
+        if (chatWidget) {
+            chatWidget.classList.remove('closed');
+            chatWidget.classList.add('open');
+        }
     }
 
     closeChat() {
         const chatWindow = document.getElementById('chat-window');
         const toggleBtn = document.getElementById('chat-toggle');
+        const chatWidget = document.querySelector('.chat-widget');
         
         if (chatWindow) {
             chatWindow.classList.add('hidden');
@@ -112,6 +130,12 @@ class ChatWidget {
 
         if (toggleBtn) {
             toggleBtn.style.transform = 'rotate(0deg)';
+        }
+
+        // Update z-index classes
+        if (chatWidget) {
+            chatWidget.classList.remove('open');
+            chatWidget.classList.add('closed');
         }
     }
 
@@ -286,6 +310,11 @@ class ChatWidget {
                             this.highlightPath(data.path_data.path);
                         }, 500);
                     }
+                    
+                    // Show the Start Learning button after highlighting the path
+                    setTimeout(() => {
+                        this.showStartLearningButton(data.path_data);
+                    }, 1000); // Wait a bit for highlighting to complete
                 } else {
                     console.log('❌ No path highlighting:', {
                         reason: !hasPathData ? 'missing or empty path_data' : 'not route planning category',
@@ -293,6 +322,9 @@ class ChatWidget {
                         isRoutePlanning,
                         category: data.agent_metadata?.category
                     });
+                    
+                    // Hide the Start Learning button if no path is available
+                    this.hideStartLearningButton();
                 }
                 
                 return data.ai_response || this.getDefaultResponse(message);
@@ -662,6 +694,77 @@ class ChatWidget {
         });
     }
 
+    setupStartLearningButton() {
+        const startLearningBtn = document.getElementById('start-learning-btn');
+        if (startLearningBtn) {
+            startLearningBtn.addEventListener('click', () => {
+                this.handleStartLearning();
+            });
+        }
+    }
+
+    showStartLearningButton(pathData) {
+        console.log('🎯 Showing Start Learning button for path:', pathData);
+        const startLearningSection = document.getElementById('start-learning-section');
+        if (startLearningSection) {
+            this.currentPath = pathData;
+            startLearningSection.classList.remove('hidden');
+            
+            // Update button text with path info if available
+            const startSkill = pathData.path && pathData.path[0] ? pathData.path[0].name : 'First Skill';
+            const endSkill = pathData.path && pathData.path[pathData.path.length - 1] ? pathData.path[pathData.path.length - 1].name : 'Target Skill';
+            
+            const buttonText = startLearningSection.querySelector('span');
+            if (buttonText) {
+                buttonText.textContent = `Start Learning: ${startSkill} → ${endSkill}`;
+            }
+        }
+    }
+
+    hideStartLearningButton() {
+        console.log('🎯 Hiding Start Learning button');
+        const startLearningSection = document.getElementById('start-learning-section');
+        if (startLearningSection) {
+            this.currentPath = null;
+            startLearningSection.classList.add('hidden');
+            
+            // Reset button text
+            const buttonText = startLearningSection.querySelector('span');
+            if (buttonText) {
+                buttonText.textContent = 'Start Learning';
+            }
+        }
+    }
+
+    handleStartLearning() {
+        console.log('🎯 Start Learning button clicked!');
+        
+        if (!this.currentPath) {
+            console.log('❌ No current path available');
+            return;
+        }
+
+        // Extract start and end skills from the path
+        const startSkill = this.currentPath.path[0]?.name || this.currentPath.path[0]?.id || 'data analyst';
+        const endSkill = this.currentPath.path[this.currentPath.path.length - 1]?.name || 
+                        this.currentPath.path[this.currentPath.path.length - 1]?.id || 'ai agents';
+
+        // Add a brief message to the chat
+        const pathNames = this.currentPath.path.map(skill => skill.name || skill.id);
+        const pathDescription = pathNames.join(' → ');
+        
+        const learningMessage = `🚀 **Opening Your Learning Path!**\n\nYour path: ${pathDescription}\n\nTaking you to a focused learning environment...`;
+        
+        this.addMessage(learningMessage, 'ai');
+        
+        // Directly navigate to the learning path page after a short delay
+        setTimeout(() => {
+            window.open(`/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`, '_blank');
+        }, 1000); // 1 second delay to show the message
+        
+        console.log('✅ Learning journey started for path:', this.currentPath);
+    }
+
     saveMessageHistory() {
         try {
             localStorage.setItem('chatWidgetHistory', JSON.stringify(this.messageHistory.slice(-50))); // Keep last 50 messages
@@ -688,6 +791,9 @@ class ChatWidget {
 
     clearHistory() {
         this.messageHistory = [];
+        this.currentPath = null;
+        this.hideStartLearningButton();
+        
         const messagesContainer = document.getElementById('chat-messages');
         if (messagesContainer) {
             messagesContainer.innerHTML = `
