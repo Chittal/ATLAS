@@ -1,0 +1,40 @@
+{% if user %}
+<div class="user-nav" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: white; padding: 12px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 15px;">
+    <div class="user-info">
+        <div style="font-weight: 600; color: #333; font-size: 14px;">Welcome, {{ user.name }}</div>
+        <div style="color: #6b7280; font-size: 12px;">{{ user.email }}</div>
+    </div>
+    <button onclick="logout()" class="logout-btn" style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease;">
+        Logout
+    </button>
+</div>
+
+<script>
+async function logout() {
+    try {
+        const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (response.ok) {
+            // Clear auth cookie
+            document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            // Redirect to login
+            window.location.href = '/login';
+        } else {
+            console.error('Logout failed');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+}
+</script>
+{% else %}
+<div class="auth-nav" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: white; padding: 12px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; gap: 12px;">
+    <a href="/login" style="background: #667eea; color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">Login</a>
+    <a href="/signup" style="background: #764ba2; color: white; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">Sign Up</a>
+</div>
+{% endif %}

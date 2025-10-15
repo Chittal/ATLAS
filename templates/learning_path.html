@@ -302,6 +302,127 @@
 
      #learning-nodes-loading.loaded { display: none; }
 
+     /* Filter Controls Styles */
+     .learning-nodes-filters {
+         padding: 20px 30px;
+         background: #f8f9fa;
+         border-bottom: 1px solid #dee2e6;
+         display: flex;
+         flex-wrap: wrap;
+         gap: 15px;
+         align-items: center;
+         justify-content: space-between;
+     }
+
+     .filter-group {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+     }
+
+     .filter-label {
+         font-weight: 600;
+         color: #495057;
+         font-size: 14px;
+         white-space: nowrap;
+     }
+
+     .filter-select, .filter-input {
+         padding: 8px 12px;
+         border: 2px solid #e9ecef;
+         border-radius: 8px;
+         font-size: 14px;
+         background: white;
+         transition: all 0.3s ease;
+         min-width: 120px;
+     }
+
+     .filter-select:focus, .filter-input:focus {
+         outline: none;
+         border-color: #667eea;
+         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+     }
+
+     .filter-input {
+         min-width: 200px;
+     }
+
+     .filter-buttons {
+         display: flex;
+         gap: 8px;
+     }
+
+     .filter-btn {
+         padding: 8px 16px;
+         border: none;
+         border-radius: 20px;
+         font-size: 14px;
+         font-weight: 500;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         display: flex;
+         align-items: center;
+         gap: 5px;
+     }
+
+     .filter-btn.primary {
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+     }
+
+     .filter-btn.primary:hover {
+         transform: translateY(-1px);
+         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+     }
+
+     .filter-btn.secondary {
+         background: #6c757d;
+         color: white;
+     }
+
+     .filter-btn.secondary:hover {
+         background: #5a6268;
+         transform: translateY(-1px);
+         box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+     }
+
+     .filter-btn.danger {
+         background: #dc3545;
+         color: white;
+     }
+
+     .filter-btn.danger:hover {
+         background: #c82333;
+         transform: translateY(-1px);
+         box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+     }
+
+     .filter-results {
+         padding: 10px 30px;
+         background: #e9ecef;
+         border-bottom: 1px solid #dee2e6;
+         font-size: 14px;
+         color: #6c757d;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+     }
+
+     .filter-results.hidden {
+         display: none;
+     }
+
+     .no-results {
+         padding: 40px;
+         text-align: center;
+         color: #6c757d;
+         font-style: italic;
+     }
+
+     .no-results.hidden {
+         display: none;
+     }
+
      .learning-nodes-list-container {
          padding: 30px;
          display: flex;
@@ -322,6 +443,7 @@
          padding: 15px 20px;
          transition: all 0.3s ease;
          gap: 15px;
+         position: relative;
      }
 
      .learning-node-item:hover {
@@ -340,6 +462,55 @@
 
      .learning-node-item[data-depth="2"] {
          border-left: 4px solid #dc3545;
+     }
+
+     .learning-node-item.completed {
+         background: #f8f9fa;
+         border-color: #28a745;
+         opacity: 0.8;
+     }
+
+     .learning-node-item.completed .node-name {
+         text-decoration: line-through;
+         color: #6c757d;
+     }
+
+     .learning-node-item.completed .node-step {
+         background: #28a745;
+         color: white;
+     }
+
+     .completion-checkbox {
+         width: 20px;
+         height: 20px;
+         border: 2px solid #667eea;
+         border-radius: 4px;
+         background: white;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         flex-shrink: 0;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         position: relative;
+     }
+
+     .completion-checkbox:hover {
+         border-color: #28a745;
+         background: #f8f9fa;
+     }
+
+     .completion-checkbox.checked {
+         background: #28a745;
+         border-color: #28a745;
+         color: white;
+     }
+
+     .completion-checkbox.checked::after {
+         content: '✓';
+         font-size: 14px;
+         font-weight: bold;
+         color: white;
      }
 
      .node-step {
@@ -375,15 +546,6 @@
          margin-bottom: 8px;
      }
 
-     .node-depth-badge {
-         background: #6c757d;
-         color: white;
-         padding: 4px 8px;
-         border-radius: 12px;
-         font-size: 12px;
-         font-weight: 500;
-         display: inline-block;
-     }
 
      .node-actions {
          display: flex;
@@ -682,6 +844,39 @@
         .expanded-header h3 {
             font-size: 1.2rem;
         }
+        
+        .learning-nodes-filters {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+            padding: 15px 20px;
+        }
+        
+        .filter-group {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 5px;
+        }
+        
+        .filter-label {
+            text-align: left;
+        }
+        
+        .filter-select, .filter-input {
+            width: 100%;
+            min-width: unset;
+        }
+        
+        .filter-buttons {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            min-width: 100px;
+            justify-content: center;
+        }
     }
 </style>
 {% endblock %}
@@ -964,8 +1159,9 @@ document.addEventListener('DOMContentLoaded', async function() {
              document.querySelector('.learning-path-content').appendChild(expandedView);
          }
          
-         // Create HTML content with horizontal list
+         // Create HTML content with filters and horizontal list
          const listHTML = showLearningNodesList(learningNodes);
+         const filterHTML = createFilterControls(learningNodes);
          expandedView.innerHTML = `
              <div class="expanded-header">
                  <h3>📚 Learning Nodes for ${skillName}</h3>
@@ -975,7 +1171,16 @@ document.addEventListener('DOMContentLoaded', async function() {
                      </svg>
                  </button>
              </div>
-             <div class="learning-nodes-list-container">
+             ${filterHTML}
+             <div class="filter-results" id="filter-results">
+                 <span id="filter-results-text">Showing all learning nodes</span>
+                 <span id="filter-results-count"></span>
+             </div>
+             <div class="no-results hidden" id="no-results">
+                 <div>🔍 No learning nodes match your current filters</div>
+                 <div style="margin-top: 10px; font-size: 12px;">Try adjusting your search or filter criteria</div>
+             </div>
+             <div class="learning-nodes-list-container" id="learning-nodes-list">
                  ${listHTML}
              </div>
          `;
@@ -989,6 +1194,11 @@ document.addEventListener('DOMContentLoaded', async function() {
              expandedView.style.transition = 'all 0.3s ease';
              expandedView.style.opacity = '1';
              expandedView.style.transform = 'translateY(0)';
+             
+             // Restore completion states after the view is visible
+             setTimeout(() => {
+                 restoreCompletionStates();
+             }, 200);
          }, 100);
          
          // Scroll to the expanded view
@@ -1134,6 +1344,50 @@ document.addEventListener('DOMContentLoaded', async function() {
          }
      }
 
+     // Function to create filter controls HTML
+     function createFilterControls(learningNodes) {
+         
+         return `
+             <div class="learning-nodes-filters">
+                 <div class="filter-group">
+                     <label class="filter-label">Search:</label>
+                     <input type="text" class="filter-input" id="search-filter" placeholder="Search learning nodes..." onkeyup="applyFilters()">
+                 </div>
+                 
+                 <div class="filter-group">
+                     <label class="filter-label">Status:</label>
+                     <select class="filter-select" id="status-filter" onchange="applyFilters()">
+                         <option value="all">All</option>
+                         <option value="completed">Completed</option>
+                         <option value="pending">Pending</option>
+                     </select>
+                 </div>
+                 
+                 
+                 <div class="filter-buttons">
+                     <button class="filter-btn primary" onclick="applyFilters()">
+                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                             <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"/>
+                         </svg>
+                         Filter
+                     </button>
+                     <button class="filter-btn secondary" onclick="resetFilters()">
+                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                             <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
+                         </svg>
+                         Reset
+                     </button>
+                     <button class="filter-btn danger" onclick="clearAllCompletions()">
+                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                             <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                         </svg>
+                         Clear All
+                     </button>
+                 </div>
+             </div>
+         `;
+     }
+
      // Function to show learning nodes as horizontal list
      function showLearningNodesList(learningNodes) {
          console.log(`🎯 Showing learning nodes list:`, learningNodes);
@@ -1144,14 +1398,14 @@ document.addEventListener('DOMContentLoaded', async function() {
              return a.name.localeCompare(b.name);
          });
          
-         // Create horizontal list HTML
+         // Create horizontal list HTML with checkboxes
          const listHTML = sortedNodes.map((node, index) => `
-             <div class="learning-node-item" data-depth="${node.depth}" data-node-id="${node.id}">
+             <div class="learning-node-item" data-depth="${node.depth}" data-node-id="${node.id}" id="node-${node.id}" data-name="${node.name.toLowerCase()}" data-description="${(node.description || '').toLowerCase()}">
+                 <div class="completion-checkbox" onclick="toggleNodeCompletion('${node.id}')" id="checkbox-${node.id}"></div>
                  <div class="node-step">${index + 1}</div>
                  <div class="node-content">
                      <div class="node-name">${node.name}</div>
                      ${node.description ? `<div class="node-description">${node.description}</div>` : ''}
-                     <div class="node-depth-badge">Level ${node.depth}</div>
                  </div>
                  <div class="node-actions">
                      <button class="action-btn primary" onclick="showResources('${node.id}', '${node.name}')">
@@ -1299,6 +1553,198 @@ document.addEventListener('DOMContentLoaded', async function() {
          }, 100);
      }
 
+     // Function to toggle node completion
+     function toggleNodeCompletion(nodeId) {
+         const checkbox = document.getElementById(`checkbox-${nodeId}`);
+         const nodeItem = document.getElementById(`node-${nodeId}`);
+         
+         if (!checkbox || !nodeItem) return;
+         
+         const isCompleted = checkbox.classList.contains('checked');
+         
+         if (isCompleted) {
+             // Mark as incomplete
+             checkbox.classList.remove('checked');
+             nodeItem.classList.remove('completed');
+             saveNodeCompletion(nodeId, false);
+         } else {
+             // Mark as complete
+             checkbox.classList.add('checked');
+             nodeItem.classList.add('completed');
+             saveNodeCompletion(nodeId, true);
+         }
+         
+         // Update completion progress and apply filters
+         updateCompletionProgress();
+         applyFilters();
+     }
+
+     // Function to save node completion state to localStorage
+     function saveNodeCompletion(nodeId, isCompleted) {
+         const completedNodes = getCompletedNodes();
+         
+         if (isCompleted) {
+             if (!completedNodes.includes(nodeId)) {
+                 completedNodes.push(nodeId);
+             }
+         } else {
+             const index = completedNodes.indexOf(nodeId);
+             if (index > -1) {
+                 completedNodes.splice(index, 1);
+             }
+         }
+         
+         localStorage.setItem('completedLearningNodes', JSON.stringify(completedNodes));
+     }
+
+     // Function to get completed nodes from localStorage
+     function getCompletedNodes() {
+         const saved = localStorage.getItem('completedLearningNodes');
+         return saved ? JSON.parse(saved) : [];
+     }
+
+     // Function to restore completion states
+     function restoreCompletionStates() {
+         const completedNodes = getCompletedNodes();
+         
+         completedNodes.forEach(nodeId => {
+             const checkbox = document.getElementById(`checkbox-${nodeId}`);
+             const nodeItem = document.getElementById(`node-${nodeId}`);
+             
+             if (checkbox && nodeItem) {
+                 checkbox.classList.add('checked');
+                 nodeItem.classList.add('completed');
+             }
+         });
+         
+         updateCompletionProgress();
+         applyFilters();
+     }
+
+     // Function to update completion progress display
+     function updateCompletionProgress() {
+         // Progress tracking is now handled in the filter results bar only
+         // No more floating progress toast notification
+     }
+
+     // Filter functionality functions
+     function applyFilters() {
+         const searchTerm = document.getElementById('search-filter')?.value.toLowerCase() || '';
+         const statusFilter = document.getElementById('status-filter')?.value || 'all';
+         
+         const allNodes = document.querySelectorAll('.learning-node-item');
+         let visibleCount = 0;
+         let completedCount = 0;
+         
+         allNodes.forEach(node => {
+             const nodeName = node.dataset.name || '';
+             const nodeDescription = node.dataset.description || '';
+             const nodeDepth = node.dataset.depth;
+             const isCompleted = node.classList.contains('completed');
+             
+             let shouldShow = true;
+             
+             // Search filter
+             if (searchTerm && !nodeName.includes(searchTerm) && !nodeDescription.includes(searchTerm)) {
+                 shouldShow = false;
+             }
+             
+             // Status filter
+             if (statusFilter === 'completed' && !isCompleted) {
+                 shouldShow = false;
+             } else if (statusFilter === 'pending' && isCompleted) {
+                 shouldShow = false;
+             }
+             
+             if (shouldShow) {
+                 node.style.display = 'flex';
+                 visibleCount++;
+                 if (isCompleted) completedCount++;
+             } else {
+                 node.style.display = 'none';
+             }
+         });
+         
+         // Update filter results
+         updateFilterResults(visibleCount, completedCount, allNodes.length);
+         
+         // Show/hide no results message
+         const noResults = document.getElementById('no-results');
+         if (visibleCount === 0) {
+             noResults?.classList.remove('hidden');
+         } else {
+             noResults?.classList.add('hidden');
+         }
+     }
+
+     function updateFilterResults(visibleCount, completedCount, totalCount) {
+         const resultsText = document.getElementById('filter-results-text');
+         const resultsCount = document.getElementById('filter-results-count');
+         
+         if (resultsText && resultsCount) {
+             if (visibleCount === totalCount) {
+                 resultsText.textContent = 'Showing all learning nodes';
+             } else {
+                 resultsText.textContent = `Showing ${visibleCount} of ${totalCount} learning nodes`;
+             }
+             
+             resultsCount.textContent = `${completedCount} completed`;
+         }
+     }
+
+     function resetFilters() {
+         const searchFilter = document.getElementById('search-filter');
+         const statusFilter = document.getElementById('status-filter');
+         
+         if (searchFilter) searchFilter.value = '';
+         if (statusFilter) statusFilter.value = 'all';
+         
+         applyFilters();
+     }
+
+     function clearAllCompletions() {
+         if (confirm('Are you sure you want to clear all completion states? This action cannot be undone.')) {
+             const allNodes = document.querySelectorAll('.learning-node-item');
+             
+             allNodes.forEach(node => {
+                 const nodeId = node.dataset.nodeId;
+                 if (nodeId) {
+                     const checkbox = document.getElementById(`checkbox-${nodeId}`);
+                     if (checkbox && checkbox.classList.contains('checked')) {
+                         checkbox.classList.remove('checked');
+                         node.classList.remove('completed');
+                         saveNodeCompletion(nodeId, false);
+                     }
+                 }
+             });
+             
+             updateCompletionProgress();
+             applyFilters();
+             
+             // Show confirmation message
+             const message = document.createElement('div');
+             message.style.cssText = `
+                 position: fixed;
+                 top: 50%;
+                 left: 50%;
+                 transform: translate(-50%, -50%);
+                 background: #28a745;
+                 color: white;
+                 padding: 15px 25px;
+                 border-radius: 8px;
+                 box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                 z-index: 10000;
+                 font-weight: 600;
+             `;
+             message.textContent = 'All completion states cleared!';
+             document.body.appendChild(message);
+             
+             setTimeout(() => {
+                 message.remove();
+             }, 2000);
+         }
+     }
+
      // Function to close resources modal
      function closeResourcesModal() {
          const modal = document.querySelector('.resources-modal');
@@ -1317,6 +1763,10 @@ document.addEventListener('DOMContentLoaded', async function() {
      window.chatAboutSkill = chatAboutSkill;
      window.showResources = showResources;
      window.closeResourcesModal = closeResourcesModal;
+     window.toggleNodeCompletion = toggleNodeCompletion;
+     window.applyFilters = applyFilters;
+     window.resetFilters = resetFilters;
+     window.clearAllCompletions = clearAllCompletions;
     
     // Bind action buttons
     document.getElementById('begin-learning-action').addEventListener('click', async function() {

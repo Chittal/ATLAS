@@ -1,15 +1,42 @@
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Depends, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
 
 from llm.groq import call_groq_model
 from helper.kuzu_db_helper import KuzuSkillGraph
 from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
 
+import os
+from pocketbase import PocketBase
+
 from dotenv import load_dotenv
-load_dotenv()  # take environment variables from .env.
+load_dotenv()
+
+pb = PocketBase(os.getenv("POCKETBASE_URL"))
+pb.admins.auth_with_password(os.getenv("POCKETBASE_EMAIL"), os.getenv("POCKETBASE_PASSWORD"))
+
+# Get secret key from environment for password hashing
+SECRET_KEY = os.getenv("JWT_SECRET") or os.getenv("SECRET_KEY") or "your-secret-key-change-this-in-production"
+
+# Authentication models
+class UserSignup(BaseModel):
+    email: str
+    password: str
+    passwordConfirm: str
+    name: str
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+# Security
+security = HTTPBearer()
+
+# Note: Using PocketBase's built-in password hashing and authentication
 
 app = FastAPI(title="AI Learning Subway Map", description="Multi-user AI Learning Path Visualization")
 
@@ -59,19 +86,36 @@ async def roadmap_progression_page(request: Request):
 @app.get("/", response_class=HTMLResponse)
 async def skills_graph_flat_page(request: Request):
     """Flat skills graph (no levels) visualization page"""
+    user = get_current_user(request)
+    print(f"Main page access - User: {user}")  # Debug logging
+    
+    # Redirect to login if no authenticated user
+    if not user:
+        print("No user found, redirecting to login")  # Debug logging
+        return RedirectResponse(url="/login", status_code=302)
+    
+    print(f"User authenticated: {user.email}")  # Debug logging
     return templates.TemplateResponse("skills_graph_flat.html", {
         "request": request,
-        "title": "Roadmap Kuzu Graph Style"
+        "title": "Roadmap Kuzu Graph Style",
+        "user": user
     })
 
 @app.get("/learning-path", response_class=HTMLResponse)
 async def learning_path_page(request: Request, start: str = "data analyst", end: str = "ai agents"):
     """Focused learning path visualization page showing only the highlighted path"""
+    user = get_current_user(request)
+    
+    # Redirect to login if no authenticated user
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
     return templates.TemplateResponse("learning_path.html", {
         "request": request,
         "start_skill": start,
         "end_skill": end,
-        "title": f"Learning Path: {start} → {end}"
+        "title": f"Learning Path: {start} → {end}",
+        "user": user
     })
 
 def get_kuzu_manager():
@@ -513,6 +557,264 @@ async def general_chat(request: Request):
     return response_data
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
+
+# Authentication helper functions
+def get_current_user(request: Request):
+    """Get current user from session"""
+    # Try to get token from cookies first
+    token = request.cookies.get("auth_token")
+    
+    # Also check Authorization header as fallback
+    if not token:
+        auth_header = request.headers.get("Authorization")
+        if auth_header and auth_header.startswith("Bearer "):
+            token = auth_header[7:]  # Remove "Bearer " prefix
+    
+    print(f"Auth token from cookie/header: {token[:20] if token else 'None'}...")  # Debug logging
+    
+    if not token:
+        return None
+    
+    try:
+        # Use PocketBase's auth refresh to validate token
+        print(f"Attempting to validate token with PocketBase authRefresh...")  # Debug logging
+        
+        # Set the token in auth store first
+        pb.auth_store.save(token, {"id": "temp", "email": "temp"})
+        
+        # Try to refresh the auth (this validates the token)
+        auth_data = pb.collection('users').authRefresh()
+        
+        if auth_data and auth_data.record:
+            user = auth_data.record
+            print(f"User found via authRefresh: {user.email}")  # Debug logging
+            return user
+        else:
+            print("Auth refresh failed - no user returned")  # Debug logging
+            return None
+            
+    except Exception as e:
+        print(f"Auth refresh validation error: {e}")  # Debug logging
+        print(f"Error type: {type(e)}")  # Debug logging
+        
+        # Fallback: Try to decode JWT token manually
+        try:
+            import base64
+            import json
+            
+            # JWT tokens have 3 parts separated by dots
+            token_parts = token.split('.')
+            if len(token_parts) == 3:
+                # Decode the payload (second part)
+                payload = token_parts[1]
+                # Add padding if needed
+                payload += '=' * (4 - len(payload) % 4)
+                decoded = base64.b64decode(payload)
+                token_data = json.loads(decoded)
+                print(f"Token payload: {token_data}")
+                
+                # Try to get user by ID from token
+                if 'id' in token_data:
+                    user = pb.collection('users').get_one(token_data['id'])
+                    print(f"Found user by ID: {user.email}")
+                    return user
+        except Exception as decode_e:
+            print(f"Manual token decode failed: {decode_e}")
+        
+        return None
+
+# Authentication routes
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    """Login page"""
+    user = get_current_user(request)
+    if user:
+        return RedirectResponse(url="/", status_code=302)
+    
+    return templates.TemplateResponse("auth/login.html", {
+        "request": request,
+        "title": "Login"
+    })
+
+@app.get("/signup", response_class=HTMLResponse)
+async def signup_page(request: Request):
+    """Signup page"""
+    user = get_current_user(request)
+    if user:
+        return RedirectResponse(url="/", status_code=302)
+    
+    return templates.TemplateResponse("auth/signup.html", {
+        "request": request,
+        "title": "Sign Up"
+    })
+
+@app.post("/api/auth/signup")
+async def signup(user_data: UserSignup):
+    """User signup endpoint"""
+    try:
+        # Validate password confirmation
+        if user_data.password != user_data.passwordConfirm:
+            raise HTTPException(status_code=400, detail="Passwords do not match")
+        
+        # Create user in PocketBase (let PocketBase handle password hashing)
+        # For auth collections, we need to include passwordConfirm
+        user = pb.collection('users').create({
+            "email": user_data.email,
+            "password": user_data.password,
+            "passwordConfirm": user_data.passwordConfirm,
+            "name": user_data.name
+        })
+        
+        return {
+            "success": True,
+            "message": "User created successfully",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
+
+@app.post("/api/auth/login")
+async def login(user_data: UserLogin):
+    """User login endpoint"""
+    try:
+        # First check if user exists
+        try:
+            users = pb.collection('users').get_list(1, 1, {
+                "filter": f"email = '{user_data.email}'"
+            })
+            if not users.items:
+                raise HTTPException(status_code=401, detail="Invalid email or password")
+        except Exception:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Use PocketBase's built-in authentication
+        auth_data = pb.collection('users').auth_with_password(
+            user_data.email,
+            user_data.password
+        )
+        
+        return {
+            "success": True,
+            "message": "Login successful",
+            "user": {
+                "id": auth_data.record.id,
+                "email": auth_data.record.email,
+                "name": auth_data.record.name
+            },
+            "token": auth_data.token
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        # Handle PocketBase authentication errors gracefully
+        error_message = str(e)
+        print(f"Login error: {error_message}")  # Debug logging
+        
+        # Check if it's a PocketBase authentication error
+        if "Failed to authenticate" in error_message or "Status code:400" in error_message:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        elif "email" in error_message.lower():
+            raise HTTPException(status_code=401, detail="Invalid email address")
+        elif "password" in error_message.lower():
+            raise HTTPException(status_code=401, detail="Invalid password")
+        else:
+            raise HTTPException(status_code=401, detail="Login failed. Please check your credentials and try again.")
+
+@app.post("/api/auth/logout")
+async def logout():
+    """User logout endpoint"""
+    try:
+        pb.auth_store.clear()
+        return {"success": True, "message": "Logout successful"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Logout failed: {str(e)}")
+
+@app.get("/api/auth/me")
+async def get_current_user_info(request: Request):
+    """Get current user information"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    return {
+        "success": True,
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name
+        }
+    }
+
+@app.get("/api/auth/test")
+async def test_auth():
+    """Test endpoint to check PocketBase connection and user data"""
+    try:
+        # Test PocketBase connection
+        users = pb.collection('users').get_list(1, 5)
+        return {
+            "success": True,
+            "message": "PocketBase connection working",
+            "total_users": users.total_items,
+            "users": [{"id": user.id, "email": user.email, "name": user.name} for user in users.items]
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+@app.get("/api/auth/debug")
+async def debug_auth(request: Request):
+    """Debug endpoint to check authentication status"""
+    token = request.cookies.get("auth_token")
+    auth_header = request.headers.get("Authorization")
+    
+    debug_info = {
+        "cookie_token": token[:20] + "..." if token else None,
+        "auth_header": auth_header[:20] + "..." if auth_header else None,
+        "full_cookie_token": token,
+        "all_cookies": dict(request.cookies),
+        "pb_validation_attempt": None,
+        "pb_validation_result": None,
+        "pb_error": None,
+        "user": None
+    }
+    
+    if token:
+        try:
+            # Test PocketBase validation step by step
+            debug_info["pb_validation_attempt"] = "Attempting authRefresh validation..."
+            
+            # Set token in auth store
+            pb.auth_store.save(token, {"id": "temp", "email": "temp"})
+            
+            # Try auth refresh
+            auth_data = pb.collection('users').authRefresh()
+            
+            debug_info["pb_validation_result"] = {
+                "auth_refresh_success": auth_data is not None,
+                "has_record": auth_data.record is not None if auth_data else False,
+                "record_type": str(type(auth_data.record)) if auth_data and auth_data.record else None
+            }
+            
+            if auth_data and auth_data.record:
+                debug_info["user"] = {
+                    "id": auth_data.record.id,
+                    "email": auth_data.record.email,
+                    "name": auth_data.record.name
+                }
+            else:
+                debug_info["pb_error"] = "Auth refresh failed or no record"
+                
+        except Exception as e:
+            debug_info["pb_error"] = str(e)
+            debug_info["pb_error_type"] = str(type(e))
+    
+    return debug_info
 
 if __name__ == "__main__":
     import uvicorn

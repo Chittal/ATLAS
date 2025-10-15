@@ -759,7 +759,7 @@ class ChatWidget {
         
         // Directly navigate to the learning path page after a short delay
         setTimeout(() => {
-            window.open(`/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`, '_blank');
+            window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
         }, 1000); // 1 second delay to show the message
         
         console.log('✅ Learning journey started for path:', this.currentPath);
