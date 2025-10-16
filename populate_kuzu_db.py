@@ -84,15 +84,8 @@ class KuzuSkillGraph:
         skill_id_mapping = {}
         for skill in skills_list:
             print(skill)
-            if isinstance(skill, list):
-                # Handle nested skill groups
-                for sub_skill in skill:
-                    self._load_single_skill(sub_skill, data_dir, order_index, skill_id_mapping)
-                    order_index += 1
-            else:
-                # Handle single skill
-                self._load_single_skill(skill, data_dir, order_index, skill_id_mapping)
-                order_index += 1
+            self._load_single_skill(skill, data_dir, order_index, skill_id_mapping)
+            order_index += 1
         return skill_id_mapping
     
     def _load_single_skill(self, skill_name: str, data_dir: str, order_index: int, skill_id_mapping: Dict[str, str]):
@@ -323,148 +316,222 @@ class KuzuSkillGraph:
         """Add skill connections based on logical learning progression from the skills list."""
         # Define the logical learning progression connections
         connections = [
-            # Foundation skills
+            # ============================================
+            # FOUNDATION LAYER (Depth 0-2)
+            # ============================================
+            
+            # Core CS fundamentals
             ("computer science", "datastructures and algorithms"),
+            
+            # Programming languages from DSA
             ("datastructures and algorithms", "python"),
+            ("datastructures and algorithms", "javascript"),
             ("datastructures and algorithms", "java"),
             ("datastructures and algorithms", "cpp"),
-            ("datastructures and algorithms", "javascript"),
+            ("datastructures and algorithms", "php"),
             
-            # Programming fundamentals to version control
+            # ============================================
+            # ESSENTIAL TOOLS LAYER (Depth 3)
+            # ============================================
+            
+            # Version control (from any language)
             ("python", "git github"),
+            ("javascript", "git github"),
             ("java", "git github"),
             ("cpp", "git github"),
-            ("javascript", "git github"),
+            ("php", "git github"),
             
-            # Version control to databases
-            ("git github", "frontend"),
-            ("git github", "backend"),
+            # ============================================
+            # WEB DEVELOPMENT TRACK
+            # ============================================
             
-            # Programming languages to web development
+            # Frontend Foundation
             ("javascript", "frontend"),
-            ("javascript", "backend"),
-            ("python", "backend"),
-            ("java", "backend"),
-            ("cpp", "backend"),
-            
-            # Web development progression
             ("frontend", "react"),
             ("frontend", "angular"),
             ("frontend", "vue"),
             
-            # Backend technologies
-            ("backend", "sql"),
-            ("backend", "nodejs"),
-            ("backend", "php"),
-            ("backend", "spring boot"),
-            ("backend", "aspnet core"),
-            ("javascript", "angular"),
-            ("javascript", "vue"),
-            ("javascript", "react"),
-            ("javascript", "nodejs"),
-            ("java", "spring boot"),
-            ("cpp", "aspnet core"),
+            # TypeScript (from JS or React)
+            ("javascript", "typescript"),
+            ("react", "typescript"),
             
-            # Full stack development
+            # Backend Foundation
+            ("python", "backend"),
+            ("javascript", "backend"),
+            ("java", "backend"),
+            ("php", "backend"),
+            ("cpp", "backend"),
+            
+            # Backend Frameworks (from language + backend)
+            ("javascript", "nodejs"),
+            ("backend", "nodejs"),
+            ("java", "spring boot"),
+            ("backend", "spring boot"),
+            ("php", "backend"),
+            ("cpp", "aspnet core"),
+            ("backend", "aspnet core"),
+            
+            # Databases (from backend)
+            ("backend", "sql"),
+            ("sql", "postgresql dba"),
+            ("sql", "mongodb"),
+            ("sql", "redis"),
+            
+            # API Technologies
+            ("backend", "graphql"),
+            ("typescript", "graphql"),
+            
+            # Full Stack (requires both frontend and backend)
             ("frontend", "full stack"),
             ("backend", "full stack"),
             ("react", "full stack"),
             ("nodejs", "full stack"),
+            
+            # Modern Full Stack Frameworks
+            ("typescript", "nextjs"),
+            ("react", "nextjs"),
             ("full stack", "nextjs"),
             
-            # Advanced web technologies
-            ("javascript", "typescript"),
-            ("react", "typescript"),
-            ("typescript", "graphql"),
-            ("backend", "graphql"),
+            # ============================================
+            # MOBILE DEVELOPMENT TRACK
+            # ============================================
             
-            # Databases
-            ("sql", "mongodb"),
-            ("sql", "postgresql dba"),
-            ("sql", "redis"),
-            
-            # Mobile development
-            ("javascript", "react native"),
+            # React Native (from React)
             ("react", "react native"),
             ("react native", "ios"),
             ("react native", "android"),
+            
+            # Native Android (from Java)
             ("java", "android"),
-            ("cpp", "android"),
-            ("javascript", "flutter"),
             
-            # Game development
-            ("cpp", "game developer"),
-            ("cpp", "server side game developer"),
-            ("javascript", "game developer"),
+            # Flutter (from general programming)
+            ("datastructures and algorithms", "flutter"),
             
-            # Design and UX
-            ("frontend", "design system"),
+            # ============================================
+            # DESIGN & UX TRACK
+            # ============================================
+            
             ("frontend", "ux design"),
-            ("css", "design system"),
-            ("css", "ux design"),
+            ("frontend", "design system"),
+            ("ux design", "design system"),
             
-            # Quality and processes
-            ("python", "code review"),
-            ("java", "code review"),
-            ("javascript", "code review"),
+            # ============================================
+            # QUALITY & PROCESS TRACK
+            # ============================================
+            
             ("git github", "code review"),
             ("code review", "qa"),
             
-            # Data and analytics
-            ("python", "bi analyst"),
-            ("python", "data analyst"),
-            ("sql", "bi analyst"),
+            # ============================================
+            # DATA & ANALYTICS TRACK
+            # ============================================
+            
+            # Data Analysis Foundation
+            ("python", "sql"),
             ("sql", "data analyst"),
+            ("python", "data analyst"),
+            
+            # Business Intelligence
+            ("data analyst", "bi analyst"),
+            ("sql", "bi analyst"),
+            
+            # Data Engineering (from data analyst)
             ("data analyst", "data engineer"),
-            ("python", "data engineer"),
+            ("sql", "data engineer"),
+            
+            # ============================================
+            # MACHINE LEARNING & AI TRACK
+            # ============================================
+            
+            # ML Foundation (requires Python + data analysis)
+            ("python", "machine learning"),
+            ("data analyst", "machine learning"),
+            
+            # AI Engineering Path
+            ("machine learning", "prompt engineering"),
+            ("machine learning", "ai engineer"),
+            ("prompt engineering", "ai engineer"),
+            
+            # MLOps (requires ML + DevOps concepts)
+            ("machine learning", "mlops"),
+            ("devops", "mlops"),
+            
+            # Advanced AI (requires ML + Engineering)
+            ("ai engineer", "ai data scientist"),
+            ("machine learning", "ai data scientist"),
+            ("data analyst", "ai data scientist"),
+            
+            # AI Agents (requires AI Engineering)
+            ("ai engineer", "ai agents"),
+            ("prompt engineering", "ai agents"),
+            
+            # ============================================
+            # DEVOPS & INFRASTRUCTURE TRACK
+            # ============================================
+            
+            # DevOps Foundation
+            ("python", "devops"),
+            ("backend", "devops"),
+            ("linux", "devops"),
+            
+            # Containerization
+            ("devops", "docker"),
+            ("docker", "kubernetes"),
+            
+            # Infrastructure as Code
+            ("kubernetes", "terraform"),
+            ("devops", "terraform"),
+            
+            # Cloud & CDN
+            ("kubernetes", "cloudflare"),
+            ("devops", "aws"),
             ("data engineer", "aws"),
             
-            # DevOps and infrastructure
-            ("python", "devops"),
-            ("java", "devops"),
-            ("javascript", "devops"),
-            ("devops", "docker"),
-            ("devops", "linux"),
-            ("docker", "kubernetes"),
-            ("kubernetes", "terraform"),
-            ("kubernetes", "cloudflare"),
+            # ============================================
+            # SECURITY TRACK
+            # ============================================
             
-            # Security
             ("devops", "cyber security"),
-            ("python", "cyber security"),
+            ("backend", "cyber security"),
             ("cyber security", "ai red teaming"),
+            ("ai engineer", "ai red teaming"),
             
-            # Modern languages
+            # ============================================
+            # SYSTEMS PROGRAMMING TRACK
+            # ============================================
+            
+            # Modern Systems Languages
             ("python", "golang"),
-            ("python", "rust"),
             ("cpp", "rust"),
             ("golang", "blockchain"),
             ("rust", "blockchain"),
             
-            # System design
+            # Game Development
+            ("cpp", "game developer"),
+            ("cpp", "server side game developer"),
+            
+            # ============================================
+            # ARCHITECTURE & LEADERSHIP TRACK
+            # ============================================
+            
+            # System Design (from full stack or backend)
             ("backend", "system design"),
             ("full stack", "system design"),
+            
+            # Software Architecture
             ("system design", "software design architecture"),
             
-            # Leadership and management
+            # Leadership Roles
             ("software design architecture", "software architect"),
             ("software architect", "engineering manager"),
-            ("engineering manager", "product manager"),
-            ("software architect", "devrel"),
             ("software architect", "technical writer"),
+            ("software architect", "devrel"),
             
-            # AI and Machine Learning
-            ("python", "machine learning"),
-            ("data analyst", "machine learning"),
-            ("machine learning", "prompt engineering"),
-            ("machine learning", "mlops"),
-            ("python", "mlops"),
-            ("devops", "mlops"),
-            ("mlops", "ai engineer"),
-            ("machine learning", "ai engineer"),
-            ("ai engineer", "ai data scientist"),
-            ("ai data scientist", "ai agents"),
+            # Product Management
+            ("engineering manager", "product manager"),
+            ("full stack", "product manager"),
         ]
+
         
         # Add all connections
         for from_skill, to_skill in connections:
@@ -903,29 +970,29 @@ def initialize_skill_graph():
     """ Initialize and populate the KuzuDB skill graph with all roadmap data. """
     skills = [
         "computer science", "datastructures and algorithms", 
-        ["python", "java", "cpp", "javascript"], 
-        ["git github", "sql"], 
-        ["frontend", "backend"], 
-        ["react", "angular", "vue"], 
-        ["nodejs", "php", "spring boot", "aspnet core"], 
-        ["full stack", "nextjs"], 
-        ["typescript", "graphql"], 
-        ["mongodb", "postgresql dba", "redis"], 
-        ["android", "ios", "flutter", "react native"], 
-        ["game developer", "server side game developer"], 
-        ["design system", "ux design"], 
-        ["code review", "qa"], 
-        ["bi analyst", "data analyst"], 
-        ["data engineer", "aws"], 
-        ["devops", "docker", "linux"], 
-        ["kubernetes", "terraform", "cloudflare"], 
-        ["cyber security", "ai red teaming"], 
-        ["blockchain", "golang", "rust"], 
-        ["system design", "software design architecture"], 
-        ["software architect", "engineering manager", "product manager", "devrel", "technical writer"], 
-        ["machine learning", "prompt engineering"], 
-        ["mlops", "ai engineer"], 
-        ["ai data scientist", "ai agents"]
+        "python", "java", "cpp", "javascript", 
+        "git github", "sql", 
+        "frontend", "backend", 
+        "react", "angular", "vue", 
+        "nodejs", "php", "spring boot", "aspnet core", 
+        "full stack", "nextjs", 
+        "typescript", "graphql", 
+        "mongodb", "postgresql dba", "redis", 
+        "android", "ios", "flutter", "react native", 
+        "game developer", "server side game developer", 
+        "design system", "ux design", 
+        "code review", "qa", 
+        "bi analyst", "data analyst", 
+        "data engineer", "aws", 
+        "devops", "docker", "linux", 
+        "kubernetes", "terraform", "cloudflare", 
+        "cyber security", "ai red teaming", 
+        "blockchain", "golang", "rust", 
+        "system design", "software design architecture", 
+        "software architect", "engineering manager", "product manager", "devrel", "technical writer", 
+        "machine learning", "prompt engineering", 
+        "mlops", "ai engineer", 
+        "ai data scientist", "ai agents"
     ]
     # Create and populate the graph
     skill_graph = KuzuSkillGraph()
