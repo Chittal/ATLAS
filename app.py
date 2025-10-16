@@ -488,12 +488,6 @@ async def query_skills(message: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing skill query: {str(e)}")
 
-@app.get("/api/test")
-async def test_endpoint():
-    """Simple test endpoint"""
-    print("TEST ENDPOINT HIT!")
-    return {"message": "Test endpoint working!", "timestamp": "2024-01-01T00:00:00Z"}
-
 @app.post("/api/general/chat")
 async def general_chat(request: Request):
     """Handle general chat queries from the chat widget."""
@@ -748,73 +742,6 @@ async def get_current_user_info(request: Request):
             "name": user.name
         }
     }
-
-@app.get("/api/auth/test")
-async def test_auth():
-    """Test endpoint to check PocketBase connection and user data"""
-    try:
-        # Test PocketBase connection
-        users = pb.collection('users').get_list(1, 5)
-        return {
-            "success": True,
-            "message": "PocketBase connection working",
-            "total_users": users.total_items,
-            "users": [{"id": user.id, "email": user.email, "name": user.name} for user in users.items]
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
-
-@app.get("/api/auth/debug")
-async def debug_auth(request: Request):
-    """Debug endpoint to check authentication status"""
-    token = request.cookies.get("auth_token")
-    auth_header = request.headers.get("Authorization")
-    
-    debug_info = {
-        "cookie_token": token[:20] + "..." if token else None,
-        "auth_header": auth_header[:20] + "..." if auth_header else None,
-        "full_cookie_token": token,
-        "all_cookies": dict(request.cookies),
-        "pb_validation_attempt": None,
-        "pb_validation_result": None,
-        "pb_error": None,
-        "user": None
-    }
-    
-    if token:
-        try:
-            # Test PocketBase validation step by step
-            debug_info["pb_validation_attempt"] = "Attempting authRefresh validation..."
-            
-            # Set token in auth store
-            pb.auth_store.save(token, {"id": "temp", "email": "temp"})
-            
-            # Try auth refresh
-            auth_data = pb.collection('users').authRefresh()
-            
-            debug_info["pb_validation_result"] = {
-                "auth_refresh_success": auth_data is not None,
-                "has_record": auth_data.record is not None if auth_data else False,
-                "record_type": str(type(auth_data.record)) if auth_data and auth_data.record else None
-            }
-            
-            if auth_data and auth_data.record:
-                debug_info["user"] = {
-                    "id": auth_data.record.id,
-                    "email": auth_data.record.email,
-                    "name": auth_data.record.name
-                }
-            else:
-                debug_info["pb_error"] = "Auth refresh failed or no record"
-                
-        except Exception as e:
-            debug_info["pb_error"] = str(e)
-            debug_info["pb_error_type"] = str(type(e))
-    
-    return debug_info
 
 if __name__ == "__main__":
     import uvicorn
