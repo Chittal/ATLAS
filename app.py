@@ -9,15 +9,15 @@ from pydantic import BaseModel
 from llm.groq import call_groq_model
 from helper.kuzu_db_helper import KuzuSkillGraph
 from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
+from helper.user_progress_helper import UserProgressHelper
+from helper.pocketbase_helper import get_pb_client, get_pb_admin_client
 
 import os
-from pocketbase import PocketBase
-
 from dotenv import load_dotenv
 load_dotenv()
 
-pb = PocketBase(os.getenv("POCKETBASE_URL"))
-pb.admins.auth_with_password(os.getenv("POCKETBASE_EMAIL"), os.getenv("POCKETBASE_PASSWORD"))
+# Initialize PocketBase user client for auth flows
+pb = get_pb_admin_client()
 
 # Get secret key from environment for password hashing
 SECRET_KEY = os.getenv("JWT_SECRET") or os.getenv("SECRET_KEY") or "your-secret-key-change-this-in-production"
@@ -398,12 +398,36 @@ async def get_learning_nodes_by_skill(skill_name: str):
         raise HTTPException(status_code=500, detail=f"Error getting learning nodes: {str(e)}")
 
 @app.get("/api/skill/{skill_name}/learning-graph")
-async def get_learning_graph_by_skill(skill_name: str):
+async def get_learning_graph_by_skill(skill_name: str, user_roadmap_path_id: str | None = None, skill_id: str | None = None):
     """Get learning nodes and edges for a specific skill by name to create a connected graph."""
     try:
         manager = get_kuzu_manager()
         learning_nodes = manager.get_learning_nodes_by_skill_name(skill_name)
         skill_edges = manager.get_skill_edges(skill_name)
+        
+        # Update learning_nodes_count in roadmap_path_skills table
+        try:
+            progress_helper = UserProgressHelper(get_pb_admin_client())
+            # Resolve roadmap_path_id from user_roadmap_path_id if needed
+            if user_roadmap_path_id:
+                try:
+                    mapping_rec = progress_helper.pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
+                    roadmap_path_id = getattr(mapping_rec, 'roadmap_path_id', None)
+                    print(f"Resolved roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {roadmap_path_id}")
+                except Exception as resolve_err:
+                    print(f"Warning: could not resolve roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {resolve_err}")
+
+            if roadmap_path_id and skill_id:
+                print(f"Updating learning nodes count by ids: {roadmap_path_id}, {skill_id}")
+                progress_helper.update_learning_nodes_count_by_ids(roadmap_path_id, skill_id, len(learning_nodes))
+            else:
+                print(f"Updating learning nodes count by name: {skill_name}")
+                progress_helper.update_learning_nodes_count(skill_name, len(learning_nodes))
+            print(f"Learning nodes count updated for {skill_name}")
+            print(f"Learning nodes count: {len(learning_nodes)}")
+        except Exception as update_error:
+            # Don't fail the main request if the count update fails
+            print(f"Warning: Could not update learning nodes count for {skill_name}: {update_error}")
         
         return {
             "skill_name": skill_name,
@@ -645,78 +669,78 @@ async def signup_page(request: Request):
 @app.post("/api/auth/signup")
 async def signup(user_data: UserSignup):
     """User signup endpoint"""
-    try:
-        # Validate password confirmation
-        if user_data.password != user_data.passwordConfirm:
-            raise HTTPException(status_code=400, detail="Passwords do not match")
-        
-        # Create user in PocketBase (let PocketBase handle password hashing)
-        # For auth collections, we need to include passwordConfirm
-        user = pb.collection('users').create({
-            "email": user_data.email,
-            "password": user_data.password,
-            "passwordConfirm": user_data.passwordConfirm,
-            "name": user_data.name
-        })
-        
-        return {
-            "success": True,
-            "message": "User created successfully",
-            "user": {
-                "id": user.id,
-                "email": user.email,
-                "name": user.name
-            }
+    # try:
+    # Validate password confirmation
+    if user_data.password != user_data.passwordConfirm:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+    
+    # Create user in PocketBase (let PocketBase handle password hashing)
+    # For auth collections, we need to include passwordConfirm
+    user = pb.collection('users').create({
+        "email": user_data.email,
+        "password": user_data.password,
+        "passwordConfirm": user_data.passwordConfirm,
+        "name": user_data.name
+    })
+    
+    return {
+        "success": True,
+        "message": "User created successfully",
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "name": user.name
         }
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
+    }
+    # except Exception as e:
+    #     raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
 
 @app.post("/api/auth/login")
 async def login(user_data: UserLogin):
     """User login endpoint"""
+    # try:
+    # First check if user exists
     try:
-        # First check if user exists
-        try:
-            users = pb.collection('users').get_list(1, 1, {
-                "filter": f"email = '{user_data.email}'"
-            })
-            if not users.items:
-                raise HTTPException(status_code=401, detail="Invalid email or password")
-        except Exception:
+        users = pb.collection('users').get_list(1, 1, {
+            "filter": f"email = '{user_data.email}'"
+        })
+        if not users.items:
             raise HTTPException(status_code=401, detail="Invalid email or password")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # Use PocketBase's built-in authentication
+    auth_data = pb.collection('users').auth_with_password(
+        user_data.email,
+        user_data.password
+    )
+    
+    return {
+        "success": True,
+        "message": "Login successful",
+        "user": {
+            "id": auth_data.record.id,
+            "email": auth_data.record.email,
+            "name": auth_data.record.name
+        },
+        "token": auth_data.token
+    }
+    # except HTTPException:
+    #     raise
+    # except Exception as e:
+    #     # Handle PocketBase authentication errors gracefully
+    #     error_message = str(e)
+    #     print(f"Login error: {error_message}")  # Debug logging
         
-        # Use PocketBase's built-in authentication
-        auth_data = pb.collection('users').auth_with_password(
-            user_data.email,
-            user_data.password
-        )
-        
-        return {
-            "success": True,
-            "message": "Login successful",
-            "user": {
-                "id": auth_data.record.id,
-                "email": auth_data.record.email,
-                "name": auth_data.record.name
-            },
-            "token": auth_data.token
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        # Handle PocketBase authentication errors gracefully
-        error_message = str(e)
-        print(f"Login error: {error_message}")  # Debug logging
-        
-        # Check if it's a PocketBase authentication error
-        if "Failed to authenticate" in error_message or "Status code:400" in error_message:
-            raise HTTPException(status_code=401, detail="Invalid email or password")
-        elif "email" in error_message.lower():
-            raise HTTPException(status_code=401, detail="Invalid email address")
-        elif "password" in error_message.lower():
-            raise HTTPException(status_code=401, detail="Invalid password")
-        else:
-            raise HTTPException(status_code=401, detail="Login failed. Please check your credentials and try again.")
+    #     # Check if it's a PocketBase authentication error
+    #     if "Failed to authenticate" in error_message or "Status code:400" in error_message:
+    #         raise HTTPException(status_code=401, detail="Invalid email or password")
+    #     elif "email" in error_message.lower():
+    #         raise HTTPException(status_code=401, detail="Invalid email address")
+    #     elif "password" in error_message.lower():
+    #         raise HTTPException(status_code=401, detail="Invalid password")
+    #     else:
+    #         raise HTTPException(status_code=401, detail="Login failed. Please check your credentials and try again.")
 
 @app.post("/api/auth/logout")
 async def logout():
@@ -742,6 +766,181 @@ async def get_current_user_info(request: Request):
             "name": user.name
         }
     }
+
+@app.post("/api/route-planning/start-learning")
+async def start_learning_track(request: Request, track_data: dict):
+    """Save user's learning track when they click 'Start Learning'"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        # Extract track information from the request
+        start_skill = track_data.get("start_skill")
+        target_skill = track_data.get("target_skill")
+        skill_path = track_data.get("skill_path", [])
+        
+        if not start_skill or not target_skill or not skill_path:
+            raise HTTPException(status_code=400, detail="Missing required track data")
+        
+        # Initialize user progress helper with an admin client for DB writes
+        admin_pb = get_pb_admin_client()
+        progress_helper = UserProgressHelper(admin_pb)
+        
+        # Save the user's roadmap path
+        result = progress_helper.save_user_roadmap_path(
+            user_id=user.id,
+            start_skill=start_skill,
+            target_skill=target_skill,
+            skill_path=skill_path
+        )
+        
+        return {
+            "success": True,
+            "message": "Learning track saved successfully",
+            "data": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save learning track: {str(e)}")
+
+@app.get("/api/user/progress")
+async def get_user_progress(request: Request):
+    """Get user's learning progress"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        # Use admin client for reading user progress
+        progress_helper = UserProgressHelper(get_pb_admin_client())
+        user_paths = progress_helper.get_user_roadmap_paths(user.id)
+        
+        return {
+            "success": True,
+            "user_paths": user_paths
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get user progress: {str(e)}")
+
+@app.post("/api/user/progress/update")
+async def update_user_progress(request: Request, progress_data: dict):
+    """Update user's progress on a learning path"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        user_roadmap_path_id = progress_data.get("user_roadmap_path_id")
+        progress = progress_data.get("progress", 0.0)
+        completed_at = progress_data.get("completed_at")
+        
+        if not user_roadmap_path_id:
+            raise HTTPException(status_code=400, detail="Missing user_roadmap_path_id")
+        
+        progress_helper = UserProgressHelper(get_pb_admin_client())
+        result = progress_helper.update_user_progress(
+            user_roadmap_path_id=user_roadmap_path_id,
+            progress=progress,
+            completed_at=completed_at
+        )
+        
+        return {
+            "success": True,
+            "message": "Progress updated successfully",
+            "data": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update progress: {str(e)}")
+
+@app.post("/api/learning-node/complete")
+async def complete_learning_node(request: Request, completion_data: dict):
+    """Mark a learning node as completed"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        learning_node_id = completion_data.get("learning_node_id")
+        skill_id = completion_data.get("skill_id")
+        user_roadmap_path_id = completion_data.get("user_roadmap_path_id")
+        completed_at = completion_data.get("completed_at")
+        
+        if not learning_node_id or not skill_id or not user_roadmap_path_id:
+            raise HTTPException(status_code=400, detail="Missing required fields: learning_node_id, skill_id, user_roadmap_path_id")
+        
+        progress_helper = UserProgressHelper(get_pb_admin_client())
+        result = progress_helper.save_learning_node_completion(
+            user_id=user.id,
+            learning_node_id=learning_node_id,
+            skill_id=skill_id,
+            user_roadmap_path_id=user_roadmap_path_id,
+            completed_at=completed_at
+        )
+        
+        return {
+            "success": True,
+            "message": f"Learning node {result['action']} successfully",
+            "data": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to complete learning node: {str(e)}")
+
+@app.post("/api/learning-node/incomplete")
+async def incomplete_learning_node(request: Request, completion_data: dict):
+    """Mark a learning node as incomplete (remove completion)"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        learning_node_id = completion_data.get("learning_node_id")
+        user_roadmap_path_id = completion_data.get("user_roadmap_path_id")
+        
+        if not learning_node_id or not user_roadmap_path_id:
+            raise HTTPException(status_code=400, detail="Missing required fields: learning_node_id, user_roadmap_path_id")
+        
+        progress_helper = UserProgressHelper(get_pb_admin_client())
+        result = progress_helper.remove_learning_node_completion(
+            user_id=user.id,
+            learning_node_id=learning_node_id,
+            user_roadmap_path_id=user_roadmap_path_id
+        )
+        
+        return {
+            "success": True,
+            "message": f"Learning node {result['action']} successfully",
+            "data": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to mark learning node incomplete: {str(e)}")
+
+@app.get("/api/learning-node/progress")
+async def get_learning_node_progress(request: Request, user_roadmap_path_id: str = None):
+    """Get user's learning node progress"""
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        progress_helper = UserProgressHelper(get_pb_admin_client())
+        progress_records = progress_helper.get_user_learning_node_progress(
+            user_id=user.id,
+            user_roadmap_path_id=user_roadmap_path_id
+        )
+        
+        return {
+            "success": True,
+            "progress_records": progress_records,
+            "total_completed": len(progress_records)
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get learning node progress: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn

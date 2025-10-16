@@ -736,7 +736,7 @@ class ChatWidget {
         }
     }
 
-    handleStartLearning() {
+    async handleStartLearning() {
         console.log('🎯 Start Learning button clicked!');
         
         if (!this.currentPath) {
@@ -753,14 +753,66 @@ class ChatWidget {
         const pathNames = this.currentPath.path.map(skill => skill.name || skill.id);
         const pathDescription = pathNames.join(' → ');
         
-        const learningMessage = `🚀 **Opening Your Learning Path!**\n\nYour path: ${pathDescription}\n\nTaking you to a focused learning environment...`;
+        const savingMessage = `🚀 **Saving Your Learning Path!**\n\nYour path: ${pathDescription}\n\nSaving to your progress tracker...`;
+        this.addMessage(savingMessage, 'ai');
         
-        this.addMessage(learningMessage, 'ai');
-        
-        // Directly navigate to the learning path page after a short delay
-        setTimeout(() => {
-            window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
-        }, 1000); // 1 second delay to show the message
+        try {
+            // Save the learning track to PocketBase
+            const trackData = {
+                start_skill: startSkill,
+                target_skill: endSkill,
+                skill_path: this.currentPath.path
+            };
+            
+            console.log('💾 Saving learning track:', trackData);
+            
+            const saveResponse = await fetch('/api/route-planning/start-learning', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(trackData)
+            });
+            
+            if (saveResponse.ok) {
+                const saveResult = await saveResponse.json();
+                console.log('✅ Learning track saved successfully:', saveResult);
+                
+                // Update message with success
+                const successMessage = `✅ **Learning Path Saved!**\n\nYour progress will be tracked. Taking you to the learning environment...`;
+                this.addMessage(successMessage, 'ai');
+                
+                // Navigate to learning path page with the roadmap path ID
+                setTimeout(() => {
+                    const userRoadmapPathId = saveResult.data?.user_roadmap_path_id;
+                    if (userRoadmapPathId) {
+                        window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}&roadmap_path_id=${userRoadmapPathId}`;
+                    } else {
+                        window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+                    }
+                }, 1500); // 1.5 second delay to show the success message
+                
+            } else {
+                console.error('❌ Failed to save learning track:', saveResponse.status);
+                const errorMessage = `❌ **Error Saving Path**\n\nCould not save your learning path. Taking you to the learning environment anyway...`;
+                this.addMessage(errorMessage, 'ai');
+                
+                // Still navigate even if save fails
+                setTimeout(() => {
+                    window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+                }, 1500);
+            }
+            
+        } catch (error) {
+            console.error('❌ Error saving learning track:', error);
+            const errorMessage = `❌ **Error Saving Path**\n\nCould not save your learning path. Taking you to the learning environment anyway...`;
+            this.addMessage(errorMessage, 'ai');
+            
+            // Still navigate even if save fails
+            setTimeout(() => {
+                window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+            }, 1500);
+        }
         
         console.log('✅ Learning journey started for path:', this.currentPath);
     }

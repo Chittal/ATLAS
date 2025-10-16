@@ -970,11 +970,19 @@
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
     let cy;
+    let pathData = null; // Store path data globally
     
     // Get URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const startSkill = urlParams.get('start') || 'data analyst';
     const endSkill = urlParams.get('end') || 'ai agents';
+    const roadmapPathId = urlParams.get('roadmap_path_id');
+    
+    // If we have a roadmap path ID from the URL, set it immediately
+    if (roadmapPathId) {
+        setCurrentUserRoadmapPathId(roadmapPathId);
+        console.log('📊 User roadmap path ID set from URL:', roadmapPathId);
+    }
     
     // Update page title and subtitle
     document.getElementById('path-subtitle').textContent = `${startSkill} → ${endSkill}`;
@@ -984,7 +992,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         try {
             // Fetch path data
             const pathResponse = await fetch(`/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`);
-            const pathData = await pathResponse.json();
+            pathData = await pathResponse.json(); // Store in global variable
             
             if (!pathData.path || pathData.path.length === 0) {
                 throw new Error('No learning path found between these skills');
@@ -1099,14 +1107,19 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             console.log(`🎯 Clicked on skill: ${skillName}`);
             
-             try {
-                 // Fetch learning graph for this skill
-                 const response = await fetch(`/api/skill/${encodeURIComponent(skillName)}/learning-graph`);
+            try {
+                // Fetch learning graph for this skill (include IDs for precise updates)
+                const rpId = getCurrentUserRoadmapPathId();
+                const params = new URLSearchParams();
+                if (rpId) params.set('user_roadmap_path_id', rpId);
+                if (skillId) params.set('skill_id', skillId);
+                const query = params.toString() ? `?${params.toString()}` : '';
+                const response = await fetch(`/api/skill/${encodeURIComponent(skillName)}/learning-graph${query}`);
                  const data = await response.json();
                  
                  if (data.learning_nodes && data.learning_nodes.length > 0) {
                      // Show expanded learning nodes as connected graph
-                     showExpandedLearningNodes(skillName, data.learning_nodes, data.edges);
+                     showExpandedLearningNodes(skillName, skillId, data.learning_nodes, data.edges);
                  } else {
                     // Fallback to chat widget
                     if (window.chatWidget && window.chatWidget.isOpen) {
@@ -1147,8 +1160,8 @@ document.addEventListener('DOMContentLoaded', async function() {
      }
     
      // Function to show expanded learning nodes as a connected graph
-     async function showExpandedLearningNodes(skillName, learningNodes, edges) {
-         console.log(`🎯 Showing expanded learning nodes for: ${skillName}`, learningNodes, edges);
+     async function showExpandedLearningNodes(skillName, skillId, learningNodes, edges) {
+         console.log(`🎯 Showing expanded learning nodes for: ${skillName} (ID: ${skillId})`, learningNodes, edges);
          
          // Create or update the expanded view
          let expandedView = document.getElementById('expanded-learning-nodes');
@@ -1160,7 +1173,7 @@ document.addEventListener('DOMContentLoaded', async function() {
          }
          
          // Create HTML content with filters and horizontal list
-         const listHTML = showLearningNodesList(learningNodes);
+         const listHTML = showLearningNodesList(learningNodes, skillId);
          const filterHTML = createFilterControls(learningNodes);
          expandedView.innerHTML = `
              <div class="expanded-header">
@@ -1389,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', async function() {
      }
 
      // Function to show learning nodes as horizontal list
-     function showLearningNodesList(learningNodes) {
+     function showLearningNodesList(learningNodes, skillId) {
          console.log(`🎯 Showing learning nodes list:`, learningNodes);
          
          // Sort learning nodes by depth and name for better organization
@@ -1400,7 +1413,7 @@ document.addEventListener('DOMContentLoaded', async function() {
          
          // Create horizontal list HTML with checkboxes
          const listHTML = sortedNodes.map((node, index) => `
-             <div class="learning-node-item" data-depth="${node.depth}" data-node-id="${node.id}" id="node-${node.id}" data-name="${node.name.toLowerCase()}" data-description="${(node.description || '').toLowerCase()}">
+             <div class="learning-node-item" data-depth="${node.depth}" data-node-id="${node.id}" id="node-${node.id}" data-name="${node.name.toLowerCase()}" data-description="${(node.description || '').toLowerCase()}" data-skill-id="${skillId}">
                  <div class="completion-checkbox" onclick="toggleNodeCompletion('${node.id}')" id="checkbox-${node.id}"></div>
                  <div class="node-step">${index + 1}</div>
                  <div class="node-content">
@@ -1554,7 +1567,7 @@ document.addEventListener('DOMContentLoaded', async function() {
      }
 
      // Function to toggle node completion
-     function toggleNodeCompletion(nodeId) {
+     async function toggleNodeCompletion(nodeId) {
          const checkbox = document.getElementById(`checkbox-${nodeId}`);
          const nodeItem = document.getElementById(`node-${nodeId}`);
          
@@ -1566,12 +1579,12 @@ document.addEventListener('DOMContentLoaded', async function() {
              // Mark as incomplete
              checkbox.classList.remove('checked');
              nodeItem.classList.remove('completed');
-             saveNodeCompletion(nodeId, false);
+             await saveNodeCompletion(nodeId, false);
          } else {
              // Mark as complete
              checkbox.classList.add('checked');
              nodeItem.classList.add('completed');
-             saveNodeCompletion(nodeId, true);
+             await saveNodeCompletion(nodeId, true);
          }
          
          // Update completion progress and apply filters
@@ -1579,8 +1592,9 @@ document.addEventListener('DOMContentLoaded', async function() {
          applyFilters();
      }
 
-     // Function to save node completion state to localStorage
-     function saveNodeCompletion(nodeId, isCompleted) {
+     // Function to save node completion state to database and localStorage
+     async function saveNodeCompletion(nodeId, isCompleted) {
+         // Save to localStorage for immediate UI feedback
          const completedNodes = getCompletedNodes();
          
          if (isCompleted) {
@@ -1595,12 +1609,142 @@ document.addEventListener('DOMContentLoaded', async function() {
          }
          
          localStorage.setItem('completedLearningNodes', JSON.stringify(completedNodes));
+         
+         // Save to database if we have the required data
+         try {
+             let userRoadmapPathId = getCurrentUserRoadmapPathId();
+             
+             // If no roadmap path ID exists, try to get or create one
+             if (!userRoadmapPathId) {
+                 console.log('No user roadmap path ID available, attempting to get/create one...');
+                 userRoadmapPathId = await getOrCreateUserRoadmapPath();
+                 if (userRoadmapPathId) {
+                     setCurrentUserRoadmapPathId(userRoadmapPathId);
+                     console.log('📊 User roadmap path ID created/retrieved:', userRoadmapPathId);
+                 } else {
+                     console.log('Could not get or create user roadmap path, skipping database save');
+                     return;
+                 }
+             }
+             
+             const nodeItem = document.getElementById(`node-${nodeId}`);
+             const skillId = nodeItem?.dataset.skillId || '';
+             
+             if (isCompleted) {
+                 // Mark as completed in database
+                 const response = await fetch('/api/learning-node/complete', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                         learning_node_id: nodeId,
+                         skill_id: skillId,
+                         user_roadmap_path_id: userRoadmapPathId,
+                         completed_at: new Date().toISOString()
+                     })
+                 });
+                 
+                 if (response.ok) {
+                     const result = await response.json();
+                     console.log('✅ Learning node completed in database:', result);
+                 } else {
+                     console.warn('⚠️ Failed to save completion to database');
+                 }
+             } else {
+                 // Mark as incomplete in database
+                 const response = await fetch('/api/learning-node/incomplete', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                         learning_node_id: nodeId,
+                         user_roadmap_path_id: userRoadmapPathId
+                     })
+                 });
+                 
+                 if (response.ok) {
+                     const result = await response.json();
+                     console.log('✅ Learning node marked incomplete in database:', result);
+                 } else {
+                     console.warn('⚠️ Failed to remove completion from database');
+                 }
+             }
+         } catch (error) {
+             console.error('❌ Error saving node completion to database:', error);
+         }
      }
 
      // Function to get completed nodes from localStorage
      function getCompletedNodes() {
          const saved = localStorage.getItem('completedLearningNodes');
          return saved ? JSON.parse(saved) : [];
+     }
+     
+     // Function to get current user roadmap path ID
+     function getCurrentUserRoadmapPathId() {
+         // This should be set when the learning track is saved
+         return window.currentUserRoadmapPathId || null;
+     }
+     
+     // Function to set current user roadmap path ID
+     function setCurrentUserRoadmapPathId(pathId) {
+         window.currentUserRoadmapPathId = pathId;
+     }
+     
+     // Function to get or create user roadmap path
+     async function getOrCreateUserRoadmapPath() {
+         try {
+             // First, try to get existing user progress
+             const response = await fetch('/api/user/progress');
+             if (response.ok) {
+                 const data = await response.json();
+                 if (data.user_paths && data.user_paths.length > 0) {
+                     // Return the first user roadmap path ID
+                     return data.user_paths[0].id;
+                 }
+             }
+             
+             // If no existing progress, create a new learning track
+             const startSkill = urlParams.get('start') || 'data analyst';
+             const endSkill = urlParams.get('end') || 'ai agents';
+             
+             // Get current path data
+             let currentPathData = pathData;
+             if (!currentPathData || !currentPathData.path) {
+                 const pathResponse = await fetch(`/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`);
+                 currentPathData = await pathResponse.json();
+             }
+             
+             if (currentPathData && currentPathData.path) {
+                 const trackData = {
+                     start_skill: startSkill,
+                     target_skill: endSkill,
+                     skill_path: currentPathData.path
+                 };
+                 
+                 const saveResponse = await fetch('/api/route-planning/start-learning', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify(trackData)
+                 });
+                 
+                 if (saveResponse.ok) {
+                     const saveResult = await saveResponse.json();
+                     if (saveResult.data && saveResult.data.user_roadmap_path_id) {
+                         return saveResult.data.user_roadmap_path_id;
+                     }
+                 }
+             }
+             
+             return null;
+         } catch (error) {
+             console.error('Error getting or creating user roadmap path:', error);
+             return null;
+         }
      }
 
      // Function to restore completion states
@@ -1770,9 +1914,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Bind action buttons
     document.getElementById('begin-learning-action').addEventListener('click', async function() {
-        // Automatically open learning nodes of first skill and scroll there
         try {
-            const startSkill = urlParams.get('start') || 'data analyst';
+            const startSkill = urlParams.get('start');
+            
+            // Check if we have a roadmap path ID (from chat navigation)
+            const currentRoadmapPathId = getCurrentUserRoadmapPathId();
+            if (!currentRoadmapPathId) {
+                console.log('No roadmap path ID available');
+                // const newRoadmapPathId = await getOrCreateUserRoadmapPath();
+                // if (newRoadmapPathId) {
+                //     setCurrentUserRoadmapPathId(newRoadmapPathId);
+                //     console.log('📊 User roadmap path ID created/retrieved:', newRoadmapPathId);
+                // }
+            }
             
             // Fetch learning graph for the first skill
             const response = await fetch(`/api/skill/${encodeURIComponent(startSkill)}/learning-graph`);
@@ -1780,7 +1934,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             if (data.learning_nodes && data.learning_nodes.length > 0) {
                 // Show expanded learning nodes for the first skill
-                showExpandedLearningNodes(startSkill, data.learning_nodes, data.edges);
+                // We need to get the skill ID for the start skill
+                const skillId = startSkill; // For now, using the skill name as ID
+                showExpandedLearningNodes(startSkill, skillId, data.learning_nodes, data.edges);
                 
                 // Scroll to the expanded view
                 setTimeout(() => {
