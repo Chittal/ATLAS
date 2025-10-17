@@ -6,65 +6,74 @@
 <link rel="stylesheet" href="/static/skill-panel.css">
 <style>
     .learning-path-container {
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: hsl(var(--background));
     }
 
     .learning-path-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+        color: hsl(var(--primary-foreground));
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }
 
     .learning-path-title {
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: 700;
-        margin-bottom: 10px;
+        margin-bottom: 0.5rem;
         text-align: center;
+        background: linear-gradient(135deg, hsl(var(--primary-foreground)) 0%, hsl(var(--primary-foreground) / 0.8) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .learning-path-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.25rem;
         opacity: 0.9;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 2rem;
+        color: hsl(var(--primary-foreground) / 0.8);
     }
 
     .learning-path-nav {
         display: flex;
         justify-content: center;
-        gap: 15px;
+        gap: 1rem;
         flex-wrap: wrap;
     }
 
     .nav-button {
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: hsl(var(--primary-foreground));
+        padding: 0.75rem 1.5rem;
+        border-radius: calc(var(--radius) + 4px);
         text-decoration: none;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         backdrop-filter: blur(10px);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .nav-button:hover {
-        background: rgba(255, 255, 255, 0.3);
-        border-color: rgba(255, 255, 255, 0.5);
-        color: white;
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: hsl(var(--primary-foreground));
         text-decoration: none;
-        transform: translateY(-2px);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .learning-path-content {
         flex: 1;
         position: relative;
-        padding: 20px;
+        padding: 2rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -75,13 +84,13 @@
         width: 100%;
         max-width: 1000px;
         height: 500px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border: 1px solid #dee2e6;
+        background: hsl(var(--card));
+        border-radius: calc(var(--radius) + 4px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        border: 1px solid hsl(var(--border));
         position: relative;
         overflow: hidden;
-        margin-top: 20px;
+        margin-top: 2rem;
     }
 
     #cy {
@@ -90,76 +99,89 @@
         top: 0;
         right: 0;
         bottom: 0;
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
+        background: hsl(var(--muted));
+        border: 1px solid hsl(var(--border));
     }
 
     .learning-path-info {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        border: 1px solid #dee2e6;
+        background: hsl(var(--card));
+        border-radius: calc(var(--radius) + 4px);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        border: 1px solid hsl(var(--border));
         max-width: 800px;
         width: 100%;
     }
 
     .path-stats {
-        display: flex;
-        justify-content: space-around;
-        text-align: center;
-        margin-bottom: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
     }
 
     .stat-item {
-        flex: 1;
+        text-align: center;
+        padding: 1rem;
+        background: hsl(var(--muted));
+        border-radius: calc(var(--radius) - 2px);
+        border: 1px solid hsl(var(--border));
     }
 
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        color: #667eea;
+        color: hsl(var(--primary));
         display: block;
+        margin-bottom: 0.25rem;
     }
 
     .stat-label {
-        font-size: 0.9rem;
-        color: #6c757d;
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.05em;
+        font-weight: 500;
     }
 
     .path-description {
         text-align: center;
-        color: #495057;
-        font-size: 1.1rem;
+        color: hsl(var(--foreground));
+        font-size: 1.125rem;
         line-height: 1.6;
+        margin-bottom: 1.5rem;
     }
 
     .path-skills {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 0.75rem;
         flex-wrap: wrap;
-        margin-top: 20px;
+        margin-top: 1.5rem;
     }
 
     .skill-badge {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 14px;
+        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+        color: hsl(var(--primary-foreground));
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
         font-weight: 500;
-        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+    }
+
+    .skill-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
 
     .skill-arrow {
-        color: #667eea;
-        font-size: 1.2rem;
-        font-weight: bold;
+        color: hsl(var(--primary));
+        font-size: 1.25rem;
+        font-weight: 600;
     }
 
     #loading {
@@ -170,7 +192,7 @@
         text-align: center;
         margin-top: -0.5em;
         font-size: 2em;
-        color: #6c757d;
+        color: hsl(var(--muted-foreground));
         z-index: 1000;
     }
 
@@ -179,42 +201,44 @@
     .learning-actions {
         display: flex;
         justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
+        gap: 1rem;
+        margin-top: 2rem;
         flex-wrap: wrap;
     }
 
     .action-button {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
+        background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+        color: hsl(var(--primary-foreground));
         border: none;
-        padding: 12px 24px;
-        border-radius: 25px;
-        font-size: 16px;
+        padding: 0.75rem 1.5rem;
+        border-radius: calc(var(--radius) + 4px);
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.5rem;
     }
 
     .action-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        color: hsl(var(--primary-foreground));
         text-decoration: none;
     }
 
     .action-button.secondary {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary) / 0.8) 100%);
+        color: hsl(var(--secondary-foreground));
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }
 
     .action-button.secondary:hover {
-        box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        color: hsl(var(--secondary-foreground));
     }
 
     /* Expanded Learning Nodes Styles */
@@ -885,80 +909,72 @@
 <div class="learning-path-container">
     <!-- Header Section -->
     <div class="learning-path-header">
-        <h1 class="learning-path-title">🎯 Your Learning Journey</h1>
-        <p class="learning-path-subtitle" id="path-subtitle">Loading your personalized learning path...</p>
-        
-        <div class="learning-path-nav">
-            <a href="/" class="nav-button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                </svg>
-                Back to Full Map
-            </a>
-            <!-- <a href="/" class="nav-button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                Full Map View
-            </a> -->
-            <!-- <button class="nav-button" onclick="window.location.reload()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
-                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
-                </svg>
-                Refresh Path
-            </button> -->
+        <div class="container">
+            <h1 class="learning-path-title">🎯 Your Learning Journey</h1>
+            <p class="learning-path-subtitle" id="path-subtitle">Loading your personalized learning path...</p>
+            
+            <div class="learning-path-nav">
+                <a href="/" class="nav-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    Back to Full Map
+                </a>
+            </div>
         </div>
     </div>
 
     <!-- Content Section -->
     <div class="learning-path-content">
-        <!-- Path Information -->
-        <div class="learning-path-info" id="path-info">
-            <div class="path-stats">
-                <div class="stat-item">
-                    <span class="stat-number" id="total-skills">-</span>
-                    <span class="stat-label">Skills</span>
+        <div class="container">
+            <!-- Path Information -->
+            <div class="learning-path-info card animate-in fade-in" id="path-info">
+                <div class="path-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-skills">-</span>
+                        <span class="stat-label">Skills</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="estimated-time">-</span>
+                        <span class="stat-label">Estimated Time</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="difficulty">-</span>
+                        <span class="stat-label">Difficulty</span>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="estimated-time">-</span>
-                    <span class="stat-label">Estimated Time</span>
+                
+                <div class="path-description" id="path-description">
+                    Your personalized learning path will appear here...
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="difficulty">-</span>
-                    <span class="stat-label">Difficulty</span>
+                
+                <div class="path-skills" id="path-skills">
+                    <!-- Skills will be populated here -->
+                </div>
+                
+                <div class="learning-actions">
+                    <button class="action-button btn btn-primary btn-lg" id="begin-learning-action">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L13.09 8.26L12 2Z"/>
+                        </svg>
+                        Begin Learning
+                    </button>
+                    <button class="action-button secondary btn btn-secondary btn-lg" id="ask-questions-action">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z"/>
+                        </svg>
+                        Ask Questions
+                    </button>
                 </div>
             </div>
-            
-            <div class="path-description" id="path-description">
-                Your personalized learning path will appear here...
-            </div>
-            
-            <div class="path-skills" id="path-skills">
-                <!-- Skills will be populated here -->
-            </div>
-            
-            <div class="learning-actions">
-                <button class="action-button" id="begin-learning-action">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L13.09 8.26L12 2Z"/>
-                    </svg>
-                    Begin Learning
-                </button>
-                <button class="action-button secondary" id="ask-questions-action">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z"/>
-                    </svg>
-                    Ask Questions
-                </button>
-            </div>
-        </div>
 
-        <!-- Graph Visualization -->
-        <div class="graph-container">
-            <div id="cy"></div>
-            <div id="loading">
-                <div class="spinner-border text-primary" role="status"></div>
-                <div style="margin-top: 10px;">Loading your learning path...</div>
+            <!-- Graph Visualization -->
+            <div class="graph-container card animate-in slide-in-from-bottom">
+                <div id="cy"></div>
+                <div id="loading" class="flex flex-col items-center justify-center h-full">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                    <div class="text-muted-foreground">Loading your learning path...</div>
+                </div>
             </div>
         </div>
     </div>

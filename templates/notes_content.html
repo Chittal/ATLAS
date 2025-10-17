@@ -1,0 +1,182 @@
+<div class="notes-container">
+    <div class="notes-header">
+        <div>
+            <h2 class="notes-title">My Notes</h2>
+            <p class="notes-subtitle">Keep track of your learning progress and insights</p>
+        </div>
+        <button class="btn btn-primary" onclick="createNewNote()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            New Note
+        </button>
+    </div>
+
+    <div class="notes-grid">
+        <div class="note-card">
+            <div class="note-header">
+                <h3 class="note-title">Python Data Structures</h3>
+                <span class="note-date">Dec 15, 2024</span>
+            </div>
+            <p class="note-preview">Learned about lists, dictionaries, and tuples. Key insights about when to use each data structure...</p>
+            <div class="note-tags">
+                <span class="note-tag">Python</span>
+                <span class="note-tag">Programming</span>
+            </div>
+        </div>
+
+        <div class="note-card">
+            <div class="note-header">
+                <h3 class="note-title">Machine Learning Concepts</h3>
+                <span class="note-date">Dec 14, 2024</span>
+            </div>
+            <p class="note-preview">Understanding the difference between supervised and unsupervised learning. Important to remember...</p>
+            <div class="note-tags">
+                <span class="note-tag">ML</span>
+                <span class="note-tag">AI</span>
+            </div>
+        </div>
+
+        <div class="note-card">
+            <div class="note-header">
+                <h3 class="note-title">React Hooks Deep Dive</h3>
+                <span class="note-date">Dec 13, 2024</span>
+            </div>
+            <p class="note-preview">useState, useEffect, and custom hooks. Best practices for state management in React applications...</p>
+            <div class="note-tags">
+                <span class="note-tag">React</span>
+                <span class="note-tag">Frontend</span>
+            </div>
+        </div>
+
+        <div class="note-card">
+            <div class="note-header">
+                <h3 class="note-title">Database Design Principles</h3>
+                <span class="note-date">Dec 12, 2024</span>
+            </div>
+            <p class="note-preview">Normalization, indexing strategies, and query optimization. Essential for scalable applications...</p>
+            <div class="note-tags">
+                <span class="note-tag">Database</span>
+                <span class="note-tag">Backend</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .notes-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .notes-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .notes-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: hsl(var(--foreground));
+        margin-bottom: 0.5rem;
+    }
+
+    .notes-subtitle {
+        font-size: 1.125rem;
+        color: hsl(var(--muted-foreground));
+    }
+
+    .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .note-card {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .note-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    .note-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .note-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: hsl(var(--foreground));
+    }
+
+    .note-date {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+    }
+
+    .note-preview {
+        color: hsl(var(--muted-foreground));
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .note-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .note-tag {
+        background: hsl(var(--primary) / 0.1);
+        color: hsl(var(--primary));
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+        .notes-container {
+            padding: 1rem;
+        }
+        
+        .notes-title {
+            font-size: 2rem;
+        }
+        
+        .notes-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .notes-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    function createNewNote() {
+        // This would open a modal or navigate to a note editor
+        alert('Create new note functionality would be implemented here');
+    }
+</script>

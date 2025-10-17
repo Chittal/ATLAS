@@ -1,0 +1,281 @@
+<div class="skills-graph-container">
+    <div class="graph-controls">
+        <button id="reset-view" class="btn btn-secondary">Reset View</button>
+        <button id="layout-cose" class="btn btn-secondary">Auto Layout</button>
+        <button id="toggle-labels" class="btn btn-secondary">Toggle Labels</button>
+        <button id="path-da-agents" class="btn btn-primary">Path: Data Analyst → AI Agents</button>
+    </div>
+    <div id="cy"></div>
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <span>Loading flat graph...</span>
+    </div>
+</div>
+
+<style>
+    .skills-graph-container {
+        position: relative;
+        height: calc(100vh - 4rem);
+        width: 100%;
+        margin: 2rem auto;
+        max-width: calc(100vw - 18rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .graph-controls {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1000;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .graph-controls .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        border-radius: 0.375rem;
+        border: 1px solid hsl(var(--border));
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .graph-controls .btn:hover {
+        background: hsl(var(--muted));
+    }
+
+    .graph-controls .btn-primary {
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        border-color: hsl(var(--primary));
+    }
+
+    .graph-controls .btn-primary:hover {
+        background: hsl(var(--primary) / 0.9);
+    }
+
+    #cy {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 600px;
+        background: hsl(var(--background));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
+        flex: 1;
+    }
+
+    #loading {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        color: hsl(var(--muted-foreground));
+        font-size: 1rem;
+        z-index: 1000;
+    }
+
+    #loading.loaded { 
+        display: none; 
+    }
+
+    .loading-spinner {
+        width: 2rem;
+        height: 2rem;
+        border: 2px solid hsl(var(--muted));
+        border-top: 2px solid hsl(var(--primary));
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Adjust for skill panel */
+    .skill-panel-visible #cy {
+        right: 400px;
+    }
+
+    @media (max-width: 768px) {
+        .skill-panel-visible #cy {
+            right: 0;
+        }
+        
+        .graph-controls {
+            top: 0.5rem;
+            left: 0.5rem;
+            right: 0.5rem;
+        }
+        
+        .graph-controls .btn {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+</style>
+
+<script>
+// Initialize graph when this content is loaded (for HTMX)
+async function initSkillsGraph() {
+    let cy;
+    let labelsVisible = true;
+
+    async function init() {
+        try {
+            const response = await fetch('/api/roadmap-flat');
+            const data = await response.json();
+
+            const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+
+            document.getElementById('loading').classList.add('loaded');
+
+            cy = cytoscape({
+                container: document.getElementById('cy'),
+                elements: data.elements,
+                style: styleText,
+                layout: { name: 'cose' },
+            });
+
+            bind();
+        } catch (e) {
+            document.getElementById('loading').innerText = 'Error: ' + (e && e.message ? e.message : e);
+        }
+    }
+
+    function bind() {
+        document.getElementById('reset-view').addEventListener('click', () => cy.fit());
+        document.getElementById('layout-cose').addEventListener('click', () => cy.layout({ name: 'cose' }).run());
+        document.getElementById('toggle-labels').addEventListener('click', () => {
+            labelsVisible = !labelsVisible;
+            cy.style().selector('node').style('label', labelsVisible ? 'data(name)' : '').update();
+        });
+
+        // Reusable function to highlight path between any two skills
+        async function highlightPathBetweenSkills(startSkill = 'data analyst', targetSkill = 'ai agents') {
+            try {
+                console.log(`🎯 Highlighting path from "${startSkill}" to "${targetSkill}"`);
+                const res = await fetch('/api/skill-path?start=' + encodeURIComponent(startSkill) + '&end=' + encodeURIComponent(targetSkill));
+                const { path, edges } = await res.json();
+                if (!path || path.length === 0) {
+                    console.log(`❌ No path found from "${startSkill}" to "${targetSkill}"`);
+                    return;
+                }
+
+                // Reset previous state
+                cy.elements().removeClass('highlighted not-path');
+                cy.nodes().unselect();
+
+                // Dim everything by default
+                cy.elements().addClass('not-path');
+
+                // Extract IDs from path objects (handle both object and string formats)
+                const pathIds = path.map(item => typeof item === 'object' ? item.id : item);
+
+                pathIds.forEach(id => {
+                    const n = cy.getElementById(id);
+                    if (n) {
+                        n.addClass('highlighted');
+                        n.removeClass('not-path');
+                        n.select();
+                    }
+                });
+
+                edges.forEach(e => {
+                    const sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                    const targetId = typeof e.target === 'object' ? e.target.id : e.target;
+                    const edgeId = `${sourceId}-${targetId}`;
+                    const ed = cy.getElementById(edgeId);
+                    if (ed) {
+                        ed.addClass('highlighted');
+                        ed.removeClass('not-path');
+                    }
+                });
+
+                const highlighted = cy.elements('.highlighted');
+                if (highlighted && highlighted.length > 0) {
+                    cy.fit(highlighted, 80);
+                }
+
+                // Log path for debugging
+                console.log(`✅ Path from "${startSkill}" to "${targetSkill}":`, path);
+            } catch (e) {
+                console.error('Failed to fetch path', e);
+            }
+        }
+
+        // Make function globally available for external use
+        window.highlightPathBetweenSkills = highlightPathBetweenSkills;
+
+        // Path button with default values
+        document.getElementById('path-da-agents').addEventListener('click', async () => {
+            await highlightPathBetweenSkills(); // Uses default values: 'data analyst' and 'ai agents'
+        });
+
+        // Add click handler for nodes to show skill panel
+        cy.on('tap', 'node', function(evt) {
+            const node = evt.target;
+            const skillId = node.data('id');
+            const skillName = node.data('name');
+            
+            if (skillId) {
+                // Show skill panel
+                window.skillPanel.show(skillId);
+                
+                // Add class to body to adjust layout
+                document.body.classList.add('skill-panel-visible');
+                
+                // Listen for panel close to remove class
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            const panel = document.getElementById('skill-panel');
+                            if (panel && panel.classList.contains('hidden')) {
+                                document.body.classList.remove('skill-panel-visible');
+                                observer.disconnect();
+                            }
+                        }
+                    });
+                });
+                
+                const panel = document.getElementById('skill-panel');
+                if (panel) {
+                    observer.observe(panel, { attributes: true });
+                }
+            }
+        });
+
+        // Add hover effects for nodes
+        cy.on('mouseover', 'node', function(evt) {
+            const node = evt.target;
+            node.style('background-color', '#e3f2fd');
+            node.style('border-color', '#2196f3');
+        });
+
+        cy.on('mouseout', 'node', function(evt) {
+            const node = evt.target;
+            node.style('background-color', '');
+            node.style('border-color', '');
+        });
+    }
+
+    init();
+}
+
+// Call init when DOM is ready or immediately if already loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillsGraph);
+} else {
+    initSkillsGraph();
+}
+</script>

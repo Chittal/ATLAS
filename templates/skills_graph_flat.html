@@ -4,55 +4,116 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/skill-panel.css">
+{% endblock %}
+
+{% block base_styles %}
+/* Remove inner scrollbars for main app pages */
+.sidebar-provider { height: auto !important; min-height: 100vh !important; overflow: visible !important; }
+.sidebar-inset { overflow: visible !important; }
+.sidebar-inset-content { overflow: visible !important; max-height: none !important; }
+{% endblock %}
+
+{% block page_title %}Skills Graph{% endblock %}
+
+{% block body %}
+<div class="skills-graph-container">
+    <div class="graph-controls">
+        <button id="reset-view" class="btn btn-secondary">Reset View</button>
+        <button id="layout-cose" class="btn btn-secondary">Auto Layout</button>
+        <button id="toggle-labels" class="btn btn-secondary">Toggle Labels</button>
+        <button id="path-da-agents" class="btn btn-primary">Path: Data Analyst → AI Agents</button>
+    </div>
+    <div id="cy"></div>
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <span>Loading flat graph...</span>
+    </div>
+</div>
+
 <style>
+    .skills-graph-container {
+        position: relative;
+        height: calc(100vh - 8rem);
+        width: 100%;
+    }
+
+    .graph-controls {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1000;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .graph-controls .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        border-radius: 0.375rem;
+        border: 1px solid hsl(var(--border));
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .graph-controls .btn:hover {
+        background: hsl(var(--muted));
+    }
+
+    .graph-controls .btn-primary {
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        border-color: hsl(var(--primary));
+    }
+
+    .graph-controls .btn-primary:hover {
+        background: hsl(var(--primary) / 0.9);
+    }
+
     #cy {
         position: absolute;
         left: 0;
         top: 0;
         right: 0;
         bottom: 0;
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
+        background: hsl(var(--background));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
     }
 
     #loading {
         position: absolute;
-        left: 0;
+        left: 50%;
         top: 50%;
-        width: 100%;
-        text-align: center;
-        margin-top: -0.5em;
-        font-size: 2em;
-        color: #6c757d;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        color: hsl(var(--muted-foreground));
+        font-size: 1rem;
         z-index: 1000;
     }
 
-    #loading.loaded { display: none; }
-
-    .controls {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 1000;
-        background: white;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    #loading.loaded { 
+        display: none; 
     }
 
-    .controls button {
-        margin: 5px;
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
+    .loading-spinner {
+        width: 2rem;
+        height: 2rem;
+        border: 2px solid hsl(var(--muted));
+        border-top: 2px solid hsl(var(--primary));
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
     }
 
-    .controls button:hover { background-color: #0056b3; }
-    .controls button:disabled { background-color: #6c757d; cursor: not-allowed; }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 
     /* Adjust for skill panel */
     .skill-panel-visible #cy {
@@ -63,25 +124,19 @@
         .skill-panel-visible #cy {
             right: 0;
         }
+        
+        .graph-controls {
+            top: 0.5rem;
+            left: 0.5rem;
+            right: 0.5rem;
+        }
+        
+        .graph-controls .btn {
+            flex: 1;
+            min-width: 0;
+        }
     }
 </style>
-{% endblock %}
-
-{% block body %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="controls">
-                <button id="reset-view">Reset View</button>
-                <button id="layout-cose">Auto Layout</button>
-                <button id="toggle-labels">Toggle Labels</button>
-                <button id="path-da-agents">Path: Data Analyst → AI Agents</button>
-            </div>
-            <div id="cy"></div>
-            <div id="loading"><span class="spinner-border" role="status"></span> Loading flat graph...</div>
-        </div>
-    </div>
-</div>
 
 {% block scripts %}
 <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>

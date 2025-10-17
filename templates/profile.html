@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - ATLAS{% endblock %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block body %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-logo">
+            <img src="/static/atlas.png" alt="ATLAS" class="profile-logo-img">
+        </div>
+        <div class="profile-avatar">
+            <span class="profile-avatar-text">
+                {% if user %}
+                    {{ user.name[0].upper() }}
+                {% else %}
+                    U
+                {% endif %}
+            </span>
+        </div>
+        <div class="profile-info">
+            <h2 class="profile-name">
+                {% if user %}
+                    {{ user.name }}
+                {% else %}
+                    User Name
+                {% endif %}
+            </h2>
+            <p class="profile-email">
+                {% if user %}
+                    {{ user.email }}
+                {% else %}
+                    user@example.com
+                {% endif %}
+            </p>
+            <span class="profile-role">Learning Enthusiast</span>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Skills Learned</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Learning Paths</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">47</div>
+                    <div class="stat-label">Hours Studied</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Completed Python Basics</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Started Machine Learning Path</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Added note: "Data Structures"</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Learning Goals</h3>
+                <div class="goals-list">
+                    <div class="goal-item">
+                        <div class="goal-progress">
+                            <div class="goal-progress-bar">
+                                <div class="goal-progress-fill" style="width: 75%"></div>
+                            </div>
+                            <span class="goal-progress-text">75%</span>
+                        </div>
+                        <div class="goal-content">
+                            <div class="goal-title">Data Science Fundamentals</div>
+                            <div class="goal-description">Complete the data science learning path</div>
+                        </div>
+                    </div>
+
+                    <div class="goal-item">
+                        <div class="goal-progress">
+                            <div class="goal-progress-bar">
+                                <div class="goal-progress-fill" style="width: 40%"></div>
+                            </div>
+                            <span class="goal-progress-text">40%</span>
+                        </div>
+                        <div class="goal-content">
+                            <div class="goal-title">Machine Learning Mastery</div>
+                            <div class="goal-description">Learn advanced ML algorithms and techniques</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        padding: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 1rem;
+        position: relative;
+    }
+
+    .profile-logo {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .profile-logo-img {
+        width: 2.5rem;
+        height: 2.5rem;
+        object-fit: contain;
+    }
+
+    .profile-avatar {
+        width: 5rem;
+        height: 5rem;
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .profile-info {
+        flex: 1;
+    }
+
+    .profile-name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: hsl(var(--foreground));
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-email {
+        font-size: 1.125rem;
+        color: hsl(var(--muted-foreground));
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-role {
+        background: hsl(var(--primary) / 0.1);
+        color: hsl(var(--primary));
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .stat-card {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        width: 3rem;
+        height: 3rem;
+        background: hsl(var(--primary) / 0.1);
+        color: hsl(var(--primary));
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: hsl(var(--foreground));
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+        margin-top: 0.25rem;
+    }
+
+    .profile-sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .profile-section {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: hsl(var(--foreground));
+        margin-bottom: 1.5rem;
+    }
+
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: hsl(var(--muted) / 0.5);
+        border-radius: 0.5rem;
+    }
+
+    .activity-icon {
+        width: 2rem;
+        height: 2rem;
+        background: hsl(var(--primary) / 0.1);
+        color: hsl(var(--primary));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .activity-content {
+        flex: 1;
+    }
+
+    .activity-title {
+        font-weight: 500;
+        color: hsl(var(--foreground));
+        margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+    }
+
+    .goals-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .goal-item {
+        padding: 1rem;
+        background: hsl(var(--muted) / 0.5);
+        border-radius: 0.5rem;
+    }
+
+    .goal-progress {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .goal-progress-bar {
+        flex: 1;
+        height: 0.5rem;
+        background: hsl(var(--muted));
+        border-radius: 0.25rem;
+        overflow: hidden;
+    }
+
+    .goal-progress-fill {
+        height: 100%;
+        background: hsl(var(--primary));
+        border-radius: 0.25rem;
+        transition: width 0.3s ease;
+    }
+
+    .goal-progress-text {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: hsl(var(--primary));
+    }
+
+    .goal-title {
+        font-weight: 500;
+        color: hsl(var(--foreground));
+        margin-bottom: 0.25rem;
+    }
+
+    .goal-description {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            padding: 1rem;
+        }
+        
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .profile-sections {
+            grid-template-columns: 1fr;
+        }
+        
+        .profile-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

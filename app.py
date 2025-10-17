@@ -84,8 +84,8 @@ async def roadmap_progression_page(request: Request):
     })
 
 @app.get("/", response_class=HTMLResponse)
-async def skills_graph_flat_page(request: Request):
-    """Flat skills graph (no levels) visualization page"""
+async def home_page(request: Request):
+    """Home page"""
     user = get_current_user(request)
     print(f"Main page access - User: {user}")  # Debug logging
     
@@ -98,6 +98,114 @@ async def skills_graph_flat_page(request: Request):
     return templates.TemplateResponse("skills_graph_flat.html", {
         "request": request,
         "title": "Roadmap Kuzu Graph Style",
+        "user": user
+    })
+
+@app.get("/home-content", response_class=HTMLResponse)
+async def home_content(request: Request):
+    """Home page content for HTMX navigation"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("skills_graph_content.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/notes", response_class=HTMLResponse)
+async def notes_page(request: Request):
+    """Notes page"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("notes.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/notes-content", response_class=HTMLResponse)
+async def notes_content(request: Request):
+    """Notes page content for HTMX navigation"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("notes_content.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/roadmaps", response_class=HTMLResponse)
+async def roadmaps_page(request: Request):
+    """Roadmaps page"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("roadmaps.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/roadmaps-content", response_class=HTMLResponse)
+async def roadmaps_content(request: Request):
+    """Roadmaps page content for HTMX navigation"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("roadmaps_content.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/settings", response_class=HTMLResponse)
+async def settings_page(request: Request):
+    """Settings page"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("settings.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/settings-content", response_class=HTMLResponse)
+async def settings_content(request: Request):
+    """Settings page content for HTMX navigation"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("settings_content.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/skills", response_class=HTMLResponse)
+async def skills_page(request: Request):
+    """Skills page"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("skills.html", {
+        "request": request,
+        "user": user
+    })
+
+@app.get("/skills-content", response_class=HTMLResponse)
+async def skills_content(request: Request):
+    """Skills page content for HTMX navigation"""
+    user = get_current_user(request)
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    return templates.TemplateResponse("skills_content.html", {
+        "request": request,
         "user": user
     })
 
@@ -647,7 +755,7 @@ async def login_page(request: Request):
     """Login page"""
     user = get_current_user(request)
     if user:
-        return RedirectResponse(url="/", status_code=302)
+        return RedirectResponse(url="/home-content", status_code=302)
     
     return templates.TemplateResponse("auth/login.html", {
         "request": request,
@@ -659,7 +767,7 @@ async def signup_page(request: Request):
     """Signup page"""
     user = get_current_user(request)
     if user:
-        return RedirectResponse(url="/", status_code=302)
+        return RedirectResponse(url="/home-content", status_code=302)
     
     return templates.TemplateResponse("auth/signup.html", {
         "request": request,
