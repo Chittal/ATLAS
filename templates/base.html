@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
-    <script src="/static/skill-panel.js"></script>
     
     <!-- Chat Widget Styles -->
     <link rel="stylesheet" href="/static/chat-widget.css">
@@ -73,6 +72,11 @@
 
         * {
             border-color: hsl(var(--border));
+        }
+
+        html, body {
+            height: 100%;
+            overflow: auto; /* Allow page scrolling as fallback */
         }
 
         body {
@@ -631,7 +635,7 @@
         /* Sidebar Styles */
         .sidebar-provider {
             display: flex;
-            height: 100vh;
+            height: 100vh; /* Ensure full-viewport height for inner scroll */
             overflow: hidden;
         }
 
@@ -917,7 +921,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: hidden; /* Delegate scrolling to content area */
+            height: 100vh; /* Fill viewport to enable inner scrolling */
             margin-left: 16rem !important; /* Account for fixed sidebar width */
             transition: margin-left 0.3s ease;
         }
@@ -933,13 +938,29 @@
             padding: 1rem 1.5rem;
             border-bottom: 1px solid hsl(var(--border));
             background: hsl(var(--background));
+            height: 4rem; /* Fixed header height */
             min-height: 4rem;
+            box-sizing: border-box;
         }
 
         .sidebar-inset-content {
             flex: 1;
-            overflow-y: auto;
+            height: calc(100vh - 4rem); /* viewport minus header */
+            overflow-y: auto !important; /* force scrolling for main content */
+            -webkit-overflow-scrolling: touch;
             padding: 1.5rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        /* Force body to not scroll */
+        body {
+            overflow: auto !important;
+        }
+        
+        /* Ensure main content scrolls */
+        #main-content {
+            overflow: auto !important;
         }
 
         /* Mobile Responsive */
@@ -986,7 +1007,7 @@
         
         <!-- Main Content Area -->
         <div class="sidebar-inset" id="main-content">
-            {% if user %}
+            <!-- {% if user %}
             <div class="sidebar-inset-header">
                 <button class="sidebar-toggle" onclick="toggleSidebar()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -997,10 +1018,14 @@
                     <h1 class="text-lg font-semibold">{% block page_title %}ATLAS{% endblock %}</h1>
                 </div>
             </div>
-            {% endif %}
+            {% endif %} -->
             
             <div class="sidebar-inset-content">
-                {% block body %}{% endblock %}
+                {% if content_template %}
+                    {% include content_template %}
+                {% else %}
+                    {% block body %}{% endblock %}
+                {% endif %}
             </div>
         </div>
     </div>

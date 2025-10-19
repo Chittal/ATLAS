@@ -371,7 +371,7 @@
                     const expires = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
                     document.cookie = `auth_token=${data.token}; path=/; SameSite=Lax; expires=${expires}`;
                 }
-                window.location.href = '/home-content';
+                window.location.href = '/';
             } catch (e) {
                 const emailError = document.getElementById('emailError');
                 const passwordError = document.getElementById('passwordError');

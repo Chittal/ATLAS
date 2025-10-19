@@ -27,34 +27,6 @@ from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 
-
-# import openai
-# import os
-# from dotenv import load_dotenv
-# load_dotenv()  # take environment variables from .env.
-
-
-# client = openai.OpenAI(
-# 	api_key=api_key,
-# 	base_url="https://apps.reknew.ai/litellm"
-# )
-
-# import base64
-
-
-# def chat_completions_openai_litellm(messages, model="reasoning_mini"):
-#     # Example with text only
-#     response = client.chat.completions.create(
-#         model=model,
-#         messages=messages
-#     )
-
-#     print(response.choices[0].message.content.split("</think>")[-1].lstrip())
-
-
-#     return response.choices[0].message.content.split("</think>")[-1].lstrip()
-
-
 from langchain_litellm import ChatLiteLLM
 from langchain.schema import (
     SystemMessage,

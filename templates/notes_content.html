@@ -68,6 +68,7 @@
         padding: 2rem;
         max-width: 1200px;
         margin: 0 auto;
+        width: 100%;
     }
 
     .notes-header {
@@ -94,7 +95,9 @@
     .notes-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
+        gap: 2rem;
+        width: 100%;
+        align-items: start;
     }
 
     .note-card {
@@ -104,6 +107,10 @@
         padding: 1.5rem;
         transition: all 0.3s ease;
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-sizing: border-box;
     }
 
     .note-card:hover {

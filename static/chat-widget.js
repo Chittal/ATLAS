@@ -166,94 +166,15 @@ class ChatWidget {
     }
 
     async processMessage(message) {
-        console.log('🔍 Processing message:', message);
-        console.log('🎯 Routing to handleGeneralQuery');
+        console.log('Processing message:', message);
+        console.log('Routing to handleGeneralQuery');
         return await this.handleGeneralQuery(message);
-        
-        // Handle different types of queries
-        // if (lowerMessage.includes('path') || lowerMessage.includes('route') || lowerMessage.includes('→')) {
-        //     return await this.handlePathQuery(message);
-        // } else if (lowerMessage.includes('prerequisite') || lowerMessage.includes('requirement')) {
-        //     return await this.handlePrerequisiteQuery(message);
-        // } else if (lowerMessage.includes('skill') || lowerMessage.includes('learn')) {
-        //     return await this.handleSkillQuery(message);
-        // } else {
-        //     return await this.handleGeneralQuery(message);
-        // }
-    }
-
-    async handlePathQuery(message) {
-        // Extract skill names from message
-        const skillNames = this.extractSkillNames(message);
-        
-        if (skillNames.length >= 2) {
-            try {
-                const start = skillNames[0];
-                const end = skillNames[1];
-                
-                const response = await fetch(`/api/skill-path?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
-                const data = await response.json();
-                console.log('🔍 Path data:', data);
-                if (data.path && data.path.length > 0) {
-                    this.highlightPath(data.path);
-                    return this.formatPathResponse(data.path, start, end);
-                } else {
-                    return `I couldn't find a direct learning path from "${start}" to "${end}". They might not be connected in the current roadmap, or you might need to go through multiple intermediate skills.`;
-                }
-            } catch (error) {
-                console.error('Path query error:', error);
-                return 'Sorry, I had trouble finding that learning path. Please make sure the skill names are correct.';
-            }
-        } else {
-            return 'To find a learning path, please specify two skills like "Find path from Python to Machine Learning" or "Python → Machine Learning".';
-        }
-    }
-
-    async handlePrerequisiteQuery(message) {
-        const skillNames = this.extractSkillNames(message);
-        
-        if (skillNames.length > 0) {
-            const skillName = skillNames[0];
-            try {
-                const response = await fetch(`/api/skill/${encodeURIComponent(skillName)}`);
-                const data = await response.json();
-                
-                if (data.prerequisites && data.prerequisites.length > 0) {
-                    return this.formatPrerequisiteResponse(data.prerequisites, skillName);
-                } else {
-                    return `${skillName} doesn't have specific prerequisites in the current roadmap, or it's a foundational skill.`;
-                }
-            } catch (error) {
-                console.error('Prerequisite query error:', error);
-                return `Sorry, I couldn't find information about "${skillName}". Please check if the skill name is correct.`;
-            }
-        } else {
-            return 'Please specify a skill name to find its prerequisites, like "What are the prerequisites for React?"';
-        }
-    }
-
-    async handleSkillQuery(message) {
-        // This is a general skill-related query
-        const response = await fetch('/api/skill/query', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: message })
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            return data.response || 'I can help you learn about various skills and their relationships. What specific skill would you like to know about?';
-        } else {
-            return 'I can help you learn about various skills and their relationships. What specific skill would you like to know about?';
-        }
     }
 
     async handleGeneralQuery(message) {
         // For general queries, we can use the existing chat API
         try {
-            console.log('📡 Calling /api/general/chat with message:', message);
+            console.log('Calling /api/general/chat with message:', message);
             // Use a default skill ID for general queries
             const response = await fetch('/api/general/chat', {
                 method: 'POST',
@@ -265,10 +186,10 @@ class ChatWidget {
             
             if (response.ok) {
                 const data = await response.json();
-                console.log('✅ Received response from API:', data);
+                console.log('Received response from API:', data);
                 
                 // Check if this is a route planning response with path data
-                console.log('🔍 Checking for route planning data:', {
+                console.log('Checking for route planning data:', {
                     hasPathData: !!data.path_data,
                     category: data.agent_metadata?.category,
                     pathData: data.path_data,
@@ -281,14 +202,14 @@ class ChatWidget {
                 const hasPathData = data.path_data && data.path_data.path && data.path_data.path.length > 0;
                 const isRoutePlanning = data.agent_metadata && data.agent_metadata.category === 'ROUTE_PLANNING';
                 
-                console.log('🔍 Condition checks:', {
+                console.log('Condition checks:', {
                     hasPathData,
                     isRoutePlanning,
                     willHighlight: hasPathData && isRoutePlanning
                 });
                 
                 if (hasPathData && isRoutePlanning) {
-                    console.log('🗺️ Route planning detected, highlighting path:', data.path_data);
+                    console.log('Route planning detected, highlighting path:', data.path_data);
                     
                     // Try to trigger the existing Path button functionality
                     // Check if we're on the roadmap page and the Path button exists
@@ -304,7 +225,7 @@ class ChatWidget {
                         const pathTargetSkill = data.path_data.path[data.path_data.path.length - 1]?.name || targetSkill || 'ai agents';
                         window.highlightPathBetweenSkills(pathStartSkill, pathTargetSkill);
                     } else {
-                        console.log('⚠️ No path highlighting method found, trying direct highlighting');
+                        console.log('No path highlighting method found, trying direct highlighting');
                         // Fallback to direct highlighting
                         setTimeout(() => {
                             this.highlightPath(data.path_data.path);
@@ -316,7 +237,7 @@ class ChatWidget {
                         this.showStartLearningButton(data.path_data);
                     }, 1000); // Wait a bit for highlighting to complete
                 } else {
-                    console.log('❌ No path highlighting:', {
+                    console.log('No path highlighting:', {
                         reason: !hasPathData ? 'missing or empty path_data' : 'not route planning category',
                         hasPathData,
                         isRoutePlanning,
@@ -329,7 +250,7 @@ class ChatWidget {
                 
                 return data.ai_response || this.getDefaultResponse(message);
             } else {
-                console.log('❌ API response not ok:', response.status);
+                console.log('API response not ok:', response.status);
                 return this.getDefaultResponse(message);
             }
         } catch (error) {
@@ -684,14 +605,8 @@ class ChatWidget {
     }
 
     setupSkillPanelIntegration() {
-        // Listen for skill panel events
-        document.addEventListener('skillPanelOpened', (e) => {
-            this.currentSkill = e.detail.skillId;
-        });
-
-        document.addEventListener('skillPanelClosed', () => {
-            this.currentSkill = null;
-        });
+        // Skill panel integration removed
+        this.currentSkill = null;
     }
 
     setupStartLearningButton() {

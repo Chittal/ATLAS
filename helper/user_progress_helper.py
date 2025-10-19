@@ -18,7 +18,9 @@ class UserProgressHelper:
         
         # Quick smoke test
         try:
+            print("Checking if PocketBase client is valid")
             _ = self.pb.collection('roadmaps').get_list(1, 1)
+            print("PocketBase client is valid")
         except Exception as e:
             raise RuntimeError(f"PocketBase client invalid or unauthorized: {e}")
     
@@ -104,18 +106,24 @@ class UserProgressHelper:
     
     def get_user_roadmap_paths(self, user_id: str) -> List[Dict]:
         """Get all roadmap paths for a user (admin client)."""
-        user_paths = self.pb.collection('user_roadmap_path').get_list(1, 50, {
-            "filter": f"user_id = '{user_id}'",
-            "expand": "roadmap_path_id,roadmap_path_id.roadmap_id"
-        })
-        return [{
-            "id": path.id,
-            "progress": getattr(path, 'progress', 0),
-            "completed_at": getattr(path, 'completed_at', None),
-            "roadmap_path_id": getattr(path, 'roadmap_path_id', None),
-            "created": getattr(path, 'created', None),
-            "updated": getattr(path, 'updated', None)
-        } for path in user_paths.items]
+        try:
+            print(f"Getting user roadmap paths for user_id: {user_id}")
+            user_paths = self.pb.collection('user_roadmap_path').get_list(1, 50, {
+                "filter": f"user_id = '{user_id}'",
+                "expand": "roadmap_path_id,roadmap_path_id.roadmap_id"
+            })
+            print(user_paths, "user_paths")
+            return [{
+                "id": path.id,
+                "progress": getattr(path, 'progress', 0),
+                "completed_at": getattr(path, 'completed_at', None),
+                "roadmap_path_id": getattr(path, 'roadmap_path_id', None),
+                "created": getattr(path, 'created', None),
+                "updated": getattr(path, 'updated', None)
+            } for path in user_paths.items]
+        except Exception as e:
+            print(f"Error getting user roadmap paths: {e}")
+            return []
     
     def update_user_progress(self, user_roadmap_path_id: str, progress: float, 
                            completed_at: Optional[str] = None) -> Dict:
@@ -274,3 +282,33 @@ class UserProgressHelper:
             return {"success": True, "records_updated": 1, "learning_nodes_count": learning_nodes_count}
         except Exception as e:
             return {"success": False, "error": str(e), "roadmap_path_id": roadmap_path_id, "skill_id": skill_id}
+    
+    def get_skills_from_user_roadmap_path(self, user_roadmap_path_id: str) -> List[Dict]:
+        """Get skills from a user roadmap path, ordered by order_index."""
+        try:
+            # First get the roadmap_path_id from user_roadmap_path
+            user_path = self.pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
+            roadmap_path_id = getattr(user_path, 'roadmap_path_id', None)
+            
+            if not roadmap_path_id:
+                return []
+            
+            # Get all skills for this roadmap path, ordered by order_index
+            skills_records = self.pb.collection('roadmap_path_skills').get_list(1, 100, {
+                "filter": f"roadmap_path_id = '{roadmap_path_id}'",
+                "sort": "order_index"
+            })
+            
+            skills = []
+            for record in skills_records.items:
+                skills.append({
+                    "id": getattr(record, 'skill_id', ''),
+                    "order_index": getattr(record, 'order_index', 0),
+                    "learning_nodes_count": getattr(record, 'learning_nodes_count', 0)
+                })
+            
+            return skills
+            
+        except Exception as e:
+            print(f"Error getting skills from user roadmap path: {e}")
+            return []
