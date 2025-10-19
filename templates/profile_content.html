@@ -1,398 +1,299 @@
-<div class="profile-container">
-    <div class="profile-header">
-        <div class="profile-logo">
-            <img src="/static/atlas.png" alt="ATLAS" class="profile-logo-img">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - AI Learning Subway Map</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <div class="avatar-circle">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+            <div class="profile-info-header">
+                <h1 class="profile-name">{{ user.name or 'User' }}</h1>
+                <p class="profile-email">{{ user.email }}</p>
+                <div class="profile-badges">
+                    {% if user.verified %}
+                    <span class="badge verified">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"></path>
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                        Verified
+                    </span>
+                    {% endif %}
+                    <span class="badge member">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Member since {{ user.created.strftime('%B %Y') if user.created else 'Unknown' }}
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="profile-avatar">
-            <span class="profile-avatar-text">
-                {% if user %}
-                    {{ user.name[0].upper() }}
-                {% else %}
-                    U
-                {% endif %}
-            </span>
+
+        <!-- Your Activity Section -->
+        <div class="activity-section">
+            <h2 class="section-title">Your Activity</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon notes">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">{{ user.statistics.notes_count }}</div>
+                        <div class="stat-label">Notes Created</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon favorites">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">{{ user.statistics.favorite_notes_count }}</div>
+                        <div class="stat-label">Favorite Notes</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon tags">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                            <line x1="7" y1="7" x2="7.01" y2="7"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">{{ user.statistics.tags_count }}</div>
+                        <div class="stat-label">Unique Tags</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon roadmaps">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">{{ user.statistics.roadmaps_count }}</div>
+                        <div class="stat-label">Learning Paths</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="profile-info">
-            <h2 class="profile-name">
-                {% if user %}
-                    {{ user.name }}
-                {% else %}
-                    User Name
-                {% endif %}
-            </h2>
-            <p class="profile-email">
-                {% if user %}
-                    {{ user.email }}
-                {% else %}
-                    user@example.com
-                {% endif %}
-            </p>
-            <span class="profile-role">Learning Enthusiast</span>
-        </div>
+
     </div>
 
-    <div class="profile-content">
-        <div class="profile-stats">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">15</div>
-                    <div class="stat-label">Skills Learned</div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Learning Paths</div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                    </svg>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">47</div>
-                    <div class="stat-label">Hours Studied</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="profile-sections">
-            <div class="profile-section">
-                <h3 class="section-title">Recent Activity</h3>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                            </svg>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Completed Python Basics</div>
-                            <div class="activity-time">2 hours ago</div>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Started Machine Learning Path</div>
-                            <div class="activity-time">1 day ago</div>
-                        </div>
-                    </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                            </svg>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-title">Added note: "Data Structures"</div>
-                            <div class="activity-time">3 days ago</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-section">
-                <h3 class="section-title">Learning Goals</h3>
-                <div class="goals-list">
-                    <div class="goal-item">
-                        <div class="goal-progress">
-                            <div class="goal-progress-bar">
-                                <div class="goal-progress-fill" style="width: 75%"></div>
-                            </div>
-                            <span class="goal-progress-text">75%</span>
-                        </div>
-                        <div class="goal-content">
-                            <div class="goal-title">Data Science Fundamentals</div>
-                            <div class="goal-description">Complete the data science learning path</div>
-                        </div>
-                    </div>
-
-                    <div class="goal-item">
-                        <div class="goal-progress">
-                            <div class="goal-progress-bar">
-                                <div class="goal-progress-fill" style="width: 40%"></div>
-                            </div>
-                            <span class="goal-progress-text">40%</span>
-                        </div>
-                        <div class="goal-content">
-                            <div class="goal-title">Machine Learning Mastery</div>
-                            <div class="goal-description">Learn advanced ML algorithms and techniques</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .profile-container {
-        padding: 2rem;
-        max-width: 1000px;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .profile-header {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-        margin-bottom: 3rem;
-        padding: 2rem;
-        background: hsl(var(--card));
-        border: 1px solid hsl(var(--border));
-        border-radius: 1rem;
-        position: relative;
-    }
-
-    .profile-logo {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-    }
-
-    .profile-logo-img {
-        width: 2.5rem;
-        height: 2.5rem;
-        object-fit: contain;
-    }
-
-    .profile-avatar {
-        width: 5rem;
-        height: 5rem;
-        background: hsl(var(--primary));
-        color: hsl(var(--primary-foreground));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        font-weight: 700;
-        flex-shrink: 0;
-    }
-
-    .profile-info {
-        flex: 1;
-    }
-
-    .profile-name {
-        font-size: 2rem;
-        font-weight: 700;
-        color: hsl(var(--foreground));
-        margin-bottom: 0.5rem;
-    }
-
-    .profile-email {
-        font-size: 1.125rem;
-        color: hsl(var(--muted-foreground));
-        margin-bottom: 0.5rem;
-    }
-
-    .profile-role {
-        background: hsl(var(--primary) / 0.1);
-        color: hsl(var(--primary));
-        padding: 0.25rem 0.75rem;
-        border-radius: 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-
-    .profile-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 3rem;
-    }
-
-    .stat-card {
-        background: hsl(var(--card));
-        border: 1px solid hsl(var(--border));
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .stat-icon {
-        width: 3rem;
-        height: 3rem;
-        background: hsl(var(--primary) / 0.1);
-        color: hsl(var(--primary));
-        border-radius: 0.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .stat-content {
-        flex: 1;
-    }
-
-    .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: hsl(var(--foreground));
-        line-height: 1;
-    }
-
-    .stat-label {
-        font-size: 0.875rem;
-        color: hsl(var(--muted-foreground));
-        margin-top: 0.25rem;
-    }
-
-    .profile-sections {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-    }
-
-    .profile-section {
-        background: hsl(var(--card));
-        border: 1px solid hsl(var(--border));
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-    }
-
-    .section-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: hsl(var(--foreground));
-        margin-bottom: 1.5rem;
-    }
-
-    .activity-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .activity-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-        background: hsl(var(--muted) / 0.5);
-        border-radius: 0.5rem;
-    }
-
-    .activity-icon {
-        width: 2rem;
-        height: 2rem;
-        background: hsl(var(--primary) / 0.1);
-        color: hsl(var(--primary));
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .activity-content {
-        flex: 1;
-    }
-
-    .activity-title {
-        font-weight: 500;
-        color: hsl(var(--foreground));
-        margin-bottom: 0.25rem;
-    }
-
-    .activity-time {
-        font-size: 0.875rem;
-        color: hsl(var(--muted-foreground));
-    }
-
-    .goals-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .goal-item {
-        padding: 1rem;
-        background: hsl(var(--muted) / 0.5);
-        border-radius: 0.5rem;
-    }
-
-    .goal-progress {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .goal-progress-bar {
-        flex: 1;
-        height: 0.5rem;
-        background: hsl(var(--muted));
-        border-radius: 0.25rem;
-        overflow: hidden;
-    }
-
-    .goal-progress-fill {
-        height: 100%;
-        background: hsl(var(--primary));
-        border-radius: 0.25rem;
-        transition: width 0.3s ease;
-    }
-
-    .goal-progress-text {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: hsl(var(--primary));
-    }
-
-    .goal-title {
-        font-weight: 500;
-        color: hsl(var(--foreground));
-        margin-bottom: 0.25rem;
-    }
-
-    .goal-description {
-        font-size: 0.875rem;
-        color: hsl(var(--muted-foreground));
-    }
-
-    @media (max-width: 768px) {
+    <style>
         .profile-container {
-            padding: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.1) 100%);
+            min-height: 100vh;
         }
-        
+
         .profile-header {
-            flex-direction: column;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: hsl(var(--card));
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid hsl(var(--border));
         }
-        
-        .profile-sections {
-            grid-template-columns: 1fr;
+
+        .profile-avatar {
+            flex-shrink: 0;
         }
-        
-        .profile-stats {
-            grid-template-columns: 1fr;
+
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 8px 25px -8px hsl(var(--primary) / 0.4);
         }
-    }
-</style>
+
+        .profile-info-header {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+            margin: 0 0 0.5rem 0;
+            line-height: 1.2;
+        }
+
+        .profile-email {
+            font-size: 1.1rem;
+            color: hsl(var(--muted-foreground));
+            margin: 0 0 1rem 0;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge.verified {
+            background: hsl(var(--success) / 0.1);
+            color: hsl(var(--success));
+            border: 1px solid hsl(var(--success) / 0.2);
+        }
+
+        .badge.member {
+            background: hsl(var(--primary) / 0.1);
+            color: hsl(var(--primary));
+            border: 1px solid hsl(var(--primary) / 0.2);
+        }
+
+        .activity-section {
+            background: hsl(var(--card));
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid hsl(var(--border));
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin: 0 0 1.5rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: hsl(var(--muted) / 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid hsl(var(--border));
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.15);
+            background: hsl(var(--muted) / 0.5);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.notes {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .stat-icon.favorites {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .stat-icon.tags {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-icon.roadmaps {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 1rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+
+            .profile-name {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>

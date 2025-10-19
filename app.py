@@ -11,6 +11,7 @@ import deps
 from routes.users import router as users_router
 from routes.roadmap_progress import router as roadmap_progress_router
 from routes.learning_map import router as learning_map_router
+from routes.notes import router as notes_router
 
 import os
 from dotenv import load_dotenv
@@ -59,6 +60,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(users_router)
 app.include_router(roadmap_progress_router)
 app.include_router(learning_map_router)
+app.include_router(notes_router)
 
 # Templates managed in deps.py
 

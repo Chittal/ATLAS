@@ -1,5 +1,5 @@
 import hashlib
-from typing import List, Dict, Optional
+from typing import List, Dict, Any, Optional
 from config import app_config
 
 
@@ -15,14 +15,6 @@ class UserProgressHelper:
             raise RuntimeError("PocketBase client not provided to UserProgressHelper")
         if not self.secret:
             raise RuntimeError("SECRET not configured in environment variables")
-        
-        # Quick smoke test
-        try:
-            print("Checking if PocketBase client is valid")
-            _ = self.pb.collection('roadmaps').get_list(1, 1)
-            print("PocketBase client is valid")
-        except Exception as e:
-            raise RuntimeError(f"PocketBase client invalid or unauthorized: {e}")
     
     def _generate_skill_sequence_hash(self, skill_sequence: str) -> str:
         """Generate a hash for skill sequence using SECRET"""
@@ -312,3 +304,54 @@ class UserProgressHelper:
         except Exception as e:
             print(f"Error getting skills from user roadmap path: {e}")
             return []
+    
+    def get_user_skill_progress(self, user_roadmap_path_id: str, skill_id: str) -> Dict[str, Any]:
+        """Get user's progress for a specific skill."""
+        try:
+            # Get all learning nodes for this skill from KuzuDB
+            from helper.helper import get_kuzu_manager
+            manager = get_kuzu_manager()
+            skill_info = manager.get_skill_by_id(skill_id)
+            
+            if not skill_info:
+                return {"completed": 0, "total": 0, "percentage": 0}
+            
+            # Get learning nodes for this skill
+            learning_nodes = manager.get_learning_nodes_by_skill_name(skill_info["name"])
+            total_nodes = len(learning_nodes)
+            
+            if total_nodes == 0:
+                return {"completed": 0, "total": 0, "percentage": 0}
+            
+            # Try to get completed learning nodes for this user and skill
+            # Handle case where collection might not exist or have different structure
+            completed_count = 0
+            try:
+                # Get all progress records for this skill
+                all_records = self.pb.collection('user_learning_node_progress').get_list(1, 100, {
+                    "filter": f"user_roadmap_path_id = '{user_roadmap_path_id}' && skill_id = '{skill_id}'"
+                })
+                
+                # Count records where completed_at is not null/empty
+                for record in all_records.items:
+                    completed_at = getattr(record, 'completed_at', None)
+                    if completed_at and completed_at.strip():  # Not null and not empty string
+                        completed_count += 1
+                        
+            except Exception as filter_error:
+                print(f"Error querying user_learning_node_progress collection: {filter_error}")
+                # If the collection doesn't exist or has issues, return 0 progress
+                completed_count = 0
+            
+            percentage = (completed_count / total_nodes) * 100 if total_nodes > 0 else 0
+            
+            return {
+                "completed": completed_count,
+                "total": total_nodes,
+                "percentage": round(percentage, 1)
+            }
+            
+        except Exception as e:
+            print(f"Error getting user skill progress: {e}")
+            return {"completed": 0, "total": 0, "percentage": 0}
+    

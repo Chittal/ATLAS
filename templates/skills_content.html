@@ -4,7 +4,7 @@
         <p class="skills-subtitle">Browse and explore all available skills in the learning ecosystem</p>
     </div>
 
-    <div class="skills-filters">
+    <!-- <div class="skills-filters">
         <div class="filter-group">
             <label for="category-filter" class="filter-label">Category</label>
             <select id="category-filter" class="filter-select">
@@ -16,89 +16,10 @@
             </select>
         </div>
         
-        <div class="filter-group">
-            <label for="level-filter" class="filter-label">Level</label>
-            <select id="level-filter" class="filter-select">
-                <option value="">All Levels</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-            </select>
-        </div>
-    </div>
+    </div> -->
 
-    <div class="skills-grid">
-        <div class="skill-card">
-            <div class="skill-header">
-                <h3 class="skill-name">Python Programming</h3>
-                <span class="skill-level beginner">Beginner</span>
-            </div>
-            <p class="skill-description">Learn Python fundamentals, data structures, and object-oriented programming</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Programming</span>
-                <span class="skill-tag">Backend</span>
-            </div>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-header">
-                <h3 class="skill-name">Machine Learning</h3>
-                <span class="skill-level intermediate">Intermediate</span>
-            </div>
-            <p class="skill-description">Build and deploy machine learning models using scikit-learn and TensorFlow</p>
-            <div class="skill-tags">
-                <span class="skill-tag">AI/ML</span>
-                <span class="skill-tag">Data Science</span>
-            </div>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-header">
-                <h3 class="skill-name">React Development</h3>
-                <span class="skill-level intermediate">Intermediate</span>
-            </div>
-            <p class="skill-description">Create interactive user interfaces with React and modern JavaScript</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Frontend</span>
-                <span class="skill-tag">JavaScript</span>
-            </div>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-header">
-                <h3 class="skill-name">Data Analysis</h3>
-                <span class="skill-level beginner">Beginner</span>
-            </div>
-            <p class="skill-description">Analyze data using pandas, NumPy, and visualization libraries</p>
-            <div class="skill-tags">
-                <span class="skill-tag">Data Science</span>
-                <span class="skill-tag">Statistics</span>
-            </div>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-header">
-                <h3 class="skill-name">Deep Learning</h3>
-                <span class="skill-level advanced">Advanced</span>
-            </div>
-            <p class="skill-description">Advanced neural networks, CNNs, RNNs, and transformer architectures</p>
-            <div class="skill-tags">
-                <span class="skill-tag">AI/ML</span>
-                <span class="skill-tag">Neural Networks</span>
-            </div>
-        </div>
-
-        <div class="skill-card">
-            <div class="skill-header">
-                <h3 class="skill-name">Cloud Computing</h3>
-                <span class="skill-level intermediate">Intermediate</span>
-            </div>
-            <p class="skill-description">Deploy and manage applications on AWS, Azure, and Google Cloud</p>
-            <div class="skill-tags">
-                <span class="skill-tag">DevOps</span>
-                <span class="skill-tag">Infrastructure</span>
-            </div>
-        </div>
+    <div class="skills-grid" id="skills-grid">
+        <!-- Skills will be loaded dynamically -->
     </div>
 </div>
 
@@ -173,7 +94,6 @@
         border-radius: 0.75rem;
         padding: 1.5rem;
         transition: all 0.3s ease;
-        cursor: pointer;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -240,6 +160,34 @@
         font-size: 0.75rem;
     }
 
+    .skill-progress {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid hsl(var(--border));
+    }
+
+    .skill-progress-bar {
+        width: 100%;
+        height: 0.5rem;
+        background: hsl(var(--muted));
+        border-radius: 0.25rem;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+
+    .skill-progress-fill {
+        height: 100%;
+        background: hsl(var(--primary));
+        border-radius: 0.25rem;
+        transition: width 0.3s ease;
+    }
+
+    .skill-progress-text {
+        font-size: 0.875rem;
+        color: hsl(var(--muted-foreground));
+        text-align: center;
+    }
+
     @media (max-width: 768px) {
         .skills-container {
             padding: 1rem;
@@ -259,3 +207,128 @@
         }
     }
 </style>
+
+<script>
+    // Load user skills immediately since this is loaded via HTMX
+    (async () => {
+        const skillsGrid = document.getElementById('skills-grid');
+        
+        try {
+            console.log('Fetching user skills...');
+            const response = await fetch('/api/user/skills', {
+                credentials: 'include' // Include cookies for auth
+            });
+            
+            console.log('Response status:', response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            console.log('API response:', data);
+            
+            if (data.skills && data.skills.length > 0) {
+                displaySkills(data.skills);
+            } else {
+                displayNoSkills();
+            }
+        } catch (error) {
+            console.error('Error loading skills:', error);
+            displayError();
+        }
+    })();
+
+    function displaySkills(skills) {
+        const skillsGrid = document.getElementById('skills-grid');
+        skillsGrid.innerHTML = '';
+
+        skills.forEach(skill => {
+            const skillCard = createSkillCard(skill);
+            skillsGrid.appendChild(skillCard);
+        });
+    }
+
+    function createSkillCard(skill) {
+        const card = document.createElement('div');
+        card.className = 'skill-card';
+        // Removed onclick functionality - no page navigation
+        
+        const progress = skill.progress || { completed: 0, total: 0, percentage: 0 };
+        const progressBar = progress.total > 0 ? 
+            `<div class="skill-progress">
+                <div class="skill-progress-bar">
+                    <div class="skill-progress-fill" style="width: ${progress.percentage}%"></div>
+                </div>
+                <div class="skill-progress-text">${progress.completed}/${progress.total} completed (${progress.percentage}%)</div>
+            </div>` : '';
+
+        card.innerHTML = `
+            <div class="skill-header">
+                <h3 class="skill-name">${skill.name}</h3>
+                <span class="skill-progress-badge">${progress.percentage}%</span>
+            </div>
+            <p class="skill-description">${skill.description || `Learn ${skill.name} skills and concepts`}</p>
+            <div class="skill-tags">
+                <span class="skill-tag">Skill</span>
+                <span class="skill-tag">Learning Path</span>
+            </div>
+            ${progressBar}
+        `;
+        
+        return card;
+    }
+
+    function displayNoSkills() {
+        const skillsGrid = document.getElementById('skills-grid');
+        skillsGrid.innerHTML = `
+            <div class="no-skills-message">
+                <h3>No Skills Available</h3>
+                <p>You haven't started any learning paths yet. Go to the Learning Paths page to get started!</p>
+            </div>
+        `;
+    }
+
+    function displayError() {
+        const skillsGrid = document.getElementById('skills-grid');
+        skillsGrid.innerHTML = `
+            <div class="error-message">
+                <h3>Error Loading Skills</h3>
+                <p>There was an error loading your skills. Please try refreshing the page.</p>
+            </div>
+        `;
+    }
+
+
+    // Add styles for new elements
+    const style = document.createElement('style');
+    style.textContent = `
+        .skill-progress-badge {
+            background: hsl(var(--primary) / 0.1);
+            color: hsl(var(--primary));
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .no-skills-message, .error-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: hsl(var(--muted) / 0.5);
+            border-radius: 0.75rem;
+            border: 1px solid hsl(var(--border));
+        }
+
+        .no-skills-message h3, .error-message h3 {
+            color: hsl(var(--foreground));
+            margin-bottom: 1rem;
+        }
+
+        .no-skills-message p, .error-message p {
+            color: hsl(var(--muted-foreground));
+        }
+    `;
+    document.head.appendChild(style);
+</script>

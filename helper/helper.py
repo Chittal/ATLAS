@@ -26,9 +26,13 @@ def get_current_user(request: Request):
         return None
     
     try:
-        # Set the token in auth store and validate with PocketBase
-        pb.auth_store.save(token, {"id": "temp", "email": "temp"})
-        auth_data = pb.collection('users').authRefresh()
+        # Create a new PocketBase client instance to avoid corrupting the shared one
+        from helper.pocketbase_helper import get_pb_client
+        client = get_pb_client()
+        
+        # Set the token in the new client's auth store
+        client.auth_store.save(token, {"id": "temp", "email": "temp"})
+        auth_data = client.collection('users').authRefresh()
         
         if auth_data and auth_data.record:
             return auth_data.record

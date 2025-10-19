@@ -40,6 +40,71 @@ async def get_skill_details(skill_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error getting skill details: {str(e)}")
 
+@router.get("/api/user/skills")
+async def get_user_skills(request: Request):
+    """Get all skills for the current user from their roadmap paths."""
+    try:
+        user = get_current_user(request)
+        if not user:
+            raise HTTPException(status_code=401, detail="Not authenticated")
+        
+        # Get user's roadmap paths
+        from helper.pocketbase_helper import get_pb_admin_client
+        admin_pb = get_pb_admin_client()
+        user_roadmap_paths = admin_pb.collection('user_roadmap_path').get_list(1, 100, {
+            "filter": f"user_id = '{user.id}'"
+        })
+        
+        if not user_roadmap_paths.items:
+            return {"skills": []}
+        
+        # Get all roadmap_path_ids
+        roadmap_path_ids = [path.roadmap_path_id for path in user_roadmap_paths.items]
+        
+        # Get skills from roadmap_path_skills table
+        all_skills = []
+        for roadmap_path_id in roadmap_path_ids:
+            roadmap_skills = admin_pb.collection('roadmap_path_skills').get_list(1, 100, {
+                "filter": f"roadmap_path_id = '{roadmap_path_id}'"
+            })
+            
+            for roadmap_skill in roadmap_skills.items:
+                # Get skill info from KuzuDB
+                manager = get_kuzu_manager()
+                skill_info = manager.get_skill_by_id(roadmap_skill.skill_id)
+                
+                if skill_info:
+                    # Check if user has progress on this skill
+                    progress_helper = UserProgressHelper(admin_pb)
+                    skill_progress = progress_helper.get_user_skill_progress(user.id, roadmap_skill.skill_id)
+                    
+                    all_skills.append({
+                        "id": skill_info["id"],
+                        "name": skill_info["name"],
+                        "description": skill_info.get("description", ""),
+                        "order_index": skill_info.get("order_index", 0),
+                        "progress": skill_progress,
+                        "roadmap_path_id": roadmap_path_id
+                    })
+        
+        # Remove duplicates and sort by order_index
+        unique_skills = {}
+        for skill in all_skills:
+            if skill["id"] not in unique_skills:
+                unique_skills[skill["id"]] = skill
+        
+        skills_list = list(unique_skills.values())
+        skills_list.sort(key=lambda x: x.get("order_index", 0))
+        
+        return {"skills": skills_list}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting user skills: {str(e)}")
+
+
+
 @router.get("/api/skill/{skill_name}/learning-nodes")
 async def get_learning_nodes_by_skill(skill_name: str):
     """Get learning nodes for a specific skill by name."""
@@ -65,7 +130,9 @@ async def get_learning_graph_by_skill(skill_name: str, user_roadmap_path_id: str
         
         # Update learning_nodes_count in roadmap_path_skills table
         try:
-            progress_helper = UserProgressHelper(pb)
+            from helper.pocketbase_helper import get_pb_admin_client
+            admin_pb = get_pb_admin_client()
+            progress_helper = UserProgressHelper(admin_pb)
             # Resolve roadmap_path_id from user_roadmap_path_id if needed
             if user_roadmap_path_id:
                 try:
