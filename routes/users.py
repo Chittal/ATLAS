@@ -1,9 +1,10 @@
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
 from schemas.user import UserSignup, UserLogin
-from deps import templates, pb
+from deps import templates
 from helper.helper import get_current_user
-
+from helper.pocketbase_helper import get_pb_admin_client
+pb = get_pb_admin_client()
 router = APIRouter(
     prefix="",
     tags=["Users"],

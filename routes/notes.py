@@ -1,6 +1,6 @@
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
-from deps import templates, pb
+from deps import templates
 from helper.helper import get_current_user
 from typing import Optional
 from schemas.notes import NoteCreate, NoteUpdate

@@ -1,5 +1,5 @@
 from fastapi import Request, HTTPException, APIRouter
-from deps import pb, templates
+from deps import templates
 from helper.user_progress_helper import UserProgressHelper
 from helper.helper import get_kuzu_manager
 from fastapi.responses import RedirectResponse, HTMLResponse

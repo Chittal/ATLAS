@@ -14,7 +14,7 @@ class BedrockClient:
     
     def __init__(self, model: str = None):
         # Use provided model or fallback to config or default
-        self.model = model or app_config.model or "anthropic.claude-3-sonnet-20240229-v1:0"
+        self.model = "anthropic.claude-3-sonnet-20240229-v1:0"
         
         if not self.model:
             raise ValueError("Model name is required but not provided")

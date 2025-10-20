@@ -12,7 +12,7 @@ migrate((app) => {
   // note: the values can be eventually loaded via $os.getenv(key)
   // or from a special local config file
   record.set("email", "admin@gmail.com")
-  record.set("password", "admin12345")
+  record.set("password", "Admin@1234")
 
   app.save(record)
   console.log("Set up Admin account successfully!")

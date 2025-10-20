@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize PocketBase user client for auth flows
-pb = get_pb_admin_client()
+# pb = get_pb_admin_client()
 
 
 
@@ -76,4 +76,5 @@ app.include_router(agent_router)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8008)
+    port = int(os.getenv("PORT", 8008))  # Use PORT env var or default to 8008
+    uvicorn.run(app, host="0.0.0.0", port=port)

@@ -1,4 +1,4 @@
-from deps import pb, kuzu_manager
+from deps import kuzu_manager
 from fastapi import Request
 
 def get_kuzu_manager():

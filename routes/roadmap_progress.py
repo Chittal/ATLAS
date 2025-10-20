@@ -1,5 +1,4 @@
 from fastapi import Request, HTTPException, APIRouter
-from deps import pb
 from helper.user_progress_helper import UserProgressHelper
 from helper.helper import get_current_user
 
@@ -149,7 +148,8 @@ async def incomplete_learning_node(request: Request, completion_data: dict):
         
         if not learning_node_id or not user_roadmap_path_id:
             raise HTTPException(status_code=400, detail="Missing required fields: learning_node_id, user_roadmap_path_id")
-        
+        from helper.pocketbase_helper import get_pb_admin_client
+        pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(pb)
         result = progress_helper.remove_learning_node_completion(
             user_id=user.id,
@@ -174,6 +174,8 @@ async def get_learning_node_progress(request: Request, user_roadmap_path_id: str
         raise HTTPException(status_code=401, detail="Not authenticated")
     
     try:
+        from helper.pocketbase_helper import get_pb_admin_client
+        pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(pb)
         progress_records = progress_helper.get_user_learning_node_progress(
             user_id=user.id,

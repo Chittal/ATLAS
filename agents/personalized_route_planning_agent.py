@@ -1,7 +1,7 @@
 import json
 from config import app_config
 # from llm.ollama import OllamaClient
-from llm.groq import GroqClient
+from llm.bedrock import BedrockClient
 # from llm.litellm import LiteLLMClient
 from schemas.agent import AgentState
 from langchain_core.tools import tool as langchain_tool
@@ -15,7 +15,7 @@ class PersonalizedRoutePlanningAgent:
 
         # self.llm = OllamaClient(model=app_config.model)
         # self.llm = LiteLLMClient(model=app_config.model)
-        self.llm = GroqClient(model=app_config.model)
+        self.llm = BedrockClient(model=app_config.model)
         # Use injected shared instance if provided; otherwise, create one
         self.kuzu_db_helper = kuzu_helper if kuzu_helper is not None else KuzuSkillGraph()
         # tools = [self.pre_requisite, self.skill_details]
