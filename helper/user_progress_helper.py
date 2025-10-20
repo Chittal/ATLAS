@@ -277,33 +277,33 @@ class UserProgressHelper:
     
     def get_skills_from_user_roadmap_path(self, user_roadmap_path_id: str) -> List[Dict]:
         """Get skills from a user roadmap path, ordered by order_index."""
-        try:
-            # First get the roadmap_path_id from user_roadmap_path
-            user_path = self.pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
-            roadmap_path_id = getattr(user_path, 'roadmap_path_id', None)
-            
-            if not roadmap_path_id:
-                return []
-            
-            # Get all skills for this roadmap path, ordered by order_index
-            skills_records = self.pb.collection('roadmap_path_skills').get_list(1, 100, {
-                "filter": f"roadmap_path_id = '{roadmap_path_id}'",
-                "sort": "order_index"
-            })
-            
-            skills = []
-            for record in skills_records.items:
-                skills.append({
-                    "id": getattr(record, 'skill_id', ''),
-                    "order_index": getattr(record, 'order_index', 0),
-                    "learning_nodes_count": getattr(record, 'learning_nodes_count', 0)
-                })
-            
-            return skills
-            
-        except Exception as e:
-            print(f"Error getting skills from user roadmap path: {e}")
+        # try:
+        # First get the roadmap_path_id from user_roadmap_path
+        user_path = self.pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
+        roadmap_path_id = getattr(user_path, 'roadmap_path_id', None)
+        
+        if not roadmap_path_id:
             return []
+        
+        # Get all skills for this roadmap path, ordered by order_index
+        skills_records = self.pb.collection('roadmap_path_skills').get_list(1, 100, {
+            "filter": f"roadmap_path_id = '{roadmap_path_id}'",
+            "sort": "order_index"
+        })
+        
+        skills = []
+        for record in skills_records.items:
+            skills.append({
+                "id": getattr(record, 'skill_id', ''),
+                "order_index": getattr(record, 'order_index', 0),
+                "learning_nodes_count": getattr(record, 'learning_nodes_count', 0)
+            })
+        
+        return skills
+        
+        # except Exception as e:
+        #     print(f"Error getting skills from user roadmap path: {e}")
+        #     return []
     
     def get_user_skill_progress(self, user_roadmap_path_id: str, skill_id: str) -> Dict[str, Any]:
         """Get user's progress for a specific skill."""

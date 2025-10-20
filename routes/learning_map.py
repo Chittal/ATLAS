@@ -190,79 +190,81 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
     - start, end: Use these to find a path between two skills by name
     - user_roadmap_path_id: Use this to get skills from a saved user roadmap path
     """
-    try:
-        manager = get_kuzu_manager()
+    # try:
+    manager = get_kuzu_manager()
+    
+    # If user_roadmap_path_id is provided, get skills from the saved roadmap path
+    if user_roadmap_path_id:
+        # Ensure we have a fresh admin client
+        from helper.pocketbase_helper import get_pb_admin_client
+        admin_pb = get_pb_admin_client()
+        progress_helper = UserProgressHelper(admin_pb)
+        skills = progress_helper.get_skills_from_user_roadmap_path(user_roadmap_path_id)
+        print(skills, "skills")
         
-        # If user_roadmap_path_id is provided, get skills from the saved roadmap path
-        if user_roadmap_path_id:
-            # Ensure we have a fresh admin client
-            from helper.pocketbase_helper import get_pb_admin_client
-            admin_pb = get_pb_admin_client()
-            progress_helper = UserProgressHelper(admin_pb)
-            skills = progress_helper.get_skills_from_user_roadmap_path(user_roadmap_path_id)
-            
-            if not skills:
-                return {"path": [], "edges": []}
-            
-            # Convert skill IDs to full skill objects with names
-            paths = []
-            for skill in skills:
-                skill_obj = manager.get_skill_by_id(skill["id"])
-                if skill_obj:
-                    paths.append({
-                        "id": skill["id"],
-                        "name": skill_obj["name"],
-                        "order_index": skill["order_index"],
-                        "learning_nodes_count": skill["learning_nodes_count"]
-                    })
-            
-            # Create edges between consecutive skills
-            edges = []
-            for i in range(len(paths) - 1):
-                source = paths[i]["id"]
-                target = paths[i + 1]["id"]
-                edges.append({
-                    "id": f"{source}-{target}",
-                    "source": source,
-                    "target": target
-                })
-            
-            return {
-                "path": paths,
-                "edges": edges,
-                "source": "user_roadmap_path"
-            }
+        if not skills:
+            return {"path": [], "edges": []}
         
-        # Fallback to start/end parameters
-        elif start and end:
-            print(start, end, "start, end")
-            paths = manager.find_learning_path(start, end)
-            print(paths, "paths")
-            if not paths:
-                return {"path": [], "edges": []}
-
-            edges = []
-            for i in range(len(paths) - 1):
-                source = paths[i]["id"]
-                target = paths[i + 1]["id"]
-                edges.append({
-                    "id": f"{source}-{target}",
-                    "source": source,
-                    "target": target
+        # Convert skill IDs to full skill objects with names
+        paths = []
+        for skill in skills:
+            skill_obj = manager.get_skill_by_id(skill["id"])
+            print(skill_obj, "skill_obj")
+            if skill_obj:
+                paths.append({
+                    "id": skill["id"],
+                    "name": skill_obj["name"],
+                    "order_index": skill["order_index"],
+                    "learning_nodes_count": skill["learning_nodes_count"]
                 })
+        
+        # Create edges between consecutive skills
+        edges = []
+        for i in range(len(paths) - 1):
+            source = paths[i]["id"]
+            target = paths[i + 1]["id"]
+            edges.append({
+                "id": f"{source}-{target}",
+                "source": source,
+                "target": target
+            })
+        
+        return {
+            "path": paths,
+            "edges": edges,
+            "source": "user_roadmap_path"
+        }
+    
+    # Fallback to start/end parameters
+    elif start and end:
+        print(start, end, "start, end")
+        paths = manager.find_learning_path(start, end)
+        print(paths, "paths")
+        if not paths:
+            return {"path": [], "edges": []}
 
-            return {
-                "path": paths,
-                "edges": edges,
-                "source": "start_end_params"
-            }
-        else:
-            raise HTTPException(status_code=400, detail="Either provide start/end parameters or user_roadmap_path_id")
-            
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
+        edges = []
+        for i in range(len(paths) - 1):
+            source = paths[i]["id"]
+            target = paths[i + 1]["id"]
+            edges.append({
+                "id": f"{source}-{target}",
+                "source": source,
+                "target": target
+            })
+
+        return {
+            "path": paths,
+            "edges": edges,
+            "source": "start_end_params"
+        }
+    else:
+        raise HTTPException(status_code=400, detail="Either provide start/end parameters or user_roadmap_path_id")
+        
+    # except HTTPException:
+    #     raise
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
 
 @router.post("/api/general/chat")
 async def general_chat(request: Request):

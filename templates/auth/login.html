@@ -1,16 +1,16 @@
-{% extends "base.html" %}
-
-{% block title %}{{ title }} - ATLAS{% endblock %}
-
-{% block head %}
-<style>
-        /* Override sidebar margin for auth pages */
-        .sidebar-inset {
-            margin-left: 0 !important;
-        }
-        
-        .sidebar-provider {
-            display: block !important;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - ATLAS</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: hsl(var(--background));
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .login-container {
@@ -19,15 +19,16 @@
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
+            background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.1) 100%);
         }
 
         .login-card {
-            background: hsl(var(--card));
-            color: hsl(var(--card-foreground));
-            border-radius: calc(var(--radius) + 4px);
-            border: 1px solid hsl(var(--border));
+            background: white;
+            color: #1f2937;
+            border-radius: 1rem;
+            border: 2px solid #e5e7eb;
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            padding: 1.75rem;
+            padding: 2rem;
             width: 100%;
             max-width: 24rem;
         }
@@ -76,18 +77,19 @@
         .form-input {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 1px solid hsl(var(--border));
-            border-radius: calc(var(--radius) - 2px);
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
             font-size: 0.875rem;
             transition: all 0.2s ease;
-            background: hsl(var(--background));
-            color: hsl(var(--foreground));
+            background: white;
+            color: #1f2937;
+            box-sizing: border-box;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: hsl(var(--ring));
-            box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .form-input.error {
@@ -104,11 +106,11 @@
 
         .form-button {
             width: 100%;
-            background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
-            color: hsl(var(--primary-foreground));
+            background: #3b82f6;
+            color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: calc(var(--radius) - 2px);
+            border-radius: 0.5rem;
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
@@ -121,6 +123,7 @@
         }
 
         .form-button:hover:not(:disabled) {
+            background: #2563eb;
             transform: translateY(-1px);
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
@@ -134,20 +137,6 @@
         .form-button:focus-visible {
             outline: 2px solid hsl(var(--ring));
             outline-offset: 2px;
-        }
-
-        /* HTMX loading states */
-        .htmx-request .form-button {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .htmx-request .loading-spinner {
-            display: inline-block;
-        }
-
-        .htmx-request #buttonText {
-            opacity: 0.7;
         }
 
         .loading-spinner {
@@ -213,24 +202,6 @@
             display: none;
         }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            color: hsl(var(--muted-foreground));
-            text-decoration: none;
-            font-size: 0.875rem;
-            margin-bottom: 1.25rem;
-            transition: color 0.2s ease;
-        }
-
-        .back-link:hover {
-            color: hsl(var(--foreground));
-        }
-
-        .back-link i {
-            margin-right: 0.5rem;
-        }
-
         @media (max-width: 480px) {
             .login-card {
                 padding: 1.5rem;
@@ -241,152 +212,123 @@
                 font-size: 1.5rem;
             }
         }
-
-        /* Remove inner scroll to avoid double scrollbar on auth pages */
-        .sidebar-provider {
-            height: auto;
-            min-height: 100vh;
-            overflow: visible;
-        }
-
-        .sidebar-inset {
-            overflow: visible;
-        }
-
-        .sidebar-inset-content {
-            overflow: visible;
-            max-height: none;
-        }
-
-        /* Hide chat widget on login page */
-        .chat-widget {
-            display: none !important;
-        }
-</style>
-{% endblock %}
-
-{% block base_styles %}
-/* Ensure auth pages use only the main page scrollbar */
-.sidebar-provider { height: auto !important; min-height: 100vh !important; overflow: visible !important; }
-.sidebar-inset { overflow: visible !important; }
-.sidebar-inset-content { overflow: visible !important; max-height: none !important; }
-{% endblock %}
-
-{% block body %}
-<div class="login-container">
-    <div class="login-card">
-        <div class="login-header">
-            <div class="login-logo">
-                <img src="/static/atlas.png" alt="ATLAS" class="login-logo-img">
-            </div>
-            <h1 class="login-title">Welcome to ATLAS</h1>
-            <p class="login-subtitle">Sign in to continue your learning journey</p>
-        </div>
-
-        <div class="success-message" id="successMessage"></div>
-
-        <form id="loginForm">
-            <div class="form-group">
-                <label class="form-label" for="email">Email Address</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="form-input" 
-                    placeholder="Enter your email"
-                    required
-                >
-                <div class="error-message" id="emailError"></div>
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <img src="/static/atlas.png" alt="ATLAS" class="login-logo-img">
+                </div>
+                <h1 class="login-title">Welcome to ATLAS</h1>
+                <p class="login-subtitle">Sign in to continue your learning journey</p>
             </div>
 
-            <div class="form-group">
-                <label class="form-label" for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    class="form-input" 
-                    placeholder="Enter your password"
-                    required
-                >
-                <div class="error-message" id="passwordError"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="form-button" id="submitButton">
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <span id="buttonText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>New to our platform?</span>
             </div>
 
-            <button type="submit" class="form-button" id="submitButton">
-                <div class="loading-spinner" id="loadingSpinner"></div>
-                <span id="buttonText">Sign In</span>
-            </button>
-        </form>
-
-        <div class="auth-divider">
-            <span>New to our platform?</span>
-        </div>
-
-        <div class="auth-footer">
-            <p>Don't have an account? <a href="/signup" class="auth-link">Signup</a></p>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="/signup" class="auth-link">Signup</a></p>
+            </div>
         </div>
     </div>
-    </div>
-</div>
 
-<script>
-    (function() {
-        const form = document.getElementById('loginForm');
-        const submitButton = document.getElementById('submitButton');
-        const spinner = document.getElementById('loadingSpinner');
-        const buttonText = document.getElementById('buttonText');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
+    <script>
+        (function() {
+            const form = document.getElementById('loginForm');
+            const submitButton = document.getElementById('submitButton');
+            const spinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
 
-        function setLoading(isLoading) {
-            if (!submitButton) return;
-            submitButton.disabled = isLoading;
-            if (spinner) spinner.style.display = isLoading ? 'inline-block' : 'none';
-            if (buttonText) buttonText.textContent = isLoading ? 'Signing In...' : 'Sign In';
-        }
-
-        async function handleSubmit(event) {
-            event.preventDefault();
-            setLoading(true);
-            try {
-                const payload = {
-                    email: emailInput?.value?.trim() || '',
-                    password: passwordInput?.value || ''
-                };
-
-                const res = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!res.ok) {
-                    const err = await res.json().catch(() => ({}));
-                    throw new Error(err.detail || 'Login failed');
-                }
-
-                const data = await res.json();
-                if (data?.token) {
-                    // Set auth token cookie
-                    const expires = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
-                    document.cookie = `auth_token=${data.token}; path=/; SameSite=Lax; expires=${expires}`;
-                }
-                window.location.href = '/';
-            } catch (e) {
-                const emailError = document.getElementById('emailError');
-                const passwordError = document.getElementById('passwordError');
-                if (emailError) emailError.style.display = 'block';
-                if (passwordError) passwordError.style.display = 'block';
-                const msg = (e && e.message) ? e.message : 'Invalid email or password';
-                if (passwordError) passwordError.textContent = msg;
-            } finally {
-                setLoading(false);
+            function setLoading(isLoading) {
+                if (!submitButton) return;
+                submitButton.disabled = isLoading;
+                if (spinner) spinner.style.display = isLoading ? 'inline-block' : 'none';
+                if (buttonText) buttonText.textContent = isLoading ? 'Signing In...' : 'Sign In';
             }
-        }
 
-        if (form) {
-            form.addEventListener('submit', handleSubmit);
-        }
-    })();
-</script>
-{% endblock %}
+            async function handleSubmit(event) {
+                event.preventDefault();
+                setLoading(true);
+                try {
+                    const payload = {
+                        email: emailInput?.value?.trim() || '',
+                        password: passwordInput?.value || ''
+                    };
+
+                    const res = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.detail || 'Login failed');
+                    }
+
+                    const data = await res.json();
+                    if (data?.token) {
+                        // Set auth token cookie
+                        const expires = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
+                        document.cookie = `auth_token=${data.token}; path=/; SameSite=Lax; expires=${expires}`;
+                    }
+                    window.location.href = '/';
+                } catch (e) {
+                    const emailError = document.getElementById('emailError');
+                    const passwordError = document.getElementById('passwordError');
+                    if (emailError) emailError.style.display = 'block';
+                    if (passwordError) passwordError.style.display = 'block';
+                    const msg = (e && e.message) ? e.message : 'Invalid email or password';
+                    if (passwordError) passwordError.textContent = msg;
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            if (form) {
+                form.addEventListener('submit', handleSubmit);
+            }
+        })();
+    </script>
+</body>
+</html>

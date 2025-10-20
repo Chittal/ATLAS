@@ -901,6 +901,170 @@
             justify-content: center;
         }
     }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        background: hsl(var(--card));
+        margin: 5% auto;
+        padding: 0;
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.75rem;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-50px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid hsl(var(--border));
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: hsl(var(--foreground));
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: hsl(var(--muted-foreground));
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+        background: hsl(var(--muted));
+        color: hsl(var(--foreground));
+    }
+
+    .note-form {
+        padding: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        color: hsl(var(--foreground));
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid hsl(var(--border));
+        border-radius: 0.5rem;
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        font-size: 0.875rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: hsl(var(--ring));
+        box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .form-help {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: hsl(var(--muted-foreground));
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 0.875rem;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+        margin-right: 0.5rem;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        padding: 1.5rem;
+        border-top: 1px solid hsl(var(--border));
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+    }
+
+    .btn-primary {
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+    }
+
+    .btn-primary:hover {
+        background: hsl(var(--primary) / 0.9);
+    }
+
+    .btn-secondary {
+        background: hsl(var(--secondary));
+        color: hsl(var(--secondary-foreground));
+        border: 1px solid hsl(var(--border));
+    }
+
+    .btn-secondary:hover {
+        background: hsl(var(--secondary) / 0.8);
+    }
 </style>
 {% endblock %}
 
@@ -958,6 +1122,12 @@
                         </svg>
                         Begin Learning
                     </button>
+                    <button class="action-button btn btn-outline btn-lg" id="create-note-action" onclick="openNotesPage()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                        Create Note
+                    </button>
                     <button class="action-button secondary btn btn-secondary btn-lg" id="ask-questions-action">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z"/>
@@ -977,6 +1147,42 @@
             </div>
         </div>
     </div>
+
+    <!-- Note Modal -->
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Create New Note</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="note-form" class="note-form">
+                <div class="form-group">
+                    <label for="note-title-input">Title</label>
+                    <input type="text" id="note-title-input" class="form-input" placeholder="Enter note title..." required>
+                </div>
+                <div class="form-group">
+                    <label for="note-content-input">Content</label>
+                    <textarea id="note-content-input" class="form-textarea" placeholder="Enter your note content..." rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="note-tags-input">Tags</label>
+                    <input type="text" id="note-tags-input" class="form-input" placeholder="Enter tags separated by commas (e.g., Python, Programming, Learning)">
+                    <small class="form-help">Separate multiple tags with commas</small>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="note-favorite-input">
+                        <span class="checkmark"></span>
+                        Mark as favorite
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="save-note-btn">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
@@ -991,7 +1197,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const startSkill = urlParams.get('start') || 'data analyst';
     const endSkill = urlParams.get('end') || 'ai agents';
-    const roadmapPathId = urlParams.get('roadmap_path_id');
+    const roadmapPathId = urlParams.get('user_roadmap_path_id');
     
     // If we have a roadmap path ID from the URL, set it immediately
     if (roadmapPathId) {
@@ -1000,13 +1206,25 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     // Update page title and subtitle
-    document.getElementById('path-subtitle').textContent = `${startSkill} → ${endSkill}`;
-    document.title = `Learning Path: ${startSkill} → ${endSkill}`;
+    if (roadmapPathId) {
+        document.getElementById('path-subtitle').textContent = 'Saved Roadmap';
+        document.title = 'Learning Path: Saved Roadmap';
+    } else {
+        document.getElementById('path-subtitle').textContent = `${startSkill} → ${endSkill}`;
+        document.title = `Learning Path: ${startSkill} → ${endSkill}`;
+    }
     
     async function init() {
         try {
-            // Fetch path data
-            const pathResponse = await fetch(`/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`);
+            // Fetch path data - use user_roadmap_path_id if available, otherwise use start/end
+            let pathUrl;
+            if (roadmapPathId) {
+                pathUrl = `/api/skill-path?user_roadmap_path_id=${encodeURIComponent(roadmapPathId)}`;
+            } else {
+                pathUrl = `/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+            }
+            
+            const pathResponse = await fetch(pathUrl);
             pathData = await pathResponse.json(); // Store in global variable
             
             if (!pathData.path || pathData.path.length === 0) {
@@ -1629,18 +1847,18 @@ document.addEventListener('DOMContentLoaded', async function() {
          try {
              let userRoadmapPathId = getCurrentUserRoadmapPathId();
              
-             // If no roadmap path ID exists, try to get or create one
-             if (!userRoadmapPathId) {
-                 console.log('No user roadmap path ID available, attempting to get/create one...');
-                 userRoadmapPathId = await getOrCreateUserRoadmapPath();
-                 if (userRoadmapPathId) {
-                     setCurrentUserRoadmapPathId(userRoadmapPathId);
-                     console.log('📊 User roadmap path ID created/retrieved:', userRoadmapPathId);
-                 } else {
-                     console.log('Could not get or create user roadmap path, skipping database save');
-                     return;
-                 }
-             }
+            // If no roadmap path ID exists, try to get or create one
+            if (!userRoadmapPathId) {
+                // If we have a roadmap path ID from URL, use that
+                if (roadmapPathId) {
+                    console.log('Using roadmap path ID from URL:', roadmapPathId);
+                    userRoadmapPathId = roadmapPathId;
+                    setCurrentUserRoadmapPathId(roadmapPathId);
+                } else {
+                    console.log('No user roadmap path ID available, skipping database save');
+                    return;
+                }
+            }
              
              const nodeItem = document.getElementById(`node-${nodeId}`);
              const skillId = nodeItem?.dataset.skillId || '';
@@ -1728,7 +1946,13 @@ document.addEventListener('DOMContentLoaded', async function() {
              // Get current path data
              let currentPathData = pathData;
              if (!currentPathData || !currentPathData.path) {
-                 const pathResponse = await fetch(`/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`);
+                 let pathUrl;
+                 if (roadmapPathId) {
+                     pathUrl = `/api/skill-path?user_roadmap_path_id=${encodeURIComponent(roadmapPathId)}`;
+                 } else {
+                     pathUrl = `/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+                 }
+                 const pathResponse = await fetch(pathUrl);
                  currentPathData = await pathResponse.json();
              }
              
@@ -2008,6 +2232,105 @@ document.addEventListener('DOMContentLoaded', async function() {
             }, 300);
         }
     });
+    
+    // Function to open notes modal
+    window.openNotesPage = function() {
+        // Reset form and show modal
+        document.getElementById('note-form').reset();
+        document.getElementById('modal-title').textContent = 'Create New Note';
+        document.getElementById('save-note-btn').textContent = 'Save Note';
+        document.getElementById('save-note-btn').onclick = (event) => {
+            event.preventDefault();
+            handleSaveNote();
+        };
+        document.getElementById('note-modal').style.display = 'block';
+        
+        // Focus on title input
+        setTimeout(() => {
+            document.getElementById('note-title-input').focus();
+        }, 100);
+    };
+
+    // Close modal
+    function closeModal() {
+        document.getElementById('note-modal').style.display = 'none';
+        document.getElementById('note-form').reset();
+    }
+
+    // Save note function
+    async function handleSaveNote() {
+        const title = document.getElementById('note-title-input').value.trim();
+        const content = document.getElementById('note-content-input').value.trim();
+        const tags = document.getElementById('note-tags-input').value.trim();
+        const isFavorite = document.getElementById('note-favorite-input').checked;
+
+        if (!title || !content) {
+            alert('Please fill in both title and content');
+            return;
+        }
+
+        try {
+            const tagsArray = tags ? tags.split(',').map(tag => tag.trim().toLowerCase()).filter(tag => tag) : [];
+            
+            const noteData = {
+                title: title,
+                content: content,
+                tags: tagsArray,
+                is_favorite: isFavorite
+            };
+
+            const response = await fetch('/api/user/notes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(noteData)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Failed to save note');
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Note saved successfully!');
+                closeModal();
+            } else {
+                throw new Error(result.message || 'Failed to save note');
+            }
+        } catch (error) {
+            console.error('Error saving note:', error);
+            alert('Error saving note: ' + error.message);
+        }
+    }
+
+    // Setup modal event listeners
+    function setupModalEventListeners() {
+        // Form submission
+        document.getElementById('note-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleSaveNote();
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('note-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('note-modal')) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    }
+    
+    // Initialize modal event listeners
+    setupModalEventListeners();
     
     init();
 });
