@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: learning-map-app
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: PORT
+        fromService:
+          type: web
+          name: learning-map-app
+          property: port
+    # Add your environment variables here
+    # These should be set in Render dashboard or via CLI
+    # Example:
+    # - key: POCKETBASE_URL
+    #   sync: false
+    # - key: POCKETBASE_EMAIL
+    #   sync: false
+    # - key: POCKETBASE_PASSWORD
+    #   sync: false
+    # - key: API_BASE
+    #   sync: false
+    # - key: API_KEY
+    #   sync: false
+    # - key: MODEL
+    #   value: llama3.1:8b
+    # - key: SECRET
+    #   sync: false
+    # - key: GROQ_API_KEY
+    #   sync: false
+    # - key: OPENAI_API_KEY
+    #   sync: false
+    # - key: CUSTOM_LLM_PROVIDER
+    #   sync: false
