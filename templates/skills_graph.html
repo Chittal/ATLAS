@@ -34,7 +34,7 @@
     .controls {
         position: absolute;
         top: 10px;
-        left: 10px;
+        right: 10px;
         z-index: 1000;
         background: white;
         padding: 10px;
@@ -139,13 +139,21 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Load data from API
             console.log('Fetching data from API...');
-            const response = await fetch('/api/skills-graph');
+            const response = await fetch('/api/roadmap-flat');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             console.log('Data loaded:', data);
+            console.log('Nodes count:', data.elements?.nodes?.length || 0);
+            console.log('Edges count:', data.elements?.edges?.length || 0);
             
             // Load styles
             console.log('Loading styles...');
             const styleResponse = await fetch('/static/skills-graph.cycss');
+            if (!styleResponse.ok) {
+                throw new Error(`Style file not found! status: ${styleResponse.status}`);
+            }
             const style = await styleResponse.text();
             console.log('Styles loaded');
             
@@ -153,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loading').classList.add('loaded');
             
             // Initialize Cytoscape
+            console.log('Initializing Cytoscape...');
             cy = cytoscape({
                 container: document.getElementById('cy'),
                 elements: data.elements,
@@ -164,15 +173,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 autolock: false
             });
             
-            // Register extensions (if available)
-            if (typeof require !== 'undefined') {
-                cy.use(require('cytoscape-popper'));
-            }
+            // Avoid using cytoscape-popper in the browser to prevent errors
             
             // Bind events
             bindEvents();
             
             console.log('Cytoscape initialized successfully!');
+            console.log('Graph elements:', cy.elements().length);
             
         } catch (error) {
             console.error('Error initializing Cytoscape:', error);
@@ -225,12 +232,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function calculatePath(start, end) {
         try {
-            const response = await fetch(`/api/skill-path?start_skill=${start.id()}&end_skill=${end.id()}`);
+            const startName = start.data('name');
+            const endName = end.data('name');
+            const response = await fetch(`/api/skill-path?start=${encodeURIComponent(startName)}&end=${encodeURIComponent(endName)}`);
             const pathData = await response.json();
-            
+
             if (pathData.path && pathData.path.length > 0) {
-                highlightPath(pathData.path);
-                showPathInfo(pathData);
+                // Convert objects to ids if needed
+                const pathIds = pathData.path.map(item => typeof item === 'object' ? item.id : item);
+                highlightPath(pathIds);
+                showPathInfo({ path: pathIds });
             } else {
                 showPathInfo({ path: [], message: 'No direct path found' });
             }

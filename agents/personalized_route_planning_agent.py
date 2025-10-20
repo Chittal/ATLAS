@@ -3,7 +3,7 @@ from config import app_config
 # from llm.ollama import OllamaClient
 from llm.groq import GroqClient
 # from llm.litellm import LiteLLMClient
-from agents.state import AgentState
+from schemas.agent import AgentState
 from langchain_core.tools import tool as langchain_tool
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import InMemorySaver

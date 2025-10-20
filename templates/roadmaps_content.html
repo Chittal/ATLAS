@@ -1,0 +1,176 @@
+<div class="roadmaps-container">
+    <div class="roadmaps-header">
+        <h2 class="roadmaps-title">Learning Paths</h2>
+        <p class="roadmaps-subtitle">Discover structured learning journeys tailored to your goals</p>
+    </div>
+
+    <div class="roadmaps-grid" id="user-roadmaps">
+        <!-- Will be populated by script -->
+    </div>
+</div>
+
+<style>
+    .roadmaps-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .roadmaps-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .roadmaps-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: hsl(var(--foreground));
+        margin-bottom: 1rem;
+    }
+
+    .roadmaps-subtitle {
+        font-size: 1.125rem;
+        color: hsl(var(--muted-foreground));
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .roadmaps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        width: 100%;
+        align-items: start;
+    }
+
+    .roadmap-card {
+        background: hsl(var(--card));
+        border: 1px solid hsl(var(--border));
+        border-radius: 1rem;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .roadmap-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .roadmap-icon {
+        width: 3rem;
+        height: 3rem;
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .roadmap-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: hsl(var(--foreground));
+        margin-bottom: 0.75rem;
+    }
+
+    .roadmap-description {
+        color: hsl(var(--muted-foreground));
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .roadmap-stats {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.875rem;
+    }
+
+    .roadmap-duration,
+    .roadmap-skills {
+        background: hsl(var(--muted));
+        color: hsl(var(--muted-foreground));
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .roadmaps-container {
+            padding: 1rem;
+        }
+        
+        .roadmaps-title {
+            font-size: 2rem;
+        }
+        
+        .roadmaps-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+// Populate user's roadmaps from API - run immediately since this is loaded via HTMX
+(async () => {
+    const container = document.getElementById('user-roadmaps');
+    
+    try {
+        console.log('Fetching user roadmaps...');
+        const res = await fetch('/api/user/roadmaps', {
+            credentials: 'include' // Include cookies for auth
+        });
+        
+        console.log('Response status:', res.status);
+
+        console.log('Response:', res);
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+        
+        const data = await res.json();
+        console.log('Response text:', data);
+        console.log('API response:', data);
+        
+        container.innerHTML = '';
+
+        if (!data.success || !data.roadmaps || data.roadmaps.length === 0) {
+            container.innerHTML = '<p class="text-muted-foreground">No saved learning paths yet.</p>';
+            console.log('No saved learning paths yet.');
+            return;
+        }
+        
+        console.log('Found roadmaps:', data.roadmaps);
+        data.roadmaps.forEach((rm) => {
+            const card = document.createElement('div');
+            card.className = 'roadmap-card';
+            card.innerHTML = `
+                <div class="roadmap-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <h3 class="roadmap-title">${rm.name || 'Saved Path'}</h3>
+                <p class="roadmap-description">${rm.skill_count} skills • Progress: ${Math.round((rm.progress || 0) * 100)}%</p>
+                <div class="roadmap-stats">
+                    <span class="roadmap-skills">${rm.skill_count} skills</span>
+                </div>
+            `;
+            card.addEventListener('click', () => {
+                // Navigate to focused learning path view using user roadmap path ID
+                window.location.href = `/learning-path?user_roadmap_path_id=${rm.user_roadmap_path_id}`;
+            });
+            container.appendChild(card);
+        });
+    } catch (e) {
+        console.error('Failed to load user roadmaps:', e);
+        container.innerHTML = `<p class="text-muted-foreground">Error loading roadmaps: ${e.message}</p>`;
+    }
+})();
+</script>

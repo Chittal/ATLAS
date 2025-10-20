@@ -288,8 +288,8 @@ class KuzuSkillGraph:
     
     def _insert_edge(self, edge: Dict[str, Any], skill_id: str, learning_node_mapping: Dict[str, str]):
         """Insert an edge (relationship) between learning nodes."""
-        from_node_id = learning_node_mapping.get(edge.get("from"))
-        to_node_id = learning_node_mapping.get(edge.get("to"))
+        from_node_id = learning_node_mapping.get(edge.get("source"))
+        to_node_id = learning_node_mapping.get(edge.get("target"))
         audience_type = edge.get("audience_type", "")
         
         if from_node_id and to_node_id:
@@ -748,77 +748,6 @@ class KuzuSkillGraph:
         print("=================================")
         return path
     
-    def find_learning_path_using_bfs(self, start_skill: str, end_skill: str) -> List[str]:
-        """Find a learning path between two skills using BFS."""
-        # Resolve skill names to IDs from KuzuDB
-        def _get_id_by_name(name: str) -> Optional[str]:
-            res = self.conn.execute(
-                """
-                MATCH (s:Skill)
-                WHERE toLower(s.name) = toLower($name)
-                RETURN s.id LIMIT 1
-                """,
-                parameters={"name": name}
-            )
-            if res.has_next():
-                return res.get_next()[0]
-            return None
-
-        start_id = _get_id_by_name(start_skill)
-        end_id = _get_id_by_name(end_skill)
-        print(start_id, end_id, "start_id, end_id")
-        if not start_id or not end_id:
-            print(f"Skill not found: {start_skill} or {end_skill}")
-            return []
-        
-        # Fall back to Python BFS over directed edges
-        from collections import deque
-
-        def get_neighbors(skill_id: str) -> List[str]:
-            res = self.conn.execute(
-                """
-                MATCH (s:Skill {id: $id})-[:SKILL_CONNECTION]->(n:Skill)
-                RETURN n.id
-                """,
-                parameters={"id": skill_id}
-            )
-            neighbors: List[str] = []
-            while res.has_next():
-                row = res.get_next()
-                neighbors.append(row[0])
-            return neighbors
-
-        queue: deque[str] = deque([start_id])
-        visited: set[str] = {start_id}
-        parent: dict[str, Optional[str]] = {start_id: None}
-
-        found: bool = False
-        while queue:
-            current = queue.popleft()
-            if current == end_id:
-                found = True
-                break
-            for neighbor in get_neighbors(current):
-                if neighbor not in visited:
-                    visited.add(neighbor)
-                    parent[neighbor] = current
-                    queue.append(neighbor)
-
-        if not found:
-            return []
-
-        # Reconstruct path from end_id back to start_id
-        path: List[str] = []
-        node = end_id
-        while node is not None:
-            path.append(node)
-            node = parent.get(node)
-        path.reverse()
-        return path
-        # except Exception:
-        #     # Fallback to empty path if KuZU shortestPath is not available
-        #     return []
-    
     def search_skills(self, query: str, category: str = None, difficulty: str = None) -> List[Dict]:
         """Search skills by name."""
         result = self.conn.execute("""
@@ -843,6 +772,76 @@ class KuzuSkillGraph:
         """Execute a Cypher query and return the results."""
         result = self.conn.execute(query, parameters=parameters)
         return result
+    
+    def get_learning_nodes_by_skill_name(self, skill_name: str) -> List[Dict[str, Any]]:
+        """Get learning nodes for a specific skill by name."""
+        try:
+            result = self.conn.execute(f"""
+                MATCH (s:Skill)<-[:BELONGS_TO]-(l:LearningNode)
+                WHERE s.name = $skill_name
+                OPTIONAL MATCH path = (start:LearningNode)-[:PREREQUISITE*0..]->(l)
+                WHERE (start)-[:BELONGS_TO]->(s)
+                AND NOT (start)<-[:PREREQUISITE]-(:LearningNode)-[:BELONGS_TO]->(s)
+                WITH l, MAX(length(path)) as depth
+                RETURN depth, l.id, l.name, l.description
+                ORDER BY depth, l.name;
+            """, parameters={"skill_name": skill_name})
+            learning_nodes: List[Dict[str, Any]] = []
+            while result.has_next():
+                row = result.get_next()
+                learning_nodes.append({
+                    "depth": row[0] if row[0] is not None else 0,
+                    "id": row[1],
+                    "name": row[2],
+                    "description": row[3] if row[3] is not None else ""
+                })
+            return learning_nodes
+        except Exception as e:
+            print(f"Error getting learning nodes by skill name: {e}")
+            return []
+
+    def get_resources_by_learning_node_id(self, learning_node_id: str) -> List[Dict[str, Any]]:
+        """Get resources for a specific learning node."""
+        try:
+            print(f"Getting resources for learning node id: {learning_node_id}")
+            result = self.conn.execute("""
+                MATCH (l:LearningNode {id: $learning_node_id})-[:HAS_RESOURCE]->(r:Resource)
+                RETURN r.id, r.title, r.url, r.type
+                ORDER BY r.title;
+            """, parameters={"learning_node_id": learning_node_id})
+            resources: List[Dict[str, Any]] = []
+            while result.has_next():
+                row = result.get_next()
+                resources.append({
+                    "id": row[0],
+                    "title": row[1],
+                    "url": row[2],
+                    "type": row[3]
+                })
+            return resources
+        except Exception as e:
+            print(f"Error getting resources by learning node id: {e}")
+            return []
+    
+    def get_skill_edges(self, skill_name: str) -> List[Dict[str, Any]]:
+        """Get skill edges for a specific skill."""
+        try:
+            result = self.conn.execute(f"""
+                MATCH (s:Skill {{name: $skill_name}})<-[:BELONGS_TO]-(from:LearningNode)
+                MATCH (from)-[:PREREQUISITE]->(to:LearningNode)-[:BELONGS_TO]->(s)
+                RETURN from.id as source, to.id as target;
+            """, parameters={"skill_name": skill_name})
+            edges: List[Dict[str, Any]] = []
+            while result.has_next():
+                row = result.get_next()
+                edges.append({
+                    "source": row[0],
+                    "target": row[1]
+                })
+            return edges
+        except Exception as e:
+            print(f"Error getting skill edges: {e}")
+            return []
     
     def close(self):
         """Close the database connection."""

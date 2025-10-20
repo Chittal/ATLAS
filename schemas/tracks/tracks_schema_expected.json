@@ -1,0 +1,86 @@
+{
+    "nodes": [
+      {
+        "id": "id1",
+        "name": "Ethics",
+        "parent_id": "optional parent node id",
+        "description": "shared description",
+        "resources": {
+          "technical_workers": {
+            "description": "This can override shared if there is specific",
+            "resources": [
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "beginner"
+              },
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "intermediate"
+              },
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "advanced"
+              }
+            ]
+          },
+          "knowledge_workers": {
+            "resources": [
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "beginner"
+              },
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "intermediate"
+              },
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "advanced"
+              }
+            ]
+          },
+          "managers": {
+            "resources": [
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "beginner"
+              },
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "intermediate"
+              },
+              {
+                "type": "course",
+                "title": "Python for Everybody",
+                "url": "https://www.coursera.org/learn/python",
+                "difficulty": "advanced"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "id1",
+        "to": "id2",
+        "audience_type": "any of these values technical_workers/knowledge_workers/managers"
+      }
+    ]
+  }

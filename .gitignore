@@ -1,5 +1,7 @@
 venv/
+.venv/
 .env
 __pycache__/
 raw_data/
 data/
+pocketbase-data/

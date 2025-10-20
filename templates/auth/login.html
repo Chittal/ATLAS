@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - ATLAS</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: hsl(var(--background));
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted) / 0.1) 100%);
+        }
+
+        .login-card {
+            background: white;
+            color: #1f2937;
+            border-radius: 1rem;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 24rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .login-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo-img {
+            width: 6rem;
+            height: 6rem;
+            object-fit: contain;
+        }
+
+        .login-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.25rem;
+        }
+
+        .login-subtitle {
+            color: hsl(var(--muted-foreground));
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.375rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: white;
+            color: #1f2937;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input.error {
+            border-color: hsl(var(--destructive));
+            background: hsl(var(--destructive) / 0.05);
+        }
+
+        .error-message {
+            color: hsl(var(--destructive));
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-button {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-button:hover:not(:disabled) {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        .form-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-button:focus-visible {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid hsl(var(--primary-foreground));
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: hsl(var(--border));
+        }
+
+        .auth-divider span {
+            padding: 0 1rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .auth-link {
+            color: hsl(var(--primary));
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .auth-link:hover {
+            color: hsl(var(--primary) / 0.8);
+        }
+
+        .success-message {
+            background: hsl(var(--muted));
+            border: 1px solid hsl(var(--border));
+            color: hsl(var(--foreground));
+            padding: 0.75rem 1rem;
+            border-radius: calc(var(--radius) - 2px);
+            margin-bottom: 1.25rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+                margin: 0.625rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <img src="/static/atlas.png" alt="ATLAS" class="login-logo-img">
+                </div>
+                <h1 class="login-title">Welcome to ATLAS</h1>
+                <p class="login-subtitle">Sign in to continue your learning journey</p>
+            </div>
+
+            <div class="success-message" id="successMessage"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <button type="submit" class="form-button" id="submitButton">
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <span id="buttonText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>New to our platform?</span>
+            </div>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="/signup" class="auth-link">Signup</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const form = document.getElementById('loginForm');
+            const submitButton = document.getElementById('submitButton');
+            const spinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            function setLoading(isLoading) {
+                if (!submitButton) return;
+                submitButton.disabled = isLoading;
+                if (spinner) spinner.style.display = isLoading ? 'inline-block' : 'none';
+                if (buttonText) buttonText.textContent = isLoading ? 'Signing In...' : 'Sign In';
+            }
+
+            async function handleSubmit(event) {
+                event.preventDefault();
+                setLoading(true);
+                try {
+                    const payload = {
+                        email: emailInput?.value?.trim() || '',
+                        password: passwordInput?.value || ''
+                    };
+
+                    const res = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({}));
+                        throw new Error(err.detail || 'Login failed');
+                    }
+
+                    const data = await res.json();
+                    if (data?.token) {
+                        // Set auth token cookie
+                        const expires = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
+                        document.cookie = `auth_token=${data.token}; path=/; SameSite=Lax; expires=${expires}`;
+                    }
+                    window.location.href = '/';
+                } catch (e) {
+                    const emailError = document.getElementById('emailError');
+                    const passwordError = document.getElementById('passwordError');
+                    if (emailError) emailError.style.display = 'block';
+                    if (passwordError) passwordError.style.display = 'block';
+                    const msg = (e && e.message) ? e.message : 'Invalid email or password';
+                    if (passwordError) passwordError.textContent = msg;
+                } finally {
+                    setLoading(false);
+                }
+            }
+
+            if (form) {
+                form.addEventListener('submit', handleSubmit);
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -9,6 +9,7 @@ class ChatWidget {
         this.messageHistory = [];
         this.isTyping = false;
         this.currentSkill = null; // Track current skill context
+        this.currentPath = null; // Track current highlighted path
         
         this.init();
     }
@@ -17,6 +18,12 @@ class ChatWidget {
         this.bindEvents();
         this.loadMessageHistory();
         this.setupAutoResize();
+        
+        // Set initial z-index class
+        const chatWidget = document.querySelector('.chat-widget');
+        if (chatWidget) {
+            chatWidget.classList.add('closed');
+        }
     }
 
     bindEvents() {
@@ -68,6 +75,9 @@ class ChatWidget {
 
         // Handle skill panel integration
         this.setupSkillPanelIntegration();
+        
+        // Handle start learning button
+        this.setupStartLearningButton();
     }
 
     toggleChat() {
@@ -81,6 +91,7 @@ class ChatWidget {
     openChat() {
         const chatWindow = document.getElementById('chat-window');
         const toggleBtn = document.getElementById('chat-toggle');
+        const chatWidget = document.querySelector('.chat-widget');
         
         if (chatWindow) {
             chatWindow.classList.remove('hidden');
@@ -99,11 +110,18 @@ class ChatWidget {
         if (toggleBtn) {
             toggleBtn.style.transform = 'rotate(45deg)';
         }
+
+        // Update z-index classes
+        if (chatWidget) {
+            chatWidget.classList.remove('closed');
+            chatWidget.classList.add('open');
+        }
     }
 
     closeChat() {
         const chatWindow = document.getElementById('chat-window');
         const toggleBtn = document.getElementById('chat-toggle');
+        const chatWidget = document.querySelector('.chat-widget');
         
         if (chatWindow) {
             chatWindow.classList.add('hidden');
@@ -112,6 +130,12 @@ class ChatWidget {
 
         if (toggleBtn) {
             toggleBtn.style.transform = 'rotate(0deg)';
+        }
+
+        // Update z-index classes
+        if (chatWidget) {
+            chatWidget.classList.remove('open');
+            chatWidget.classList.add('closed');
         }
     }
 
@@ -142,94 +166,15 @@ class ChatWidget {
     }
 
     async processMessage(message) {
-        console.log('🔍 Processing message:', message);
-        console.log('🎯 Routing to handleGeneralQuery');
+        console.log('Processing message:', message);
+        console.log('Routing to handleGeneralQuery');
         return await this.handleGeneralQuery(message);
-        
-        // Handle different types of queries
-        // if (lowerMessage.includes('path') || lowerMessage.includes('route') || lowerMessage.includes('→')) {
-        //     return await this.handlePathQuery(message);
-        // } else if (lowerMessage.includes('prerequisite') || lowerMessage.includes('requirement')) {
-        //     return await this.handlePrerequisiteQuery(message);
-        // } else if (lowerMessage.includes('skill') || lowerMessage.includes('learn')) {
-        //     return await this.handleSkillQuery(message);
-        // } else {
-        //     return await this.handleGeneralQuery(message);
-        // }
-    }
-
-    async handlePathQuery(message) {
-        // Extract skill names from message
-        const skillNames = this.extractSkillNames(message);
-        
-        if (skillNames.length >= 2) {
-            try {
-                const start = skillNames[0];
-                const end = skillNames[1];
-                
-                const response = await fetch(`/api/skill-path?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
-                const data = await response.json();
-                console.log('🔍 Path data:', data);
-                if (data.path && data.path.length > 0) {
-                    this.highlightPath(data.path);
-                    return this.formatPathResponse(data.path, start, end);
-                } else {
-                    return `I couldn't find a direct learning path from "${start}" to "${end}". They might not be connected in the current roadmap, or you might need to go through multiple intermediate skills.`;
-                }
-            } catch (error) {
-                console.error('Path query error:', error);
-                return 'Sorry, I had trouble finding that learning path. Please make sure the skill names are correct.';
-            }
-        } else {
-            return 'To find a learning path, please specify two skills like "Find path from Python to Machine Learning" or "Python → Machine Learning".';
-        }
-    }
-
-    async handlePrerequisiteQuery(message) {
-        const skillNames = this.extractSkillNames(message);
-        
-        if (skillNames.length > 0) {
-            const skillName = skillNames[0];
-            try {
-                const response = await fetch(`/api/skill/${encodeURIComponent(skillName)}`);
-                const data = await response.json();
-                
-                if (data.prerequisites && data.prerequisites.length > 0) {
-                    return this.formatPrerequisiteResponse(data.prerequisites, skillName);
-                } else {
-                    return `${skillName} doesn't have specific prerequisites in the current roadmap, or it's a foundational skill.`;
-                }
-            } catch (error) {
-                console.error('Prerequisite query error:', error);
-                return `Sorry, I couldn't find information about "${skillName}". Please check if the skill name is correct.`;
-            }
-        } else {
-            return 'Please specify a skill name to find its prerequisites, like "What are the prerequisites for React?"';
-        }
-    }
-
-    async handleSkillQuery(message) {
-        // This is a general skill-related query
-        const response = await fetch('/api/skill/query', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: message })
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            return data.response || 'I can help you learn about various skills and their relationships. What specific skill would you like to know about?';
-        } else {
-            return 'I can help you learn about various skills and their relationships. What specific skill would you like to know about?';
-        }
     }
 
     async handleGeneralQuery(message) {
         // For general queries, we can use the existing chat API
         try {
-            console.log('📡 Calling /api/general/chat with message:', message);
+            console.log('Calling /api/general/chat with message:', message);
             // Use a default skill ID for general queries
             const response = await fetch('/api/general/chat', {
                 method: 'POST',
@@ -241,10 +186,10 @@ class ChatWidget {
             
             if (response.ok) {
                 const data = await response.json();
-                console.log('✅ Received response from API:', data);
+                console.log('Received response from API:', data);
                 
                 // Check if this is a route planning response with path data
-                console.log('🔍 Checking for route planning data:', {
+                console.log('Checking for route planning data:', {
                     hasPathData: !!data.path_data,
                     category: data.agent_metadata?.category,
                     pathData: data.path_data,
@@ -257,14 +202,14 @@ class ChatWidget {
                 const hasPathData = data.path_data && data.path_data.path && data.path_data.path.length > 0;
                 const isRoutePlanning = data.agent_metadata && data.agent_metadata.category === 'ROUTE_PLANNING';
                 
-                console.log('🔍 Condition checks:', {
+                console.log('Condition checks:', {
                     hasPathData,
                     isRoutePlanning,
                     willHighlight: hasPathData && isRoutePlanning
                 });
                 
                 if (hasPathData && isRoutePlanning) {
-                    console.log('🗺️ Route planning detected, highlighting path:', data.path_data);
+                    console.log('Route planning detected, highlighting path:', data.path_data);
                     
                     // Try to trigger the existing Path button functionality
                     // Check if we're on the roadmap page and the Path button exists
@@ -280,24 +225,32 @@ class ChatWidget {
                         const pathTargetSkill = data.path_data.path[data.path_data.path.length - 1]?.name || targetSkill || 'ai agents';
                         window.highlightPathBetweenSkills(pathStartSkill, pathTargetSkill);
                     } else {
-                        console.log('⚠️ No path highlighting method found, trying direct highlighting');
+                        console.log('No path highlighting method found, trying direct highlighting');
                         // Fallback to direct highlighting
                         setTimeout(() => {
                             this.highlightPath(data.path_data.path);
                         }, 500);
                     }
+                    
+                    // Show the Start Learning button after highlighting the path
+                    setTimeout(() => {
+                        this.showStartLearningButton(data.path_data);
+                    }, 1000); // Wait a bit for highlighting to complete
                 } else {
-                    console.log('❌ No path highlighting:', {
+                    console.log('No path highlighting:', {
                         reason: !hasPathData ? 'missing or empty path_data' : 'not route planning category',
                         hasPathData,
                         isRoutePlanning,
                         category: data.agent_metadata?.category
                     });
+                    
+                    // Hide the Start Learning button if no path is available
+                    this.hideStartLearningButton();
                 }
                 
                 return data.ai_response || this.getDefaultResponse(message);
             } else {
-                console.log('❌ API response not ok:', response.status);
+                console.log('API response not ok:', response.status);
                 return this.getDefaultResponse(message);
             }
         } catch (error) {
@@ -652,14 +605,131 @@ class ChatWidget {
     }
 
     setupSkillPanelIntegration() {
-        // Listen for skill panel events
-        document.addEventListener('skillPanelOpened', (e) => {
-            this.currentSkill = e.detail.skillId;
-        });
+        // Skill panel integration removed
+        this.currentSkill = null;
+    }
 
-        document.addEventListener('skillPanelClosed', () => {
-            this.currentSkill = null;
-        });
+    setupStartLearningButton() {
+        const startLearningBtn = document.getElementById('start-learning-btn');
+        if (startLearningBtn) {
+            startLearningBtn.addEventListener('click', () => {
+                this.handleStartLearning();
+            });
+        }
+    }
+
+    showStartLearningButton(pathData) {
+        console.log('🎯 Showing Start Learning button for path:', pathData);
+        const startLearningSection = document.getElementById('start-learning-section');
+        if (startLearningSection) {
+            this.currentPath = pathData;
+            startLearningSection.classList.remove('hidden');
+            
+            // Update button text with path info if available
+            const startSkill = pathData.path && pathData.path[0] ? pathData.path[0].name : 'First Skill';
+            const endSkill = pathData.path && pathData.path[pathData.path.length - 1] ? pathData.path[pathData.path.length - 1].name : 'Target Skill';
+            
+            const buttonText = startLearningSection.querySelector('span');
+            if (buttonText) {
+                buttonText.textContent = `Start Learning: ${startSkill} → ${endSkill}`;
+            }
+        }
+    }
+
+    hideStartLearningButton() {
+        console.log('🎯 Hiding Start Learning button');
+        const startLearningSection = document.getElementById('start-learning-section');
+        if (startLearningSection) {
+            this.currentPath = null;
+            startLearningSection.classList.add('hidden');
+            
+            // Reset button text
+            const buttonText = startLearningSection.querySelector('span');
+            if (buttonText) {
+                buttonText.textContent = 'Start Learning';
+            }
+        }
+    }
+
+    async handleStartLearning() {
+        console.log('🎯 Start Learning button clicked!');
+        
+        if (!this.currentPath) {
+            console.log('❌ No current path available');
+            return;
+        }
+
+        // Extract start and end skills from the path
+        const startSkill = this.currentPath.path[0]?.name || this.currentPath.path[0]?.id || 'data analyst';
+        const endSkill = this.currentPath.path[this.currentPath.path.length - 1]?.name || 
+                        this.currentPath.path[this.currentPath.path.length - 1]?.id || 'ai agents';
+
+        // Add a brief message to the chat
+        const pathNames = this.currentPath.path.map(skill => skill.name || skill.id);
+        const pathDescription = pathNames.join(' → ');
+        
+        const savingMessage = `🚀 **Saving Your Learning Path!**\n\nYour path: ${pathDescription}\n\nSaving to your progress tracker...`;
+        this.addMessage(savingMessage, 'ai');
+        
+        try {
+            // Save the learning track to PocketBase
+            const trackData = {
+                start_skill: startSkill,
+                target_skill: endSkill,
+                skill_path: this.currentPath.path
+            };
+            
+            console.log('💾 Saving learning track:', trackData);
+            
+            const saveResponse = await fetch('/api/route-planning/start-learning', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(trackData)
+            });
+            
+            if (saveResponse.ok) {
+                const saveResult = await saveResponse.json();
+                console.log('✅ Learning track saved successfully:', saveResult);
+                
+                // Update message with success
+                const successMessage = `✅ **Learning Path Saved!**\n\nYour progress will be tracked. Taking you to the learning environment...`;
+                this.addMessage(successMessage, 'ai');
+                
+                // Navigate to learning path page with the roadmap path ID
+                setTimeout(() => {
+                    const userRoadmapPathId = saveResult.data?.user_roadmap_path_id;
+                    if (userRoadmapPathId) {
+                        window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}&roadmap_path_id=${userRoadmapPathId}`;
+                    } else {
+                        window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+                    }
+                }, 1500); // 1.5 second delay to show the success message
+                
+            } else {
+                console.error('❌ Failed to save learning track:', saveResponse.status);
+                const errorMessage = `❌ **Error Saving Path**\n\nCould not save your learning path. Taking you to the learning environment anyway...`;
+                this.addMessage(errorMessage, 'ai');
+                
+                // Still navigate even if save fails
+                setTimeout(() => {
+                    window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+                }, 1500);
+            }
+            
+        } catch (error) {
+            console.error('❌ Error saving learning track:', error);
+            const errorMessage = `❌ **Error Saving Path**\n\nCould not save your learning path. Taking you to the learning environment anyway...`;
+            this.addMessage(errorMessage, 'ai');
+            
+            // Still navigate even if save fails
+            setTimeout(() => {
+                window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+            }, 1500);
+        }
+        
+        console.log('✅ Learning journey started for path:', this.currentPath);
     }
 
     saveMessageHistory() {
@@ -688,6 +758,9 @@ class ChatWidget {
 
     clearHistory() {
         this.messageHistory = [];
+        this.currentPath = null;
+        this.hideStartLearningButton();
+        
         const messagesContainer = document.getElementById('chat-messages');
         if (messagesContainer) {
             messagesContainer.innerHTML = `
