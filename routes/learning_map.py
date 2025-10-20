@@ -269,64 +269,107 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
 @router.post("/api/general/chat")
 async def general_chat(request: Request):
     """Handle general chat queries from the chat widget."""
-    print("ENDPOINT HIT! /api/skill/general/chat was called!")
-    # try:
-    request_json = await request.json()
-    user_message = request_json.get("message", "")
-    print(f"API called with message: '{user_message}'")
-    print(f"Full message dict: {request_json}")
-    # Use the global LangGraph agent
-    print("CALLING LANGGRAPH AGENT")
-    result = request.app.state.agent.execute_graph(user_message)
-    print("Agent result:", result)
+    print("ENDPOINT HIT! /api/general/chat was called!")
     
-    # Extract the response from the agent result
-    if result.get("status") == "success" and result.get("messages"):
-        assistant_messages = [msg for msg in result["messages"] if msg["role"] == "assistant"]
-        if assistant_messages:
-            ai_response = assistant_messages[-1]["content"]
+    # Import AgentCore client
+    from agentcore_client import agentcore_client
+    
+    try:
+        request_json = await request.json()
+        user_message = request_json.get("message", "")
+        user_id = request_json.get("user_id")  # Optional user ID
+        
+        print(f"API called with message: '{user_message}'")
+        print(f"Full message dict: {request_json}")
+        
+        # Use AgentCore instead of local agent
+        print("CALLING AGENTCORE AGENT")
+        result = await agentcore_client.chat_with_agent(user_message, user_id)
+        print("AgentCore result:", result)
+    
+        # Extract the response from AgentCore result
+        if result.get("status") == "success":
+            ai_response = result.get("message", "I'm sorry, I couldn't process your request.")
         else:
-            ai_response = "I'm sorry, I couldn't process your request."
-    else:
-        ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
-    
-    response_data = {
-        "ai_response": ai_response,
-        "timestamp": "2024-01-01T00:00:00Z",
-        "agent_metadata": {
-            "category": result.get("category"),
-            "step": result.get("step"),
-            "status": result.get("status")
-        }
-    }
-    
-    # If this is a route planning query, get the path data for highlighting
-    if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
-        try:
-            path_objects = result.get("path_objects")
-            print(f"Route planning path objects: {path_objects}")
-            
-            # Create edges for the path
-            edges = []
-            for i in range(len(path_objects) - 1):
-                source = path_objects[i]["id"]
-                target = path_objects[i + 1]["id"]
-                edges.append({
-                    "id": f"{source}-{target}",
-                    "source": source,
-                    "target": target
-                })
-            
-            path_data = {
-                "path": path_objects,
-                "edges": edges
+            ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
+        
+        response_data = {
+            "ai_response": ai_response,
+            "timestamp": "2024-01-01T00:00:00Z",
+            "agent_metadata": {
+                "category": result.get("category"),
+                "step": result.get("step"),
+                "status": result.get("status")
             }
-            print(f"Path data for highlighting: {path_data}")
-            response_data["path_data"] = path_data
-        except Exception as e:
-            print(f"Error creating path data: {e}")
+        }
     
-    return response_data
+        # If this is a route planning query, get the path data for highlighting
+        if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
+            try:
+                path_objects = result.get("path_objects")
+                print(f"Route planning path objects: {path_objects}")
+                
+                # Create edges for the path
+                edges = []
+                for i in range(len(path_objects) - 1):
+                    source = path_objects[i]["id"]
+                    target = path_objects[i + 1]["id"]
+                    edges.append({
+                        "id": f"{source}-{target}",
+                        "source": source,
+                        "target": target
+                    })
+                
+                path_data = {
+                    "path": path_objects,
+                    "edges": edges
+                }
+                print(f"Path data for highlighting: {path_data}")
+                response_data["path_data"] = path_data
+            except Exception as e:
+                print(f"Error creating path data: {e}")
+        
+        return response_data
+        
+    except Exception as e:
+        print(f"Error in general_chat: {e}")
+        # Fallback to local agent if AgentCore fails
+        print("Falling back to local agent...")
+        try:
+            local_result = request.app.state.agent.execute_graph(user_message)
+            
+            # Extract the response from the local agent result
+            if local_result.get("status") == "success" and local_result.get("messages"):
+                assistant_messages = [msg for msg in local_result["messages"] if msg["role"] == "assistant"]
+                if assistant_messages:
+                    ai_response = assistant_messages[-1]["content"]
+                else:
+                    ai_response = "I'm sorry, I couldn't process your request."
+            else:
+                ai_response = f"I encountered an issue: {local_result.get('error', 'Unknown error')}"
+            
+            return {
+                "ai_response": ai_response,
+                "timestamp": "2024-01-01T00:00:00Z",
+                "agent_metadata": {
+                    "category": local_result.get("category"),
+                    "step": local_result.get("step"),
+                    "status": local_result.get("status"),
+                    "fallback": True
+                }
+            }
+        except Exception as fallback_error:
+            print(f"Fallback agent also failed: {fallback_error}")
+            return {
+                "ai_response": "I'm sorry, I'm having trouble processing your request right now. Please try again later.",
+                "timestamp": "2024-01-01T00:00:00Z",
+                "agent_metadata": {
+                    "category": "ERROR",
+                    "step": "error_handling",
+                    "status": "error",
+                    "fallback": True
+                }
+            }
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
 

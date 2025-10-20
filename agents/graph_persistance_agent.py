@@ -1,4 +1,0 @@
-skills = ["computer science", "datastructures and algorithms", ["python", "java", "cpp", "javascript"], ["git github", "sql"], ["frontend", "backend"], ["html", "css"], ["react", "angular", "vue"], ["nodejs", "php", "spring boot", "aspnet core"], ["full stack", "nextjs"], ["typescript", "graphql"], ["mongodb", "postgresql dba", "redis"], ["android", "ios", "flutter", "react native"], ["game developer", "server side game developer"], ["design system", "ux design"], ["code review", "qa"], ["bi analyst", "data analyst"], ["data engineer", "aws"], ["devops", "docker", "linux"], ["kubernetes", "terraform", "cloudflare"], ["cyber security", "ai red teaming"], ["blockchain", "golang", "rust"], ["system design", "software design architecture"], ["software architect", "engineering manager", "product manager", "devrel", "technical writer"], ["machine learning", "prompt engineering"], ["mlops", "ai engineer"], ["ai data scientist", "ai agents"]]
-
-
-

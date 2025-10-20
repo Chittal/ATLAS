@@ -65,7 +65,7 @@ async def signup(user_data: UserSignup):
     #     raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
 
 @router.post("/api/auth/login")
-async def login(user_data: UserLogin):
+async def login(user_data: UserLogin, request: Request):
     """User login endpoint"""
     try:
         # First check if user exists
@@ -84,7 +84,9 @@ async def login(user_data: UserLogin):
             user_data.password
         )
         
-        return {
+        # Create response with cookie
+        from fastapi.responses import JSONResponse
+        response = JSONResponse({
             "success": True,
             "message": "Login successful",
             "user": {
@@ -93,7 +95,19 @@ async def login(user_data: UserLogin):
                 "name": auth_data.record.name
             },
             "token": auth_data.token
-        }
+        })
+        
+        # Set the auth token as an HTTP-only cookie
+        response.set_cookie(
+            key="auth_token",
+            value=auth_data.token,
+            max_age=7 * 24 * 60 * 60,  # 7 days
+            httponly=True,
+            secure=False,  # Set to True in production with HTTPS
+            samesite="lax"
+        )
+        
+        return response
     except HTTPException:
         raise
     except Exception as e:
@@ -116,7 +130,22 @@ async def logout():
     """User logout endpoint"""
     try:
         pb.auth_store.clear()
-        return {"success": True, "message": "Logout successful"}
+        
+        # Create response and clear the cookie
+        from fastapi.responses import JSONResponse
+        response = JSONResponse({
+            "success": True, 
+            "message": "Logout successful"
+        })
+        
+        # Clear the auth token cookie
+        response.delete_cookie(
+            key="auth_token",
+            httponly=True,
+            samesite="lax"
+        )
+        
+        return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Logout failed: {str(e)}")
 
