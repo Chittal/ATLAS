@@ -1,0 +1,129 @@
+# Render-specific .dockerignore
+# Optimized for faster builds and smaller images
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (exclude to reduce image size)
+README.md
+*.md
+docs/
+
+# Logs
+*.log
+logs/
+
+# Environment files (use Render environment variables instead)
+.env
+.env.local
+.env.*.local
+env.example
+
+# Docker files (not needed in the image)
+Dockerfile
+Dockerfile.pocketbase
+Dockerfile.render
+docker-compose*.yml
+.dockerignore*
+
+# Testing files
+test_*.py
+*_test.py
+tests/
+
+# Development and deployment scripts
+build-and-push.sh
+docker-test.*
+task-definition.json
+
+# Large data files that should be initialized at runtime
+raw_data/
+pocketbase-data/
+*.db
+*.db-shm
+*.db-wal
+explorer.db
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# Pytest cache
+.pytest_cache/
+
+# MyPy cache
+.mypy_cache/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Node modules (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Local configuration
+.local/
+local/
+
+# Render-specific excludes
+render.yaml

@@ -71,3 +71,6 @@ README.md
 # Temporary files
 tmp/
 temp/
+
+# PocketBase
+pocketbase-data/

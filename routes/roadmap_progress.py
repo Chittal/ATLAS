@@ -15,33 +15,35 @@ async def start_learning_track(request: Request, track_data: dict):
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
     
-    try:
-        # Extract track information from the request
-        start_skill = track_data.get("start_skill")
-        target_skill = track_data.get("target_skill")
-        skill_path = track_data.get("skill_path", [])
+    # try:
+    # Extract track information from the request
+    start_skill = track_data.get("start_skill")
+    target_skill = track_data.get("target_skill")
+    skill_path = track_data.get("skill_path", [])
+    
+    if not start_skill or not target_skill or not skill_path:
+        raise HTTPException(status_code=400, detail="Missing required track data")
+    
+    from helper.pocketbase_helper import get_pb_admin_client
+    pb = get_pb_admin_client()
+    progress_helper = UserProgressHelper(pb)
+    
+    # Save the user's roadmap path
+    result = progress_helper.save_user_roadmap_path(
+        user_id=user.id,
+        start_skill=start_skill,
+        target_skill=target_skill,
+        skill_path=skill_path
+    )
+    
+    return {
+        "success": True,
+        "message": "Learning track saved successfully",
+        "data": result
+    }
         
-        if not start_skill or not target_skill or not skill_path:
-            raise HTTPException(status_code=400, detail="Missing required track data")
-        
-        progress_helper = UserProgressHelper(pb)
-        
-        # Save the user's roadmap path
-        result = progress_helper.save_user_roadmap_path(
-            user_id=user.id,
-            start_skill=start_skill,
-            target_skill=target_skill,
-            skill_path=skill_path
-        )
-        
-        return {
-            "success": True,
-            "message": "Learning track saved successfully",
-            "data": result
-        }
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save learning track: {str(e)}")
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"Failed to save learning track: {str(e)}")
 
 @router.get("/api/user/progress")
 async def get_user_progress(request: Request):
@@ -52,6 +54,8 @@ async def get_user_progress(request: Request):
     
     try:
         # Use admin client for reading user progress
+        from helper.pocketbase_helper import get_pb_admin_client
+        pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(pb)
         user_paths = progress_helper.get_user_roadmap_paths(user.id)
         
@@ -78,6 +82,8 @@ async def update_user_progress(request: Request, progress_data: dict):
         if not user_roadmap_path_id:
             raise HTTPException(status_code=400, detail="Missing user_roadmap_path_id")
         
+        from helper.pocketbase_helper import get_pb_admin_client
+        pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(pb)
         result = progress_helper.update_user_progress(
             user_roadmap_path_id=user_roadmap_path_id,
@@ -110,6 +116,8 @@ async def complete_learning_node(request: Request, completion_data: dict):
         if not learning_node_id or not skill_id or not user_roadmap_path_id:
             raise HTTPException(status_code=400, detail="Missing required fields: learning_node_id, skill_id, user_roadmap_path_id")
         
+        from helper.pocketbase_helper import get_pb_admin_client
+        pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(pb)
         result = progress_helper.save_learning_node_completion(
             user_id=user.id,

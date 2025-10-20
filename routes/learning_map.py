@@ -266,8 +266,8 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
 
-@router.post("/api/general/chat")
-async def general_chat(request: Request):
+@router.post("/api/general/chat/agentcore")
+async def general_chat_agentcore(request: Request):
     """Handle general chat queries from the chat widget."""
     print("ENDPOINT HIT! /api/general/chat was called!")
     
@@ -370,6 +370,71 @@ async def general_chat(request: Request):
                     "fallback": True
                 }
             }
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
+
+
+@router.post("/api/general/chat")
+async def general_chat(request: Request):
+    """Handle general chat queries from the chat widget."""
+    print("ENDPOINT HIT! /api/skill/general/chat was called!")
+    # try:
+    request_json = await request.json()
+    user_message = request_json.get("message", "")
+    print(f"API called with message: '{user_message}'")
+    print(f"Full message dict: {request_json}")
+    # Use the global LangGraph agent
+    print("CALLING LANGGRAPH AGENT")
+    result = request.app.state.agent.execute_graph(user_message)
+    print("Agent result:", result)
+    
+    # Extract the response from the agent result
+    if result.get("status") == "success" and result.get("messages"):
+        assistant_messages = [msg for msg in result["messages"] if msg["role"] == "assistant"]
+        if assistant_messages:
+            ai_response = assistant_messages[-1]["content"]
+        else:
+            ai_response = "I'm sorry, I couldn't process your request."
+    else:
+        ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
+    
+    response_data = {
+        "ai_response": ai_response,
+        "timestamp": "2024-01-01T00:00:00Z",
+        "agent_metadata": {
+            "category": result.get("category"),
+            "step": result.get("step"),
+            "status": result.get("status")
+        }
+    }
+    
+    # If this is a route planning query, get the path data for highlighting
+    if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
+        try:
+            path_objects = result.get("path_objects")
+            print(f"Route planning path objects: {path_objects}")
+            
+            # Create edges for the path
+            edges = []
+            for i in range(len(path_objects) - 1):
+                source = path_objects[i]["id"]
+                target = path_objects[i + 1]["id"]
+                edges.append({
+                    "id": f"{source}-{target}",
+                    "source": source,
+                    "target": target
+                })
+            
+            path_data = {
+                "path": path_objects,
+                "edges": edges
+            }
+            print(f"Path data for highlighting: {path_data}")
+            response_data["path_data"] = path_data
+        except Exception as e:
+            print(f"Error creating path data: {e}")
+    
+    return response_data
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
 
