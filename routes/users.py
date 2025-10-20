@@ -4,7 +4,7 @@ from schemas.user import UserSignup, UserLogin
 from deps import templates
 from helper.helper import get_current_user
 from helper.pocketbase_helper import get_pb_admin_client
-pb = get_pb_admin_client()
+
 router = APIRouter(
     prefix="",
     tags=["Users"],
@@ -46,6 +46,7 @@ async def signup(user_data: UserSignup):
     
     # Create user in PocketBase (let PocketBase handle password hashing)
     # For auth collections, we need to include passwordConfirm
+    pb = get_pb_admin_client()
     user = pb.collection('users').create({
         "email": user_data.email,
         "password": user_data.password,
@@ -69,6 +70,7 @@ async def signup(user_data: UserSignup):
 async def login(user_data: UserLogin, request: Request):
     """User login endpoint"""
     try:
+        pb = get_pb_admin_client()
         # First check if user exists
         try:
             users = pb.collection('users').get_list(1, 1, {
@@ -130,6 +132,7 @@ async def login(user_data: UserLogin, request: Request):
 async def logout():
     """User logout endpoint"""
     try:
+        pb = get_pb_admin_client()
         pb.auth_store.clear()
         
         # Create response and clear the cookie
