@@ -56,6 +56,11 @@ app.add_middleware(
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# Health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "Learning Map API is running"}
+
 # Include routers
 app.include_router(users_router)
 app.include_router(roadmap_progress_router)

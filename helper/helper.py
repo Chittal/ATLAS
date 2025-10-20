@@ -32,12 +32,25 @@ def get_current_user(request: Request):
         
         # Set the token in the new client's auth store
         client.auth_store.save(token, {"id": "temp", "email": "temp"})
-        auth_data = client.collection('users').authRefresh()
         
-        if auth_data and auth_data.record:
-            return auth_data.record
-        else:
-            return None
+        # Try to refresh the token to validate it
+        try:
+            auth_data = client.collection('users').authRefresh()
+            if auth_data and auth_data.record:
+                return auth_data.record
+        except Exception as refresh_error:
+            print(f"Token refresh failed: {refresh_error}")
+            # If refresh fails, try to get user info directly
+            try:
+                # Try to get current user info without refresh
+                user_info = client.collection('users').get_one(client.auth_store.model.id)
+                if user_info:
+                    return user_info
+            except Exception as get_error:
+                print(f"Get user info failed: {get_error}")
+                return None
+        
+        return None
             
     except Exception as e:
         print(f"Auth validation error: {e}")
