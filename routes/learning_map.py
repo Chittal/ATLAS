@@ -768,13 +768,14 @@ async def get_user_roadmaps(request: Request):
         roadmaps: list[dict] = []
         for path in user_paths:
             roadmap_path_id = path.get("roadmap_path_id")
+            print(roadmap_path_id, "roadmap_path_id")
 
             # Count skills for this roadmap path using totalItems (efficient)
             try:
                 skills_page = admin_pb.collection('roadmap_path_skills').get_list(1, 1, {
                     "filter": f"roadmap_path_id = '{roadmap_path_id}'"
                 })
-                skill_count = getattr(skills_page, 'totalItems', len(getattr(skills_page, 'items', [])))
+                skill_count = getattr(skills_page, 'total_items', len(getattr(skills_page, 'items', [])))
             except Exception:
                 skill_count = 0
 
@@ -784,6 +785,7 @@ async def get_user_roadmaps(request: Request):
                 rp_name = getattr(rp, 'name', '')
                 roadmap_id = getattr(rp, 'roadmap_id', '')
             except Exception:
+                print("Error fetching roadmap path details")
                 rp_name = ''
                 roadmap_id = ''
 

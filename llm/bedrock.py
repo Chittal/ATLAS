@@ -42,19 +42,6 @@ class BedrockClient:
             )
         except Exception as e:
             print(f"Warning: Could not initialize Bedrock with model '{self.model}': {e}")
-            # Fallback to a common model
-            self.model = "anthropic.claude-3-sonnet-20240229-v1:0"
-            self.llm = ChatBedrock(
-                model_id=self.model,
-                region_name=self.aws_region,
-                aws_access_key_id=self.aws_access_key_id,
-                aws_secret_access_key=self.aws_secret_access_key,
-                model_kwargs={
-                    "temperature": 0.5,
-                    "max_tokens": 300,
-                    "top_p": 0.95
-                }
-            )
     
     def chat(self, messages: list[dict], system_prompt: Optional[str] = None) -> str:
         """
