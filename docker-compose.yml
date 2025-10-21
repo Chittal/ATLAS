@@ -1,0 +1,68 @@
+name: learning-map
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: learning-map-app
+    ports:
+      - "80:${PORT:-8008}"
+    volumes:
+      - ./data:/app/data
+      - ./static:/app/static
+      - ./templates:/app/templates
+      - ./logs:/app/logs
+    environment:
+      - POCKETBASE_URL=http://pocketbase:${PB_PORT:-8090}
+      - POCKETBASE_EMAIL=${POCKETBASE_EMAIL}
+      - POCKETBASE_PASSWORD=${POCKETBASE_PASSWORD}
+      - SECRET=${SECRET}
+      - API_BASE=${API_BASE}
+      - API_KEY=${API_KEY}
+      - MODEL=${MODEL:-llama3.1:8b}
+      - CUSTOM_LLM_PROVIDER=${CUSTOM_LLM_PROVIDER}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - AGENTCORE_URL=${AGENTCORE_URL}
+      - AGENTCORE_API_KEY=${AGENTCORE_API_KEY}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-2}
+      - BEDROCK_MODEL_ID=${BEDROCK_MODEL_ID}
+      - CONTAINERIZED=true
+    env_file:
+      - .env
+    depends_on:
+      - pocketbase
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${APP_PORT:-8008}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  pocketbase:
+    container_name: learning-map-pocketbase
+    image: ghcr.io/muchobien/pocketbase:latest
+    command: 
+      - --dev
+      - --http=0.0.0.0:${PB_PORT:-8090}
+      - --automigrate
+    ports:
+      - "${PB_PORT:-8090}:${PB_PORT:-8090}"
+    volumes:
+      - ./pocketbase-data:/pb_data
+      - ./pb_migrations:/pb_migrations
+      - ./logs:/pb_logs
+    environment:
+      - PB_HOST=0.0.0.0
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:${PB_PORT:-8090}/api/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
