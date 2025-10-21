@@ -19,5 +19,5 @@ def get_pb_admin_client():
 
 def get_pb_client() -> PocketBase:
     """Get a PocketBase client instance."""
-    client = PocketBase(app_config.pocketbase_url)
+    client = PocketBase(app_config.pocketbase_url, http_client=httpx.Client(verify=False))
     return client
