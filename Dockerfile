@@ -35,9 +35,6 @@ COPY . .
 RUN mkdir -p /opt/render/project/src/data /opt/render/project/src/static /opt/render/project/src/templates && \
     chmod -R 755 /opt/render/project/src
 
-# Make migration scripts executable
-RUN chmod +x run_migrations.sh migrate_pocketbase.py
-
 # Create non-root user for security
 RUN useradd --create-home --shell /bin/bash app && \
     chown -R app:app /opt/render/project/src
