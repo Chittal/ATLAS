@@ -42,7 +42,7 @@ async def get_skill_details(skill_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error getting skill details: {str(e)}")
 
-@router.get("/api/skill/{skill_name}/prerequisites")
+@router.get("/api/skills/{skill_name}/prerequisites")
 async def get_skill_prerequisites(skill_name: str):
     """Get prerequisites for a specific skill."""
     try:
