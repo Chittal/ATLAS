@@ -1,5 +1,6 @@
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
+from config import app_config
 from schemas.user import UserSignup, UserLogin
 from deps import templates
 from helper.helper import get_current_user
@@ -17,7 +18,7 @@ async def login_page(request: Request):
     """Login page"""
     user = get_current_user(request)
     if user:
-        return RedirectResponse(url="/", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/", status_code=302)
     
     return templates.TemplateResponse("auth/login.html", {
         "request": request,
@@ -29,7 +30,7 @@ async def signup_page(request: Request):
     """Signup page"""
     user = get_current_user(request)
     if user:
-        return RedirectResponse(url="/", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/", status_code=302)
     
     return templates.TemplateResponse("auth/signup.html", {
         "request": request,
@@ -174,7 +175,7 @@ async def profile_page(request: Request):
     """Profile page"""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Gather user statistics
     try:

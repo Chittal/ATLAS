@@ -9,6 +9,7 @@ from helper.kuzu_db_helper import KuzuSkillGraph
 from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
 from helper.pocketbase_helper import get_pb_admin_client
 import deps
+from config import app_config
 
 from routes.users import router as users_router
 from routes.roadmap_progress import router as roadmap_progress_router
@@ -52,8 +53,12 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers (including X-API-Key)
 )
 
-# Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Mount static files with prefix
+if app_config.url_prefix:
+    static_prefix = f"{app_config.url_prefix}/static"
+else:
+    static_prefix = "/static"
+app.mount(static_prefix, StaticFiles(directory="static"), name="static")
 
 # Health check endpoint
 @app.get("/health")
@@ -61,12 +66,14 @@ def health_check():
     return {"status": "healthy", "message": "Learning Map API is running"}
 
 
-# Include routers
-app.include_router(users_router)
-app.include_router(roadmap_progress_router)
-app.include_router(learning_map_router)
-app.include_router(notes_router)
-app.include_router(agent_router)
+# Include routers with prefix
+prefix = app_config.url_prefix if app_config.url_prefix else ""
+print(prefix, "prefix")
+app.include_router(users_router, prefix=prefix)
+app.include_router(roadmap_progress_router, prefix=prefix)
+app.include_router(learning_map_router, prefix=prefix)
+app.include_router(notes_router, prefix=prefix)
+app.include_router(agent_router, prefix=prefix)
 
 # Templates managed in deps.py
 

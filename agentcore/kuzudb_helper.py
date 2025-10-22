@@ -26,7 +26,9 @@ def find_learning_path(start_skill, target_skill):
     The output is a list of skills in the learning path.
     """
     print("I AM AT FIND LEARNING PATH=============")
+    print(app_config.atlas_app_url, "app_config.atlas_app_url")
     url = f"{app_config.atlas_app_url}/api/skill-path?start={start_skill}&end={target_skill}"
+    print(url, "url")
     response = requests.get(url, verify=False)
     print(response, "response")
     response_json = response.json()

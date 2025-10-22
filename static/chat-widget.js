@@ -176,7 +176,7 @@ class ChatWidget {
         try {
             console.log('Calling /api/general/chat with message:', message);
             // Use a default skill ID for general queries
-            const response = await fetch('/api/general/chat', {
+            const response = await fetch(window.urlPrefix + '/api/general/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -681,7 +681,7 @@ class ChatWidget {
             
             console.log('💾 Saving learning track:', trackData);
             
-            const saveResponse = await fetch('/api/route-planning/start-learning', {
+            const saveResponse = await fetch(window.urlPrefix + '/api/route-planning/start-learning', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -701,9 +701,9 @@ class ChatWidget {
                 setTimeout(() => {
                     const userRoadmapPathId = saveResult.data?.user_roadmap_path_id;
                     if (userRoadmapPathId) {
-                        window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}&roadmap_path_id=${userRoadmapPathId}`;
+                        window.location.href = window.urlPrefix + `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}&roadmap_path_id=${userRoadmapPathId}`;
                     } else {
-                        window.location.href = `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
+                        window.location.href = window.urlPrefix + `/learning-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
                     }
                 }, 1500); // 1.5 second delay to show the success message
                 

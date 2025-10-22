@@ -481,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Load data from API
             console.log('Fetching data from API...');
-            const response = await fetch('/api/roadmap-flat');
+            const response = await fetch('{{ url_for_prefix("/api/roadmap-flat") }}');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Load styles
             console.log('Loading styles...');
-            const styleResponse = await fetch('/static/skills-graph.cycss');
+            const styleResponse = await fetch('{{ static_url("/skills-graph.cycss") }}');
             if (!styleResponse.ok) {
                 throw new Error(`Style file not found! status: ${styleResponse.status}`);
             }

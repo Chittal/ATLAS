@@ -32,7 +32,7 @@ async function initializeLearningNodesGraph(learningNodes, edges) {
         }));
         
         // Get base styles
-        const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+        const styleText = await (await fetch(window.urlPrefix + '/static/skills-graph.cycss')).text();
         
         // Add custom styles for learning nodes
         const customStyles = `

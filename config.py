@@ -13,16 +13,22 @@ class Config:
         self.aws_account_id = os.getenv("AWS_ACCOUNT_ID")
         self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
         self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-        self.model = os.getenv("MODEL")  # Default model
+        self.model = os.getenv("MODEL")
         print(self.model, "self.model")
         self.agent_runtime_arn = os.getenv("AGENT_RUNTIME_ARN")
-        print(self.agent_runtime_arn, "self.agent_runtime_arn")
         
         # PocketBase configuration
         self.pocketbase_url = os.getenv("POCKETBASE_URL")
         self.pocketbase_email = os.getenv("POCKETBASE_EMAIL")
         self.pocketbase_password = os.getenv("POCKETBASE_PASSWORD")
         self.secret = os.getenv("SECRET")
+        
+        # URL prefix configuration
+        url_prefix = os.getenv("URL_PREFIX", "").rstrip("/")
+        if url_prefix and not url_prefix.startswith("/"):
+            url_prefix = "/" + url_prefix
+        self.url_prefix = url_prefix
+        print(self.url_prefix, "self.url_prefix")
         
         # # Initialize PocketBase connection
         # self.pb = None

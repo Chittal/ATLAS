@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }} - ATLAS</title>
-    <link rel="stylesheet" href="/static/styles.css">
     <style>
         body {
             margin: 0;
@@ -239,7 +238,7 @@
         <div class="signup-card">
             <div class="signup-header">
                 <div class="signup-logo">
-                    <img src="/static/atlas.png" alt="ATLAS" class="signup-logo-img">
+                    <img src="{{ static_url('/atlas.png') }}" alt="ATLAS" class="signup-logo-img">
                 </div>
                 <h1 class="signup-title">Create Account</h1>
                 <p class="signup-subtitle">Create your account to start your personalized learning journey</p>
@@ -317,7 +316,7 @@
             </div>
 
             <div class="signup-footer">
-                <p>Sign in to your existing account <a href="/login" class="signup-link">here</a></p>
+                <p>Sign in to your existing account <a href="{{ url_for_prefix('/login') }}" class="signup-link">here</a></p>
             </div>
         </div>
     </div>
@@ -390,7 +389,7 @@
 
                     const payload = { name, email, password, passwordConfirm };
 
-                    const res = await fetch('/api/auth/signup', {
+                    const res = await fetch('{{ url_for_prefix("/api/auth/signup") }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
@@ -402,7 +401,7 @@
                     }
 
                     // Auto-login after signup
-                    const loginRes = await fetch('/api/auth/login', {
+                    const loginRes = await fetch('{{ url_for_prefix("/api/auth/login") }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email, password })
@@ -413,9 +412,9 @@
                             const expires = new Date(Date.now() + 7*24*60*60*1000).toUTCString();
                             document.cookie = `auth_token=${data.token}; path=/; SameSite=Lax; expires=${expires}`;
                         }
-                        window.location.href = '/';
+                        window.location.href = '{{ url_for_prefix("/") }}';
                     } else {
-                        window.location.href = '/login';
+                        window.location.href = '{{ url_for_prefix("/login") }}';
                     }
                 } catch (e) {
                     const errText = (e && e.message) ? e.message : 'Signup failed';

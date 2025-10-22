@@ -123,7 +123,7 @@
     
     try {
         console.log('Fetching user roadmaps...');
-        const res = await fetch('/api/user/roadmaps', {
+        const res = await fetch('{{ url_for_prefix("/api/user/roadmaps") }}', {
             credentials: 'include' // Include cookies for auth
         });
         
@@ -164,7 +164,7 @@
             `;
             card.addEventListener('click', () => {
                 // Navigate to focused learning path view using user roadmap path ID
-                window.location.href = `/learning-path?user_roadmap_path_id=${rm.user_roadmap_path_id}`;
+                window.location.href = `${window.urlPrefix}/learning-path?user_roadmap_path_id=${rm.user_roadmap_path_id}`;
             });
             container.appendChild(card);
         });

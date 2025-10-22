@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
     
     <!-- Chat Widget Styles -->
-    <link rel="stylesheet" href="/static/chat-widget.css">
+    <link rel="stylesheet" href="{{ static_url('/chat-widget.css') }}">
     
     {% block head %}{% endblock %}
     <style>
@@ -1031,11 +1031,15 @@
     </div>
     
     <!-- Include Chat Widget (hidden on login/signup pages) -->
-    {% if not request.path.startswith('/login') and not request.path.startswith('/signup') %}
+    {% if not request.path.endswith('/login') and not request.path.endswith('/signup') %}
     {% include 'partials_chat_widget.html' %}
     
     <!-- Chat Widget JavaScript -->
-    <script src="/static/chat-widget.js"></script>
+    <script>
+        // Make URL prefix available to JavaScript
+        window.urlPrefix = '{{ url_prefix }}';
+    </script>
+    <script src="{{ static_url('/chat-widget.js') }}"></script>
     {% endif %}
     
     <!-- Sidebar JavaScript -->
@@ -1101,7 +1105,7 @@
         // Logout function
         async function logout() {
             try {
-                const response = await fetch('/api/auth/logout', {
+                const response = await fetch('{{ url_for_prefix("/api/auth/logout") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1112,7 +1116,7 @@
                     // Clear auth cookie
                     document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                     // Redirect to login
-                    window.location.href = '/login';
+                    window.location.href = '{{ url_for_prefix("/login") }}';
                 } else {
                     console.error('Logout failed');
                 }

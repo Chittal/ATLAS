@@ -256,7 +256,7 @@
     async function initGraph() {
         try {
             console.log('🚀 Starting roadmap initialization...');
-            const response = await fetch('/api/roadmap-progression');
+            const response = await fetch('{{ url_for_prefix("/api/roadmap-progression") }}');
             console.log('📡 API response status:', response.status);
             
             if (!response.ok) {
@@ -416,7 +416,7 @@
     async function highlightPathBetweenSkills(startSkill = 'data analyst', targetSkill = 'ai agents') {
         try {
             console.log(`🎯 Highlighting path from "${startSkill}" to "${targetSkill}"`);
-            const res = await fetch('/api/skill-path?start=' + encodeURIComponent(startSkill) + '&end=' + encodeURIComponent(targetSkill));
+            const res = await fetch('{{ url_for_prefix("/api/skill-path") }}?start=' + encodeURIComponent(startSkill) + '&end=' + encodeURIComponent(targetSkill));
             const { path, edges } = await res.json();
             if (!cy || !path || path.length === 0) {
                 console.log(`❌ No path found from "${startSkill}" to "${targetSkill}"`);
@@ -478,7 +478,7 @@
 
     async function showSkillPath(start_skill, target_skill) {
         try {
-            const res = await fetch('/api/skill-path?start=' + encodeURIComponent(start_skill.toLowerCase()) + '&end=' + encodeURIComponent(target_skill.toLowerCase()));
+            const res = await fetch('{{ url_for_prefix("/api/skill-path") }}?start=' + encodeURIComponent(start_skill.toLowerCase()) + '&end=' + encodeURIComponent(target_skill.toLowerCase()));
             const { path, edges } = await res.json();
             if (!cy || !path || path.length === 0) return;
 

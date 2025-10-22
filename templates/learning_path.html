@@ -1077,7 +1077,7 @@
             <p class="learning-path-subtitle" id="path-subtitle">Loading your personalized learning path...</p>
             
             <div class="learning-path-nav">
-                <a href="/" class="nav-button">
+                <a href="{{ url_for_prefix('/') }}" class="nav-button">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                     </svg>
@@ -1224,7 +1224,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 pathUrl = `/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
             }
             
-            const pathResponse = await fetch(pathUrl);
+            const pathResponse = await fetch(window.urlPrefix + pathUrl);
             pathData = await pathResponse.json(); // Store in global variable
             
             if (!pathData.path || pathData.path.length === 0) {
@@ -1319,7 +1319,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         
         // Get style from existing stylesheet (same as skills_graph_flat.html)
-        const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+        const styleText = await (await fetch('{{ static_url("/skills-graph.cycss") }}')).text();
         
          cy = cytoscape({
              container: document.getElementById('cy'),
@@ -1347,7 +1347,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (rpId) params.set('user_roadmap_path_id', rpId);
                 if (skillId) params.set('skill_id', skillId);
                 const query = params.toString() ? `?${params.toString()}` : '';
-                const response = await fetch(`/api/skill/${encodeURIComponent(skillName)}/learning-graph${query}`);
+                const response = await fetch(`${window.urlPrefix}/api/skill/${encodeURIComponent(skillName)}/learning-graph${query}`);
                  const data = await response.json();
                  
                  if (data.learning_nodes && data.learning_nodes.length > 0) {
@@ -1477,7 +1477,7 @@ document.addEventListener('DOMContentLoaded', async function() {
              }));
              
              // Get base styles
-             const styleText = await (await fetch('/static/skills-graph.cycss')).text();
+             const styleText = await (await fetch('{{ static_url("/skills-graph.cycss") }}')).text();
              
              // Add custom styles for learning nodes
              const customStyles = `
@@ -1719,7 +1719,7 @@ document.addEventListener('DOMContentLoaded', async function() {
          console.log(`📚 Showing resources for node: ${nodeName}`);
          
          try {
-             const response = await fetch(`/api/learning-node/${encodeURIComponent(nodeId)}/resources`);
+             const response = await fetch(`${window.urlPrefix}/api/learning-node/${encodeURIComponent(nodeId)}/resources`);
              const data = await response.json();
              
              if (data.resources && data.resources.length > 0) {
@@ -1865,7 +1865,7 @@ document.addEventListener('DOMContentLoaded', async function() {
              
              if (isCompleted) {
                  // Mark as completed in database
-                 const response = await fetch('/api/learning-node/complete', {
+                 const response = await fetch('{{ url_for_prefix("/api/learning-node/complete") }}', {
                      method: 'POST',
                      headers: {
                          'Content-Type': 'application/json',
@@ -1886,7 +1886,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                  }
              } else {
                  // Mark as incomplete in database
-                 const response = await fetch('/api/learning-node/incomplete', {
+                 const response = await fetch('{{ url_for_prefix("/api/learning-node/incomplete") }}', {
                      method: 'POST',
                      headers: {
                          'Content-Type': 'application/json',
@@ -1930,7 +1930,7 @@ document.addEventListener('DOMContentLoaded', async function() {
      async function getOrCreateUserRoadmapPath() {
          try {
              // First, try to get existing user progress
-             const response = await fetch('/api/user/progress');
+             const response = await fetch('{{ url_for_prefix("/api/user/progress") }}');
              if (response.ok) {
                  const data = await response.json();
                  if (data.user_paths && data.user_paths.length > 0) {
@@ -1952,7 +1952,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                  } else {
                      pathUrl = `/api/skill-path?start=${encodeURIComponent(startSkill)}&end=${encodeURIComponent(endSkill)}`;
                  }
-                 const pathResponse = await fetch(pathUrl);
+                 const pathResponse = await fetch(window.urlPrefix + pathUrl);
                  currentPathData = await pathResponse.json();
              }
              
@@ -1963,7 +1963,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                      skill_path: currentPathData.path
                  };
                  
-                 const saveResponse = await fetch('/api/route-planning/start-learning', {
+                 const saveResponse = await fetch('{{ url_for_prefix("/api/route-planning/start-learning") }}', {
                      method: 'POST',
                      headers: {
                          'Content-Type': 'application/json',
@@ -2168,7 +2168,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
             
             // Fetch learning graph for the first skill
-            const response = await fetch(`/api/skill/${encodeURIComponent(startSkill)}/learning-graph`);
+            const response = await fetch(`${window.urlPrefix}/api/skill/${encodeURIComponent(startSkill)}/learning-graph`);
             const data = await response.json();
             
             if (data.learning_nodes && data.learning_nodes.length > 0) {
@@ -2279,7 +2279,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 is_favorite: isFavorite
             };
 
-            const response = await fetch('/api/user/notes', {
+            const response = await fetch('{{ url_for_prefix("/api/user/notes") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

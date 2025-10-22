@@ -4,6 +4,7 @@ import uuid
 from helper.user_progress_helper import UserProgressHelper
 from helper.helper import get_kuzu_manager
 from fastapi.responses import RedirectResponse, HTMLResponse
+from config import app_config
 from helper.helper import get_current_user
 from helper.agentcore import invoke_agent_runtime
 
@@ -356,9 +357,9 @@ async def general_chat(request: Request):
         print(f"Error in general_chat: {e}")
         # Fallback to local agent if AgentCore fails
         print("Falling back to local agent...")
+        
         try:
-            local_result = request.app.state.agent.execute_graph(user_message)
-            
+            local_result = request.app.state.agent.execute_graph(user_message)  
             # Extract the response from the local agent result
             if local_result.get("status") == "success" and local_result.get("messages"):
                 assistant_messages = [msg for msg in local_result["messages"] if msg["role"] == "assistant"]
@@ -369,7 +370,7 @@ async def general_chat(request: Request):
             else:
                 ai_response = f"I encountered an issue: {local_result.get('error', 'Unknown error')}"
             
-            return {
+            response_data = {
                 "ai_response": ai_response,
                 "timestamp": "2024-01-01T00:00:00Z",
                 "agent_metadata": {
@@ -379,6 +380,34 @@ async def general_chat(request: Request):
                     "fallback": True
                 }
             }
+            if local_result.get("category") == "ROUTE_PLANNING" and local_result.get("path_objects"):
+                print("I executed")
+                try:
+                    path_objects = local_result.get("path_objects")
+                    print(path_objects, "path_objects")
+                    print(f"Route planning path objects: {path_objects}")
+                    
+                    # Create edges for the path
+                    edges = []
+                    for i in range(len(path_objects) - 1):
+                        source = path_objects[i]["id"]
+                        target = path_objects[i + 1]["id"]
+                        edges.append({
+                            "id": f"{source}-{target}",
+                            "source": source,
+                            "target": target
+                        })
+                    
+                    path_data = {
+                        "path": path_objects,
+                        "edges": edges
+                    }
+                    print(f"Path data for highlighting: {path_data}")
+                    response_data["path_data"] = path_data
+                except Exception as e:
+                    print(f"Error creating path data: {e}")
+        
+            return response_data
         except Exception as fallback_error:
             print(f"Fallback agent also failed: {fallback_error}")
             return {
@@ -598,7 +627,7 @@ async def home_page(request: Request):
     # Redirect to login if no authenticated user
     if not user:
         print("No user found, redirecting to login")  # Debug logging
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     print(f"User authenticated: {user.email}")  # Debug logging
     return templates.TemplateResponse("skills_graph.html", {
@@ -612,7 +641,7 @@ async def notes_content(request: Request):
     """Notes page - returns full layout for direct access, content-only for HTMX"""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Check if this is an HTMX request
     is_htmx = request.headers.get("hx-request") == "true"
@@ -637,7 +666,7 @@ async def roadmaps_content(request: Request):
     """Roadmaps page - returns full layout for direct access, content-only for HTMX"""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Check if this is an HTMX request
     is_htmx = request.headers.get("hx-request") == "true"
@@ -662,7 +691,7 @@ async def settings_content(request: Request):
     """Settings page - returns full layout for direct access, content-only for HTMX"""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Check if this is an HTMX request
     is_htmx = request.headers.get("hx-request") == "true"
@@ -687,7 +716,7 @@ async def skills_content(request: Request):
     """Skills page - returns full layout for direct access, content-only for HTMX"""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Check if this is an HTMX request
     is_htmx = request.headers.get("hx-request") == "true"
@@ -712,7 +741,7 @@ async def profile_content(request: Request):
     """Profile page - returns full layout for direct access, content-only for HTMX"""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Check if this is an HTMX request
     is_htmx = request.headers.get("hx-request") == "true"
@@ -739,7 +768,7 @@ async def learning_path_page(request: Request, start: str = None, end: str = Non
     
     # Redirect to login if no authenticated user
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     # Set default values if neither user_roadmap_path_id nor start/end are provided
     if not user_roadmap_path_id and not start and not end:

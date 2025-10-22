@@ -215,7 +215,7 @@
         
         try {
             console.log('Fetching user skills...');
-            const response = await fetch('/api/user/skills', {
+            const response = await fetch('{{ url_for_prefix("/api/user/skills") }}', {
                 credentials: 'include' // Include cookies for auth
             });
             

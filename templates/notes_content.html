@@ -532,7 +532,7 @@
     // Load all notes from API
     async function loadNotes() {
         try {
-            const response = await fetch('/api/user/notes', {
+            const response = await fetch('{{ url_for_prefix("/api/user/notes") }}', {
                 credentials: 'include'
             });
             
@@ -553,7 +553,7 @@
     // Load available tags
     async function loadTags() {
         try {
-            const response = await fetch('/api/user/tags', {
+            const response = await fetch('{{ url_for_prefix("/api/user/tags") }}', {
                 credentials: 'include'
             });
             
@@ -693,7 +693,7 @@
     // Save note (create or update)
     async function saveNote(noteData, noteId = null) {
         try {
-            const url = noteId ? `/api/user/notes/${noteId}` : '/api/user/notes';
+            const url = noteId ? window.urlPrefix + `/api/user/notes/${noteId}` : window.urlPrefix + '/api/user/notes';
             const method = noteId ? 'PUT' : 'POST';
 
             const response = await fetch(url, {
@@ -743,7 +743,7 @@
         };
 
         try {
-            const response = await fetch(`/api/user/notes/${noteId}`, {
+            const response = await fetch(`${window.urlPrefix}/api/user/notes/${noteId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

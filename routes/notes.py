@@ -1,5 +1,6 @@
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
+from config import app_config
 from deps import templates
 from helper.helper import get_current_user
 from typing import Optional
@@ -16,7 +17,7 @@ async def notes_page(request: Request):
     """Notes page."""
     user = get_current_user(request)
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
     return templates.TemplateResponse("notes_content.html", {
         "request": request,
