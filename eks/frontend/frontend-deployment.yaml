@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas
+  namespace: cleo
+  labels:
+    app: atlas
+    tier: backend
+    environment: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas
+  template:
+    metadata:
+      labels:
+        app: atlas
+        tier: backend
+    spec:
+      containers:
+      - name: atlas
+        image: 235494787311.dkr.ecr.us-east-2.amazonaws.com/atlas:latest  
+        ports:
+        - containerPort: 8008
+        env:
+        - name: POCKETBASE_URL
+          value: "https://pocketbase-alb-1623984931.us-east-2.elb.amazonaws.com"
+        - name: POCKETBASE_EMAIL
+          value: "admin@gmail.com"
+        - name: POCKETBASE_PASSWORD
+          value: "Admin@1234"
+        - name: SECRET
+          value: "secret"
+        - name: AWS_REGION
+          value: "us-east-2"
+        envFrom:
+        - configMapRef:
+            name: atlas-env-config
+        command: ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT:-8008}"]
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+
+      imagePullSecrets:
+      - name: ecr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atlas-service
+  namespace: cleo
+  labels:
+    app: atlas
+    tier: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8008
+    targetPort: 8008
+    protocol: TCP
+  selector:
+    app: atlas
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: atlas-hpa
+  namespace: cleo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: atlas
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
