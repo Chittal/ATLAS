@@ -8,8 +8,15 @@ class Config:
     def __init__(self):
         self.api_base = os.getenv("API_BASE")
         self.api_key = os.getenv("API_KEY")
-        self.model = os.getenv("MODEL", "llama3.1:8b")  # Default model
         self.llm_provider = os.getenv("CUSTOM_LLM_PROVIDER")
+        self.aws_region = os.getenv("AWS_REGION")
+        self.aws_account_id = os.getenv("AWS_ACCOUNT_ID")
+        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+        self.model = os.getenv("MODEL")  # Default model
+        print(self.model, "self.model")
+        self.agent_runtime_arn = os.getenv("AGENT_RUNTIME_ARN")
+        print(self.agent_runtime_arn, "self.agent_runtime_arn")
         
         # PocketBase configuration
         self.pocketbase_url = os.getenv("POCKETBASE_URL")

@@ -8,6 +8,7 @@ def invoke_agent_runtime(user_message: str, session_id: str):
     payload = json.dumps({
         "user_message": user_message
     })
+    print(app_config.agent_runtime_arn, "app_config.agent_runtime_arn")
     response = client.invoke_agent_runtime(
         agentRuntimeArn=app_config.agent_runtime_arn,
         runtimeSessionId=session_id,  # Must be 33+ chars
