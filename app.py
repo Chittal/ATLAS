@@ -20,10 +20,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# Initialize PocketBase user client for auth flows
-# pb = get_pb_admin_client()
-
-
 
 app = FastAPI(title="AI Learning Subway Map", description="Multi-user AI Learning Path Visualization")
 

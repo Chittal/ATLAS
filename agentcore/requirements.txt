@@ -1,37 +1,19 @@
-# AgentCore Agent Requirements
-# Core dependencies for the personalized route planning agent
-
-# LangChain and LangGraph
-langchain==0.3.27
 langchain-core==0.3.76
-langchain-community==0.3.29
+langchain==0.3.27
+langchain-aws==0.2.35
 langgraph==0.6.7
 langgraph-checkpoint==2.1.1
-
-# AWS Bedrock and LLM Clients
-boto3==1.35.94
-botocore==1.35.94
-langchain-aws==0.2.4
-langchain-core==0.3.76
+langgraph-prebuilt==0.6.4
+bedrock-agentcore==1.0.3
 
 # HTTP client for API calls
 httpx==0.28.1
 requests==2.32.5
 
+boto3==1.40.55
+botocore==1.40.55
+
 # Environment and configuration
 python-dotenv==1.1.1
 pydantic==2.11.7
 pydantic-settings==2.10.1
-
-# JSON handling
-orjson==3.11.3
-
-# Logging and monitoring
-structlog==24.4.0
-
-# Async support
-asyncio
-aiohttp==3.12.15
-
-# Utilities
-typing-extensions==4.15.0

@@ -1,7 +1,10 @@
 venv/
+avenv/
 .venv/
 .env
 __pycache__/
 raw_data/
 data/
 pocketbase-data/
+eks/
+.bedrock_agentcore.yaml

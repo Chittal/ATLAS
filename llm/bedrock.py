@@ -14,15 +14,15 @@ class BedrockClient:
     
     def __init__(self, model: str = None):
         # Use provided model or fallback to config or default
-        self.model = "anthropic.claude-3-sonnet-20240229-v1:0"
+        self.model = app_config.model
         
         if not self.model:
             raise ValueError("Model name is required but not provided")
             
         # Get AWS credentials from environment variables
-        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
-        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-        self.aws_region = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
+        self.aws_access_key_id = app_config.aws_access_key_id
+        self.aws_secret_access_key = app_config.aws_secret_access_key
+        self.aws_region = app_config.aws_region
         
         if not self.aws_access_key_id or not self.aws_secret_access_key:
             raise ValueError("AWS credentials (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) are required")

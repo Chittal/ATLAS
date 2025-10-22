@@ -1,9 +1,11 @@
 from fastapi import Request, HTTPException, APIRouter
 from deps import templates
+import uuid
 from helper.user_progress_helper import UserProgressHelper
 from helper.helper import get_kuzu_manager
 from fastapi.responses import RedirectResponse, HTMLResponse
 from helper.helper import get_current_user
+from helper.agentcore import invoke_agent_runtime
 
 router = APIRouter(
     prefix="",
@@ -39,6 +41,20 @@ async def get_skill_details(skill_id: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error getting skill details: {str(e)}")
+
+@router.get("/api/skill/{skill_name}/prerequisites")
+async def get_skill_prerequisites(skill_name: str):
+    """Get prerequisites for a specific skill."""
+    try:
+        manager = get_kuzu_manager()
+        prerequisites = manager.get_skill_prerequisites_by_name(skill_name)
+        return {
+            "skill_name": skill_name,
+            "prerequisites": prerequisites,
+            "total_prerequisites": len(prerequisites)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting skill prerequisites: {str(e)}")
 
 @router.get("/api/user/skills")
 async def get_user_skills(request: Request):
@@ -102,7 +118,6 @@ async def get_user_skills(request: Request):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error getting user skills: {str(e)}")
-
 
 
 @router.get("/api/skill/{skill_name}/learning-nodes")
@@ -266,33 +281,36 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
 
-@router.post("/api/general/chat/agentcore")
-async def general_chat_agentcore(request: Request):
+@router.post("/api/general/chat")
+async def general_chat(request: Request):
     """Handle general chat queries from the chat widget."""
     print("ENDPOINT HIT! /api/general/chat was called!")
-    
-    # Import AgentCore client
-    from agentcore_client import agentcore_client
     
     try:
         request_json = await request.json()
         user_message = request_json.get("message", "")
-        user_id = request_json.get("user_id")  # Optional user ID
+        # user_id = request_json.get("user_id")  # Optional user ID
         
         print(f"API called with message: '{user_message}'")
         print(f"Full message dict: {request_json}")
         
         # Use AgentCore instead of local agent
         print("CALLING AGENTCORE AGENT")
-        result = await agentcore_client.chat_with_agent(user_message, user_id)
-        print("AgentCore result:", result)
-    
-        # Extract the response from AgentCore result
-        if result.get("status") == "success":
-            ai_response = result.get("message", "I'm sorry, I couldn't process your request.")
+        session_id = str(uuid.uuid4())
+        result = invoke_agent_runtime(user_message, session_id=session_id)
+        # Extract the response from the agent result
+        if result.get("status") == "success" and result.get("agent_result"):
+            agent_result = result.get("agent_result")
+            print(agent_result, "agent_result")
+            assistant_messages = [msg for msg in agent_result["messages"] if msg["role"] == "assistant"]
+            print(assistant_messages, "assistant_messages")
+            if assistant_messages:
+                ai_response = assistant_messages[-1]["content"]
+            else:
+                ai_response = "I'm sorry, I couldn't process your request."
         else:
-            ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
-        
+            ai_response = f"I encountered an issue: {result.get('message', 'Unknown error')}"
+        result = result.get("agent_result")
         response_data = {
             "ai_response": ai_response,
             "timestamp": "2024-01-01T00:00:00Z",
@@ -302,11 +320,14 @@ async def general_chat_agentcore(request: Request):
                 "status": result.get("status")
             }
         }
-    
+        print(result, "result")
+        
         # If this is a route planning query, get the path data for highlighting
         if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
+            print("I executed")
             try:
                 path_objects = result.get("path_objects")
+                print(path_objects, "path_objects")
                 print(f"Route planning path objects: {path_objects}")
                 
                 # Create edges for the path
@@ -370,12 +391,9 @@ async def general_chat_agentcore(request: Request):
                     "fallback": True
                 }
             }
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
 
-
-@router.post("/api/general/chat")
-async def general_chat(request: Request):
+@router.post("/api/general/chat/old")
+async def general_chat_old(request: Request):
     """Handle general chat queries from the chat widget."""
     print("ENDPOINT HIT! /api/skill/general/chat was called!")
     # try:
