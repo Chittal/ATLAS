@@ -8,7 +8,10 @@ def get_skill_prerequisites_by_name(skill_name):
     The output is a list of prerequisites for the skill.
     """
     url = f"{app_config.atlas_app_url}/api/skills/{skill_name}/prerequisites"
+    print(url, "url")
+    print(app_config.atlas_app_url, "app_config.atlas_app_url")
     response = requests.get(url, verify=False)
+    print(response, "response")
     response_json = response.json()
     if response.status_code == 200:
         prerequisites = response_json["prerequisites"]

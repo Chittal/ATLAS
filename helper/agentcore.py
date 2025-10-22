@@ -4,7 +4,7 @@ from config import app_config
 
 client = boto3.client('bedrock-agentcore', region_name='us-east-2')
 
-def invoke_agent_runtime(user_message: str, session_id: str):
+async def invoke_agent_runtime(user_message: str, session_id: str):
     payload = json.dumps({
         "user_message": user_message
     })

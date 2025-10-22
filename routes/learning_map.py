@@ -297,7 +297,7 @@ async def general_chat(request: Request):
         # Use AgentCore instead of local agent
         print("CALLING AGENTCORE AGENT")
         session_id = str(uuid.uuid4())
-        result = invoke_agent_runtime(user_message, session_id=session_id)
+        result = await invoke_agent_runtime(user_message, session_id=session_id)
         # Extract the response from the agent result
         if result.get("status") == "success" and result.get("agent_result"):
             agent_result = result.get("agent_result")
