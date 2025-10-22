@@ -4,9 +4,7 @@ from config import app_config
 from llm.bedrock import BedrockClient
 # from llm.litellm import LiteLLMClient
 from schemas.agent import AgentState
-from langchain_core.tools import tool as langchain_tool
 from langgraph.graph import StateGraph, START, END
-from langgraph.checkpoint.memory import InMemorySaver
 from helper.kuzu_db_helper import KuzuSkillGraph
 
 class PersonalizedRoutePlanningAgent:
@@ -16,6 +14,7 @@ class PersonalizedRoutePlanningAgent:
         # self.llm = OllamaClient(model=app_config.model)
         # self.llm = LiteLLMClient(model=app_config.model)
         self.llm = BedrockClient(model=app_config.model)
+        self.graph = None
         # Use injected shared instance if provided; otherwise, create one
         self.kuzu_db_helper = kuzu_helper if kuzu_helper is not None else KuzuSkillGraph()
         # tools = [self.pre_requisite, self.skill_details]
@@ -231,7 +230,7 @@ class PersonalizedRoutePlanningAgent:
             state["error"] = str(e)
             return state
 
-    def execute_graph(self, user_message):
+    def create_graph(self):
         def map_category_to_node(state: AgentState):
             print("I AM AT MAP CATEGORY TO NODE=============")
             category = state["category"]
@@ -262,6 +261,11 @@ class PersonalizedRoutePlanningAgent:
         graph.add_edge("prerequisite", END)
         # graph.add_edge("skill_details", END)
         graph = graph.compile()
+        return graph
+
+    def execute_graph(self, user_message):
+        if self.graph is None:
+            self.graph = self.create_graph()
         initial_state = {
             "current_message": user_message,
             "messages": [],
@@ -275,7 +279,7 @@ class PersonalizedRoutePlanningAgent:
             "path_objects": []
         }
         print(initial_state, "initial_state")
-        result = graph.invoke(initial_state)
+        result = self.graph.invoke(initial_state)
         print(result, "result")
         return result
 

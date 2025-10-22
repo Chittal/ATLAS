@@ -359,6 +359,8 @@ async def general_chat(request: Request):
         print("Falling back to local agent...")
         
         try:
+            from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
+            request.app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=request.app.state.kuzu_manager)
             local_result = request.app.state.agent.execute_graph(user_message)  
             # Extract the response from the local agent result
             if local_result.get("status") == "success" and local_result.get("messages"):
