@@ -17,6 +17,7 @@ COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
 # Copy migrations into the image
 COPY pb_migrations /pb_migrations
 
+# env file
 COPY env.example .env
 
 # Just set the entrypoint to pocketbase, let docker-compose pass the flags
