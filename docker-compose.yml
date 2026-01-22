@@ -56,6 +56,8 @@ services:
       - --dev
       - --http=0.0.0.0:${PB_PORT}
       - --automigrate
+      - --dir=/data/pb_data
+      - --migrationsDir=/data/pb_migrations
     ports:
       - "${PB_PORT:-8090}:${PB_PORT:-8090}"
     volumes:
