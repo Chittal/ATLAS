@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: learning-map-app
     ports:
-      - "80:${PORT:-8008}"
+      - "8008:${PORT:-8008}"
     volumes:
       - ./data:/app/data
       - ./static:/app/static
