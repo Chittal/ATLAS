@@ -1,0 +1,4 @@
+- Two way skill connection
+- Learning objective, projects
+- Find more resources based on difficuly
+- PersonalizedRoutePlanningAgent - Optimize agents to be more of like a ReAct agent just one node it decides which tool to call.

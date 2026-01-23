@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-app = FastAPI(title="AI Learning Subway Map", description="Multi-user AI Learning Path Visualization")
+app = FastAPI(title="ATLAS", description="Multi-user AI Learning Path Visualization")
 
 # Initialize shared Kuzu manager and agent in startup events to avoid multi-process locks
 @app.on_event("startup")
@@ -30,11 +30,9 @@ def on_startup():
     try:
         app.state.kuzu_manager = KuzuSkillGraph("skills_graph.db")
         deps.kuzu_manager = app.state.kuzu_manager
-        app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=app.state.kuzu_manager)
-        print("✅ LangGraph agent initialized successfully")
-    except Exception as e:
-        print(f"❌ Failed to initialize LangGraph agent: {e}")
         app.state.agent = None
+    except Exception as e:
+        print(f"Error in on_startup: {e}")
 
 @app.on_event("shutdown")
 def on_shutdown():

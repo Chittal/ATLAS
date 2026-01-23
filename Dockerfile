@@ -14,7 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Set work directory (Render's standard)
 WORKDIR /opt/render/project/src
 
-# Install system dependencies (minimal set for Render)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
