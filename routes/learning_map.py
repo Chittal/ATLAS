@@ -282,8 +282,8 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
 
-@router.post("/api/general/chat")
-async def general_chat(request: Request):
+@router.post("/api/general/chat/agentcore")
+async def general_chat_agentcore(request: Request):
     """Handle general chat queries from the chat widget."""
     print("ENDPOINT HIT! /api/general/chat was called!")
     
@@ -359,6 +359,8 @@ async def general_chat(request: Request):
         print("Falling back to local agent...")
         
         try:
+            from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
+            request.app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=request.app.state.kuzu_manager)
             local_result = request.app.state.agent.execute_graph(user_message)  
             # Extract the response from the local agent result
             if local_result.get("status") == "success" and local_result.get("messages"):
@@ -421,8 +423,8 @@ async def general_chat(request: Request):
                 }
             }
 
-@router.post("/api/general/chat/old")
-async def general_chat_old(request: Request):
+@router.post("/api/general/chat")
+async def general_chat(request: Request):
     """Handle general chat queries from the chat widget."""
     print("ENDPOINT HIT! /api/skill/general/chat was called!")
     # try:

@@ -1,0 +1,25 @@
+FROM alpine:3 AS downloader
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+ARG PB_VERSION=0.35.1
+ENV BUILDX_ARCH="${TARGETOS:-linux}_${TARGETARCH:-amd64}${TARGETVARIANT}"
+
+RUN wget https://github.com/pocketbase/pocketbase/releases/download/v0.29.2/pocketbase_0.29.2_${BUILDX_ARCH}.zip \
+    && unzip pocketbase_0.29.2_${BUILDX_ARCH}.zip \
+    && chmod +x /pocketbase
+
+FROM alpine:3
+RUN apk update && apk add ca-certificates wget && rm -rf /var/cache/apk/*
+
+COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
+
+# Copy migrations into the image
+COPY pb_migrations /pb_migrations
+
+# env file copied to env
+COPY env.example .env
+
+# Just set the entrypoint to pocketbase, let docker-compose pass the flags
+ENTRYPOINT ["/usr/local/bin/pocketbase"]
+CMD ["serve", "--http=0.0.0.0:8090"]
