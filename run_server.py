@@ -3,13 +3,14 @@
 Simple script to run the FastAPI subway map server
 """
 
+import logging
 import uvicorn
 from app import app
 
 if __name__ == "__main__":
-    print("🚇 Starting Subway Map Server...")
-    print("📍 Open your browser to: http://localhost:8008")
-    print("🛑 Press Ctrl+C to stop the server")
+    logging.debug("🚇 Starting Subway Map Server...")
+    logging.debug("📍 Open your browser to: http://localhost:8008")
+    logging.debug("🛑 Press Ctrl+C to stop the server")
 
     uvicorn.run(
         "app:app",  # Use import string for reload to work

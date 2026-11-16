@@ -1,5 +1,6 @@
+import logging
 from deps import kuzu_manager
-from fastapi import Request
+from fastapi import Request, HTTPException
 
 def get_kuzu_manager():
     """Return shared Kuzu manager instance."""
@@ -14,6 +15,26 @@ def get_kuzu_manager():
     except Exception:
         pass
     raise RuntimeError("Kuzu manager not initialized")
+
+
+def require_owned_roadmap_path(pb, user, user_roadmap_path_id: str):
+    """Return the user_roadmap_path record if it belongs to `user`, else raise 404.
+
+    Routes use the admin PocketBase client, which bypasses PocketBase's own access
+    rules, so this check is what stops one user from reading or changing another
+    user's roadmap path. A path owned by someone else gets the same 404 as a missing
+    one, so the response doesn't reveal which IDs exist.
+    """
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    try:
+        record = pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
+    except Exception:
+        raise HTTPException(status_code=404, detail="Roadmap path not found")
+    if getattr(record, 'user_id', None) != user.id:
+        logging.warning("User %s tried to access user_roadmap_path %s owned by another user", user.id, user_roadmap_path_id)
+        raise HTTPException(status_code=404, detail="Roadmap path not found")
+    return record
 
 
 # Authentication helper functions
@@ -39,7 +60,7 @@ def get_current_user(request: Request):
             if auth_data and auth_data.record:
                 return auth_data.record
         except Exception as refresh_error:
-            print(f"Token refresh failed: {refresh_error}")
+            logging.debug(f"Token refresh failed: {refresh_error}")
             # If refresh fails, try to get user info directly
             try:
                 # Try to get current user info without refresh
@@ -47,11 +68,11 @@ def get_current_user(request: Request):
                 if user_info:
                     return user_info
             except Exception as get_error:
-                print(f"Get user info failed: {get_error}")
+                logging.debug(f"Get user info failed: {get_error}")
                 return None
         
         return None
             
     except Exception as e:
-        print(f"Auth validation error: {e}")
+        logging.debug(f"Auth validation error: {e}")
         return None

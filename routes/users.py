@@ -1,3 +1,4 @@
+import logging
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
 from config import app_config
@@ -40,32 +41,35 @@ async def signup_page(request: Request):
 @router.post("/api/auth/signup")
 async def signup(user_data: UserSignup):
     """User signup endpoint"""
-    # try:  
-    # Validate password confirmation
-    if user_data.password != user_data.passwordConfirm:
-        raise HTTPException(status_code=400, detail="Passwords do not match")
-    
-    # Create user in PocketBase (let PocketBase handle password hashing)
-    # For auth collections, we need to include passwordConfirm
-    pb = get_pb_admin_client()
-    user = pb.collection('users').create({
-        "email": user_data.email,
-        "password": user_data.password,
-        "passwordConfirm": user_data.passwordConfirm,
-        "name": user_data.name
-    })
-    
-    return {
-        "success": True,
-        "message": "User created successfully",
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "name": user.name
+    try:
+        # Validate password confirmation
+        if user_data.password != user_data.passwordConfirm:
+            raise HTTPException(status_code=400, detail="Passwords do not match")
+
+        # Create user in PocketBase (let PocketBase handle password hashing)
+        # For auth collections, we need to include passwordConfirm
+        pb = get_pb_admin_client()
+        user = pb.collection('users').create({
+            "email": user_data.email,
+            "password": user_data.password,
+            "passwordConfirm": user_data.passwordConfirm,
+            "name": user_data.name
+        })
+
+        return {
+            "success": True,
+            "message": "User created successfully",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name
+            }
         }
-    }
-    # except Exception as e:
-    #     raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error("Signup failed: %s", e)
+        raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
 
 @router.post("/api/auth/login")
 async def login(user_data: UserLogin, request: Request):
@@ -117,7 +121,7 @@ async def login(user_data: UserLogin, request: Request):
     except Exception as e:
         # Handle PocketBase authentication errors gracefully
         error_message = str(e)
-        print(f"Login error: {error_message}")  # Debug logging
+        logging.debug(f"Login error: {error_message}")  # Debug logging
         
         # Check if it's a PocketBase authentication error
         if "Failed to authenticate" in error_message or "Status code:400" in error_message:
@@ -216,7 +220,7 @@ async def profile_page(request: Request):
             })
             roadmaps_count = len(roadmaps.items)
         except Exception as e:
-            print(f"Error getting roadmaps count: {e}")
+            logging.debug(f"Error getting roadmaps count: {e}")
             roadmaps_count = 0
         
         # Prepare user data with statistics
@@ -236,7 +240,7 @@ async def profile_page(request: Request):
         }
         
     except Exception as e:
-        print(f"Error gathering user statistics: {e}")
+        logging.debug(f"Error gathering user statistics: {e}")
         # Fallback with basic user data
         user_data = {
             "id": user.id,

@@ -1,3 +1,4 @@
+import logging
 from langchain_ollama import ChatOllama
 from langchain_core.messages import (
     SystemMessage,
@@ -22,7 +23,7 @@ class OllamaClient:
             # Initialize ChatOllama LLM
             self.llm = ChatOllama(model=self.model)
         except Exception as e:
-            print(f"Warning: Could not initialize Ollama with model '{self.model}': {e}")
+            logging.debug(f"Warning: Could not initialize Ollama with model '{self.model}': {e}")
             # Fallback to a common model
             self.model = "llama3.1:8b"
             self.llm = ChatOllama(model=self.model)
@@ -73,7 +74,7 @@ class OllamaClient:
             response = self.llm.invoke(messages)
             return response.content
         except Exception as e:
-            print(f"Error in Ollama chat_simple: {e}")
+            logging.debug(f"Error in Ollama chat_simple: {e}")
             return f"I encountered an error: {str(e)}"
 
     def bind_tools(self, tools: list[dict]):

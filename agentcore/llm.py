@@ -1,3 +1,4 @@
+import logging
 from langchain_aws import ChatBedrock
 from langchain_core.messages import (
     SystemMessage,
@@ -28,11 +29,11 @@ class BedrockClient:
             
         try:
             # Initialize ChatBedrock LLM
-            print("I AM AT BEDROCK CLIENT=============")
-            print("Model", self.model)
-            print("AWS Access Key ID", self.aws_access_key_id)
-            print("AWS Secret Access Key", self.aws_secret_access_key)
-            print("AWS Region", self.aws_region)
+            logging.debug("I AM AT BEDROCK CLIENT=============")
+            logging.debug("%s %s", "Model", self.model)
+            logging.debug("%s %s", "AWS Access Key ID", self.aws_access_key_id)
+            logging.debug("%s %s", "AWS Secret Access Key", self.aws_secret_access_key)
+            logging.debug("%s %s", "AWS Region", self.aws_region)
             self.llm = ChatBedrock(
                 model_id=self.model,
                 region_name=self.aws_region,
@@ -45,8 +46,8 @@ class BedrockClient:
                 }
             )
         except Exception as e:
-            print("I AM AT BEDROCK CLIENT EXCEPTION=============")
-            print(f"Warning: Could not initialize Bedrock with model '{self.model}': {e}")
+            logging.debug("I AM AT BEDROCK CLIENT EXCEPTION=============")
+            logging.debug(f"Warning: Could not initialize Bedrock with model '{self.model}': {e}")
     
     def chat(self, messages: list[dict], system_prompt: Optional[str] = None) -> str:
         """
@@ -92,10 +93,10 @@ class BedrockClient:
             
             # Send the message to the model
             response = self.llm.invoke(messages)
-            print("RESPONSE===========", response)
+            logging.debug("%s %s", "RESPONSE===========", response)
             return response.content
         except Exception as e:
-            print(f"Error in Bedrock chat_simple: {e}")
+            logging.debug(f"Error in Bedrock chat_simple: {e}")
             return f"I encountered an error: {str(e)}"
 
     def bind_tools(self, tools: list[dict]):

@@ -1,3 +1,4 @@
+import logging
 from operator import le
 import kuzu
 import json
@@ -76,14 +77,14 @@ class KuzuSkillGraph:
             )
         """)
         
-        print("KuzuDB comprehensive schema created successfully!")
+        logging.debug("KuzuDB comprehensive schema created successfully!")
     
     def load_skills_from_files(self, skills_list: List[str], data_dir: str = "data"):
         """Load skills from JSON roadmap files into KuzuDB."""
         order_index = 0
         skill_id_mapping = {}
         for skill in skills_list:
-            print(skill)
+            logging.debug(skill)
             self._load_single_skill(skill, data_dir, order_index, skill_id_mapping)
             order_index += 1
         return skill_id_mapping
@@ -94,7 +95,7 @@ class KuzuSkillGraph:
         file_path = os.path.join(data_dir, file_name)
         
         if not os.path.exists(file_path):
-            print(f"Warning: Roadmap file not found for skill: {skill_name} at {file_path}")
+            logging.debug(f"Warning: Roadmap file not found for skill: {skill_name} at {file_path}")
             return skill_id_mapping
         # try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -123,10 +124,10 @@ class KuzuSkillGraph:
         for edge in edges:
             self._insert_edge(edge, skill_id, learning_node_mapping)
         
-        print(f"Loaded skill: {skill_name} with {len(nodes)} nodes and {len(edges)} edges")
+        logging.debug(f"Loaded skill: {skill_name} with {len(nodes)} nodes and {len(edges)} edges")
         return skill_id_mapping
         # except Exception as e:
-        #     print(f"Error loading skill {skill_name}: {str(e)}")
+        #     logging.debug(f"Error loading skill {skill_name}: {str(e)}")
         #     # Still create the skill node even if there's an error
         #     # skill_id = f"skill_{skill_name.replace(' ', '_')}"
         #     # self.conn.execute("""
@@ -150,7 +151,7 @@ class KuzuSkillGraph:
         
         if result.has_next():
             existing_id = result.get_next()[0]
-            print(f"Case 1: Found existing node with same name+description, using ID: {existing_id}")
+            logging.debug(f"Case 1: Found existing node with same name+description, using ID: {existing_id}")
             return existing_id, False
         
         # Case 2: Check if original ID exists but with different name/description
@@ -176,11 +177,11 @@ class KuzuSkillGraph:
                     "name": node_name,
                     "description": description
                 })
-                print(f"Case 2: ID exists with different content, created new ID: {new_id}")
+                logging.debug(f"Case 2: ID exists with different content, created new ID: {new_id}")
                 return new_id, True
             else:
                 # ID exists with same content
-                print(f"Case 2b: ID exists with same content, using original ID: {original_node_id}")
+                logging.debug(f"Case 2b: ID exists with same content, using original ID: {original_node_id}")
                 return original_node_id, False
         
         # Case 3: Everything is new, use original ID
@@ -195,7 +196,7 @@ class KuzuSkillGraph:
             "name": node_name,
             "description": description
         })
-        # print(f"Case 3: All new, created node with original ID: {original_node_id}")
+        # logging.debug(f"Case 3: All new, created node with original ID: {original_node_id}")
         return original_node_id, True
     
     def handle_resource(self, title, url, resource_type):
@@ -220,7 +221,7 @@ class KuzuSkillGraph:
         
         if result.has_next():
             existing_id = result.get_next()[0]
-            # print(f"Resource exists, using ID: {existing_id}")
+            # logging.debug(f"Resource exists, using ID: {existing_id}")
             return existing_id, False
         
         # Create new resource
@@ -238,7 +239,7 @@ class KuzuSkillGraph:
             "url": url,
             "type": resource_type
         })
-        # print(f"Created new resource with ID: {new_resource_id}")
+        # logging.debug(f"Created new resource with ID: {new_resource_id}")
         return new_resource_id, True
     
     def _insert_learning_node(self, node: Dict[str, Any], skill_id: str):
@@ -310,7 +311,7 @@ class KuzuSkillGraph:
             "to_id": to_skill
         })
         
-        print(f"Added skill connection: {from_skill} -> {to_skill}")
+        logging.debug(f"Added skill connection: {from_skill} -> {to_skill}")
     
     def add_skill_connections_from_progression(self, skill_id_mapping: Dict[str, str]):
         """Add skill connections based on logical learning progression from the skills list."""
@@ -538,9 +539,9 @@ class KuzuSkillGraph:
             try:
                 self.add_skill_connection(skill_id_mapping[from_skill], skill_id_mapping[to_skill])
             except Exception as e:
-                print(f"Warning: Could not add connection {from_skill} -> {to_skill}: {str(e)}")
+                logging.debug(f"Warning: Could not add connection {from_skill} -> {to_skill}: {str(e)}")
         
-        print(f"Added {len(connections)} skill connections based on learning progression")
+        logging.debug(f"Added {len(connections)} skill connections based on learning progression")
     
     def get_skill_info(self, skill_name: str) -> Dict[str, Any]:
         """Retrieve information for a specific skill."""
@@ -749,7 +750,7 @@ class KuzuSkillGraph:
                 })
             return skills
         except Exception as e:
-            print(f"Error getting skill prerequisites by name: {e}")
+            logging.debug(f"Error getting skill prerequisites by name: {e}")
             return []
 
     def get_skill_next_skills(self, skill_id: str) -> List[Dict[str, Any]]:
@@ -811,9 +812,9 @@ class KuzuSkillGraph:
             row = res.get_next()
             for node in row[0]["_nodes"]:
                 path.append({"id": node["id"], "name": node["name"]})
-        print("=================================")
-        print("Path objects:", path)
-        print("=================================")
+        logging.debug("=================================")
+        logging.debug("%s %s", "Path objects:", path)
+        logging.debug("=================================")
         return path
     
     def find_learning_path_using_bfs(self, start_skill: str, end_skill: str) -> List[str]:
@@ -834,9 +835,9 @@ class KuzuSkillGraph:
 
         start_id = _get_id_by_name(start_skill)
         end_id = _get_id_by_name(end_skill)
-        print(start_id, end_id, "start_id, end_id")
+        logging.debug("%s %s %s", start_id, end_id, "start_id, end_id")
         if not start_id or not end_id:
-            print(f"Skill not found: {start_skill} or {end_skill}")
+            logging.debug(f"Skill not found: {start_skill} or {end_skill}")
             return []
         
         # Fall back to Python BFS over directed edges
@@ -936,7 +937,7 @@ class KuzuSkillGraph:
                 })
             return learning_nodes
         except Exception as e:
-            print(f"Error getting learning nodes by skill name: {e}")
+            logging.debug(f"Error getting learning nodes by skill name: {e}")
             return []
 
     def get_resources_by_learning_node_id(self, learning_node_id: str) -> List[Dict[str, Any]]:
@@ -958,7 +959,7 @@ class KuzuSkillGraph:
                 })
             return resources
         except Exception as e:
-            print(f"Error getting resources by learning node id: {e}")
+            logging.debug(f"Error getting resources by learning node id: {e}")
             return []
     
     def close(self):
@@ -999,49 +1000,50 @@ def initialize_skill_graph():
     skill_id_mapping = skill_graph.load_skills_from_files(skills)
     
     # Add skill connections based on logical learning progression
-    print("\nAdding skill connections from basic to advanced...")
+    logging.debug("\nAdding skill connections from basic to advanced...")
 
     skill_graph.add_skill_connections_from_progression(skill_id_mapping)
     
-    print("Skill graph initialized successfully!")
+    logging.debug("Skill graph initialized successfully!")
     return skill_graph
 
 # Example usage
 if __name__ == "__main__":
+    logging.basicConfig(level=os.getenv("LOG_LEVEL", "DEBUG").upper(), format="%(levelname)s: %(message)s")
     # Initialize the graph
     graph = initialize_skill_graph()
     
     # Example queries
-    print("\nAll skills:")
+    logging.debug("\nAll skills:")
     all_skills = graph.get_all_skills()
     for skill in all_skills[:10]:  # Show first 10
-        print(f"- {skill['name']} (order: {skill['order_index']})")
+        logging.debug(f"- {skill['name']} (order: {skill['order_index']})")
     
-    print("\nPython skill info:")
+    logging.debug("\nPython skill info:")
     python_info = graph.get_skill_info("python")
     if "error" not in python_info:
-        print(f"Skill: {python_info['name']} (order: {python_info['order_index']})")
+        logging.debug(f"Skill: {python_info['name']} (order: {python_info['order_index']})")
     
     # Example: Show skill connections for Python
-    print("\nPython skill connections:")
+    logging.debug("\nPython skill connections:")
     python_connections = graph.get_skill_connections("python")
-    print(f"Incoming: {python_connections['incoming']}")
-    print(f"Outgoing: {python_connections['outgoing']}")
+    logging.debug(f"Incoming: {python_connections['incoming']}")
+    logging.debug(f"Outgoing: {python_connections['outgoing']}")
     
     # Example: Show skill connections for JavaScript
-    print("\nJavaScript skill connections:")
+    logging.debug("\nJavaScript skill connections:")
     js_connections = graph.get_skill_connections("javascript")
-    print(f"Incoming: {js_connections['incoming']}")
-    print(f"Outgoing: {js_connections['outgoing']}")
+    logging.debug(f"Incoming: {js_connections['incoming']}")
+    logging.debug(f"Outgoing: {js_connections['outgoing']}")
     
-    print("\nPython roadmap details:")
+    logging.debug("\nPython roadmap details:")
     python_roadmap = graph.get_skill_roadmap("python")
     if "error" not in python_roadmap:
-        print(f"Skill: {python_roadmap['skill']}")
-        print(f"Learning nodes: {len(python_roadmap['nodes'])}")
-        print(f"Prerequisites: {len(python_roadmap['edges'])}")
+        logging.debug(f"Skill: {python_roadmap['skill']}")
+        logging.debug(f"Learning nodes: {len(python_roadmap['nodes'])}")
+        logging.debug(f"Prerequisites: {len(python_roadmap['edges'])}")
         if python_roadmap['nodes']:
-            print(f"First node: {python_roadmap['nodes'][0]['name']}")
+            logging.debug(f"First node: {python_roadmap['nodes'][0]['name']}")
     
     # Close the connection
     graph.close()

@@ -1,7 +1,17 @@
+import logging
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Logging setup: set LOG_LEVEL=DEBUG to see the debug output.
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    force=True,
+)
+for _noisy in ("httpx", "httpcore", "urllib3", "botocore", "boto3", "LiteLLM", "litellm", "langchain", "langsmith"):
+    logging.getLogger(_noisy).setLevel(logging.WARNING)
 
 class Config:
     def __init__(self):

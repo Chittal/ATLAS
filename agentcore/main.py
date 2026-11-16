@@ -1,3 +1,4 @@
+import logging
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
 from personalized_route_planning_agent import agent, graph
 from config import app_config
@@ -11,7 +12,7 @@ async def agent_invocation(payload):
     if user_message is None:
         raise ValueError("User message is required")
     result = agent.invoke(user_message, graph)
-    print("result", result)
+    logging.debug("%s %s", "result", result)
     return {
         "status": "success",
         "status_code": 200,

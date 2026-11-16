@@ -1,3 +1,4 @@
+import logging
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -32,7 +33,7 @@ def on_startup():
         deps.kuzu_manager = app.state.kuzu_manager
         app.state.agent = None
     except Exception as e:
-        print(f"Error in on_startup: {e}")
+        logging.debug(f"Error in on_startup: {e}")
 
 @app.on_event("shutdown")
 def on_shutdown():
@@ -66,7 +67,7 @@ def health_check():
 
 # Include routers with prefix
 prefix = app_config.url_prefix if app_config.url_prefix else ""
-print(prefix, "prefix")
+logging.debug("%s %s", prefix, "prefix")
 app.include_router(users_router, prefix=prefix)
 app.include_router(roadmap_progress_router, prefix=prefix)
 app.include_router(learning_map_router, prefix=prefix)

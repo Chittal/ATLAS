@@ -1,3 +1,4 @@
+import logging
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
 from config import app_config
@@ -36,13 +37,16 @@ async def get_user_notes(request: Request, search: Optional[str] = None, tag: Op
             raise HTTPException(status_code=401, detail="Not authenticated")
         
         # Build filter conditions
-        filter_conditions = [f"user_id = '{user.id}'"]
-        
+        # search/tag are user input: escape them so they can't break out of the quotes
+        from helper.pocketbase_helper import pb_escape
+        filter_conditions = [f"user_id = '{pb_escape(user.id)}'"]
+
         if search:
-            filter_conditions.append(f"(title ~ '{search}' || content ~ '{search}')")
-        
+            s = pb_escape(search)
+            filter_conditions.append(f"(title ~ '{s}' || content ~ '{s}')")
+
         if tag:
-            filter_conditions.append(f"tags ~ '{tag}'")
+            filter_conditions.append(f"tags ~ '{pb_escape(tag)}'")
         
         if favorite is not None:
             filter_conditions.append(f"is_favorite = {str(favorite).lower()}")
@@ -274,5 +278,5 @@ async def get_user_tags(request: Request):
     # except HTTPException:
     #     raise
     # except Exception as e:
-    #     print(f"Error getting tags: {e}")  # Debug logging
+    #     logging.debug(f"Error getting tags: {e}")  # Debug logging
     #     raise HTTPException(status_code=500, detail=f"Error getting tags: {str(e)}")
