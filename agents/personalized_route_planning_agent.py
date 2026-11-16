@@ -1,5 +1,6 @@
 import logging
 import json
+import threading
 from config import app_config
 # from llm.ollama import OllamaClient
 # from llm.bedrock import BedrockClient
@@ -18,6 +19,8 @@ class PersonalizedRoutePlanningAgent:
         self.graph = None
         # Use injected shared instance if provided; otherwise, create one
         self.kuzu_db_helper = kuzu_helper if kuzu_helper is not None else KuzuSkillGraph()
+        # The agent runs in worker threads; concurrent chats must not use the Kuzu connection at the same time
+        self._kuzu_lock = threading.Lock()
         # tools = [self.pre_requisite, self.skill_details]
         # self.llm.bind_tools(tools)
     
@@ -27,7 +30,8 @@ class PersonalizedRoutePlanningAgent:
         if state["category"] != "PREREQUISITE":
             return state
         target_skill = state["target_skill"]
-        prerequisites = self.kuzu_db_helper.get_skill_prerequisites_by_name(target_skill)
+        with self._kuzu_lock:
+            prerequisites = self.kuzu_db_helper.get_skill_prerequisites_by_name(target_skill)
         if prerequisites:
             prerequisites = [prerequisite["name"] for prerequisite in prerequisites]
             prerequisites = ", ".join(prerequisites)
@@ -177,29 +181,39 @@ class PersonalizedRoutePlanningAgent:
                 return state
             target_skill = state["target_skill"]
             start_skill = state["start_skill"]
-            path_objects = self.kuzu_db_helper.find_learning_path(start_skill, target_skill)
+            with self._kuzu_lock:
+                path_objects = self.kuzu_db_helper.find_learning_path(start_skill, target_skill)
             
             # Store the original path objects for highlighting
             state["path_objects"] = path_objects
             
             if path_objects:
-                path_names = [p["name"] for p in path_objects]
-                path = ", ".join(path_names)
-            else:
-                path = "No path found"
-            logging.debug("%s %s", "Path IN DATABASE===========", path)
-            prompt = f"""
-            Given this learning path from {start_skill} to {target_skill}:
+                path = " -> ".join(p["name"] for p in path_objects)
+                logging.debug("Path in database: %s", path)
+                prompt = f"""
+            You are a learning coach. A learner who already knows "{start_skill}" wants to reach "{target_skill}".
+            Our skills graph gives this learning path, in order (the first item is the starting skill, the last is the target):
             {path}
-            - Path is a list of skills separated by commas. 
-            - It will include the start and target skill.
-            Create a friendly, motivating curriculum outline that:
-            - Leave out the start skill and create progression for all other skills.
-            - Shows progression clearly
-            - Estimates time per stage
-            - Explains why each step matters
-            - Keeps it encouraging and actionable
-            Do not include any extra text—only the list of prerequisites.
+
+            Write a friendly, motivating curriculum outline that:
+            - Skips the starting skill (the learner already knows it) and covers every other skill, in the order given
+            - Gives each skill its own numbered stage with an estimated time to learn it
+            - Explains in one or two sentences why each stage matters for reaching "{target_skill}"
+            - Ends with one short line of encouragement
+            Use only the skills in the path above; do not add, remove or reorder stages.
+            Return only the outline, with no introduction before it.
+            """
+            else:
+                logging.debug("No path in database from %s to %s", start_skill, target_skill)
+                prompt = f"""
+            You are a learning coach. A learner who knows "{start_skill}" wants to learn "{target_skill}",
+            but our skills graph has no stored learning path between these two skills.
+
+            In a short, friendly reply:
+            - Say that you couldn't find a saved roadmap between "{start_skill}" and "{target_skill}"
+            - Suggest a general sequence of 3-6 skills to learn to get there, with a one-line reason for each,
+              and make clear this is a general suggestion rather than a roadmap from our skills graph
+            - Suggest checking the skill names or picking skills from the skills graph to get an exact roadmap
             """
             response = self.llm.chat_simple(prompt)
             state["step"] = "route_planning"

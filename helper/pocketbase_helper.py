@@ -18,6 +18,16 @@ def get_pb_admin_client():
         raise Exception("Invalid PB credentials")
     return client
 
+def pb_escape(value) -> str:
+    """Escape a value for use inside a single-quoted PocketBase filter string.
+
+    The Python SDK has no parameter binding, so any user-supplied value placed
+    in a filter must go through this; otherwise a `'` in the value can end the
+    string and add conditions (e.g. reading other users' records).
+    """
+    return str(value).replace("\\", "\\\\").replace("'", "\\'")
+
+
 def get_pb_client() -> PocketBase:
     """Get a PocketBase client instance."""
     client = PocketBase(app_config.pocketbase_url, http_client=httpx.Client(verify=False))

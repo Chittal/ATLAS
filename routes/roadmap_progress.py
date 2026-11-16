@@ -1,6 +1,6 @@
 from fastapi import Request, HTTPException, APIRouter
 from helper.user_progress_helper import UserProgressHelper
-from helper.helper import get_current_user
+from helper.helper import get_current_user, require_owned_roadmap_path
 
 router = APIRouter(
     prefix="",
@@ -83,6 +83,7 @@ async def update_user_progress(request: Request, progress_data: dict):
         
         from helper.pocketbase_helper import get_pb_admin_client
         pb = get_pb_admin_client()
+        require_owned_roadmap_path(pb, user, user_roadmap_path_id)
         progress_helper = UserProgressHelper(pb)
         result = progress_helper.update_user_progress(
             user_roadmap_path_id=user_roadmap_path_id,
@@ -96,6 +97,8 @@ async def update_user_progress(request: Request, progress_data: dict):
             "data": result
         }
         
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to update progress: {str(e)}")
 
@@ -117,6 +120,7 @@ async def complete_learning_node(request: Request, completion_data: dict):
         
         from helper.pocketbase_helper import get_pb_admin_client
         pb = get_pb_admin_client()
+        require_owned_roadmap_path(pb, user, user_roadmap_path_id)
         progress_helper = UserProgressHelper(pb)
         result = progress_helper.save_learning_node_completion(
             user_id=user.id,
@@ -132,6 +136,8 @@ async def complete_learning_node(request: Request, completion_data: dict):
             "data": result
         }
         
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to complete learning node: {str(e)}")
 
@@ -150,6 +156,7 @@ async def incomplete_learning_node(request: Request, completion_data: dict):
             raise HTTPException(status_code=400, detail="Missing required fields: learning_node_id, user_roadmap_path_id")
         from helper.pocketbase_helper import get_pb_admin_client
         pb = get_pb_admin_client()
+        require_owned_roadmap_path(pb, user, user_roadmap_path_id)
         progress_helper = UserProgressHelper(pb)
         result = progress_helper.remove_learning_node_completion(
             user_id=user.id,
@@ -163,6 +170,8 @@ async def incomplete_learning_node(request: Request, completion_data: dict):
             "data": result
         }
         
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to mark learning node incomplete: {str(e)}")
 
@@ -176,6 +185,8 @@ async def get_learning_node_progress(request: Request, user_roadmap_path_id: str
     try:
         from helper.pocketbase_helper import get_pb_admin_client
         pb = get_pb_admin_client()
+        if user_roadmap_path_id:
+            require_owned_roadmap_path(pb, user, user_roadmap_path_id)
         progress_helper = UserProgressHelper(pb)
         progress_records = progress_helper.get_user_learning_node_progress(
             user_id=user.id,
@@ -188,5 +199,7 @@ async def get_learning_node_progress(request: Request, user_roadmap_path_id: str
             "total_completed": len(progress_records)
         }
         
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get learning node progress: {str(e)}")

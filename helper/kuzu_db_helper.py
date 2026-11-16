@@ -18,6 +18,18 @@ class KuzuSkillGraph:
         self.conn = kuzu.Connection(self.db)
         # self._create_schema()
     
+    def with_own_connection(self) -> "KuzuSkillGraph":
+        """Return a helper that shares this Database but has its own Connection.
+
+        A Kuzu Connection must not be used from two threads at once. The routes use
+        the main connection on the event loop thread; code running in worker threads
+        (the chat agent) should use a separate connection from this method.
+        """
+        clone = object.__new__(KuzuSkillGraph)
+        clone.db = self.db
+        clone.conn = kuzu.Connection(self.db)
+        return clone
+
     def _create_schema(self):
         """Create comprehensive graph schema for skills, nodes, and resources."""
         # Create Skill node table
@@ -507,6 +519,7 @@ class KuzuSkillGraph:
             skills.append({
                 "id": row[0],
                 "name": row[1],
+                "description": f"Learn {row[1]} skills and concepts",
                 "order_index": row[2]
             })
         
@@ -594,25 +607,6 @@ class KuzuSkillGraph:
             "incoming": incoming,
             "outgoing": outgoing
         }
-    
-    def get_all_skills(self) -> List[Dict]:
-        """Get all skills from the database."""
-        result = self.conn.execute("""
-            MATCH (s:Skill)
-            RETURN s.id as id, s.name as name, s.order_index as order_index
-        """)
-        
-        skills = []
-        while result.has_next():
-            row = result.get_next()
-            skills.append({
-                "id": row[0],
-                "name": row[1],
-                "description": f"Learn {row[1]} skills and concepts",
-                "order_index": row[2]
-            })
-        
-        return skills
     
     def get_all_skill_connections(self) -> List[Dict]:
         """Get all skill connections from the database."""

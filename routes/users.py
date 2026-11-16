@@ -41,32 +41,35 @@ async def signup_page(request: Request):
 @router.post("/api/auth/signup")
 async def signup(user_data: UserSignup):
     """User signup endpoint"""
-    # try:  
-    # Validate password confirmation
-    if user_data.password != user_data.passwordConfirm:
-        raise HTTPException(status_code=400, detail="Passwords do not match")
-    
-    # Create user in PocketBase (let PocketBase handle password hashing)
-    # For auth collections, we need to include passwordConfirm
-    pb = get_pb_admin_client()
-    user = pb.collection('users').create({
-        "email": user_data.email,
-        "password": user_data.password,
-        "passwordConfirm": user_data.passwordConfirm,
-        "name": user_data.name
-    })
-    
-    return {
-        "success": True,
-        "message": "User created successfully",
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "name": user.name
+    try:
+        # Validate password confirmation
+        if user_data.password != user_data.passwordConfirm:
+            raise HTTPException(status_code=400, detail="Passwords do not match")
+
+        # Create user in PocketBase (let PocketBase handle password hashing)
+        # For auth collections, we need to include passwordConfirm
+        pb = get_pb_admin_client()
+        user = pb.collection('users').create({
+            "email": user_data.email,
+            "password": user_data.password,
+            "passwordConfirm": user_data.passwordConfirm,
+            "name": user_data.name
+        })
+
+        return {
+            "success": True,
+            "message": "User created successfully",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name
+            }
         }
-    }
-    # except Exception as e:
-    #     raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error("Signup failed: %s", e)
+        raise HTTPException(status_code=400, detail=f"Signup failed: {str(e)}")
 
 @router.post("/api/auth/login")
 async def login(user_data: UserLogin, request: Request):

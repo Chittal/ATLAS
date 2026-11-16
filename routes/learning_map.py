@@ -1,4 +1,6 @@
+import asyncio
 import logging
+from datetime import datetime, timezone
 from fastapi import Request, HTTPException, APIRouter
 from deps import templates
 import uuid
@@ -6,7 +8,7 @@ from helper.user_progress_helper import UserProgressHelper
 from helper.helper import get_kuzu_manager
 from fastapi.responses import RedirectResponse, HTMLResponse
 from config import app_config
-from helper.helper import get_current_user
+from helper.helper import get_current_user, require_owned_roadmap_path
 from helper.agentcore import invoke_agent_runtime
 
 router = APIRouter(
@@ -19,7 +21,10 @@ def get_agent(request: Request):
     """Lazily create the local route planning agent once and reuse it across requests."""
     if getattr(request.app.state, "agent", None) is None:
         from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
-        request.app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=request.app.state.kuzu_manager)
+        # The agent runs in worker threads, so give it its own Kuzu connection (same database)
+        request.app.state.agent = PersonalizedRoutePlanningAgent(
+            kuzu_helper=request.app.state.kuzu_manager.with_own_connection()
+        )
     return request.app.state.agent
 
 @router.get("/api/skill/{skill_id}")
@@ -146,8 +151,13 @@ async def get_learning_nodes_by_skill(skill_name: str):
         raise HTTPException(status_code=500, detail=f"Error getting learning nodes: {str(e)}")
 
 @router.get("/api/skill/{skill_name}/learning-graph")
-async def get_learning_graph_by_skill(skill_name: str, user_roadmap_path_id: str | None = None, skill_id: str | None = None):
+async def get_learning_graph_by_skill(request: Request, skill_name: str, user_roadmap_path_id: str | None = None, skill_id: str | None = None):
     """Get learning nodes and edges for a specific skill by name to create a connected graph."""
+    # A saved path was named: it must belong to the logged-in user (checked before the try so 401/404 aren't turned into 500)
+    owned_path = None
+    if user_roadmap_path_id:
+        from helper.pocketbase_helper import get_pb_admin_client
+        owned_path = require_owned_roadmap_path(get_pb_admin_client(), get_current_user(request), user_roadmap_path_id)
     try:
         manager = get_kuzu_manager()
         learning_nodes = manager.get_learning_nodes_by_skill_name(skill_name)
@@ -159,13 +169,9 @@ async def get_learning_graph_by_skill(skill_name: str, user_roadmap_path_id: str
             admin_pb = get_pb_admin_client()
             progress_helper = UserProgressHelper(admin_pb)
             # Resolve roadmap_path_id from user_roadmap_path_id if needed
-            if user_roadmap_path_id:
-                try:
-                    mapping_rec = progress_helper.pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
-                    roadmap_path_id = getattr(mapping_rec, 'roadmap_path_id', None)
-                    logging.debug(f"Resolved roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {roadmap_path_id}")
-                except Exception as resolve_err:
-                    logging.debug(f"Warning: could not resolve roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {resolve_err}")
+            if owned_path is not None:
+                roadmap_path_id = getattr(owned_path, 'roadmap_path_id', None)
+                logging.debug(f"Resolved roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {roadmap_path_id}")
 
             if roadmap_path_id and skill_id:
                 logging.debug(f"Updating learning nodes count by ids: {roadmap_path_id}, {skill_id}")
@@ -205,7 +211,7 @@ async def get_learning_node_resources(learning_node_id: str):
         raise HTTPException(status_code=500, detail=f"Error getting learning node resources: {str(e)}")
 
 @router.get("/api/skill-path")
-async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_id: str = None):
+async def get_skill_path(request: Request, start: str = None, end: str = None, user_roadmap_path_id: str = None):
     """Get a learning path between two skills (by name) using KuzuDB graph, or from a user roadmap path.
 
     Returns a list of skill ids representing the path, and also the corresponding
@@ -223,6 +229,7 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
         # Ensure we have a fresh admin client
         from helper.pocketbase_helper import get_pb_admin_client
         admin_pb = get_pb_admin_client()
+        require_owned_roadmap_path(admin_pb, get_current_user(request), user_roadmap_path_id)
         progress_helper = UserProgressHelper(admin_pb)
         skills = progress_helper.get_skills_from_user_roadmap_path(user_roadmap_path_id)
         logging.debug("%s %s", skills, "skills")
@@ -291,208 +298,100 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
     # except Exception as e:
     #     raise HTTPException(status_code=500, detail=f"Error finding skill path: {str(e)}")
 
+def _path_edges(path_objects: list[dict]) -> list[dict]:
+    """Edges between consecutive skills in a path, for highlighting on the client."""
+    return [
+        {"id": f"{a['id']}-{b['id']}", "source": a["id"], "target": b["id"]}
+        for a, b in zip(path_objects, path_objects[1:])
+    ]
+
+
+def _build_chat_response(result: dict, fallback: bool = False) -> dict:
+    """Turn an agent graph result into the JSON the chat widget expects."""
+    assistant_messages = [m for m in (result.get("messages") or []) if m.get("role") == "assistant"]
+    if result.get("status") == "success" and assistant_messages:
+        ai_response = assistant_messages[-1]["content"]
+    elif result.get("status") == "success":
+        ai_response = "I'm sorry, I couldn't process your request."
+    else:
+        logging.error("Agent returned an error: %s", result.get("error"))
+        ai_response = "I'm sorry, I couldn't process that request. Please try rephrasing it."
+
+    metadata = {
+        "category": result.get("category"),
+        "step": result.get("step"),
+        "status": result.get("status"),
+    }
+    if fallback:
+        metadata["fallback"] = True
+
+    response_data = {
+        "ai_response": ai_response,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "agent_metadata": metadata,
+    }
+
+    path_objects = result.get("path_objects")
+    if result.get("category") == "ROUTE_PLANNING" and path_objects:
+        response_data["path_data"] = {"path": path_objects, "edges": _path_edges(path_objects)}
+        logging.debug("Path data for highlighting: %s", response_data["path_data"])
+    return response_data
+
+
+async def _read_chat_message(request: Request) -> str:
+    """Require a logged-in user and return the chat message from the request body."""
+    if not get_current_user(request):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    body = await request.json()
+    message = (body.get("message") or "").strip()
+    if not message:
+        raise HTTPException(status_code=400, detail="Message is required")
+    logging.debug("Chat message: %r", message)
+    return message
+
+
+async def _run_local_agent(request: Request, user_message: str) -> dict:
+    """Run the local agent in a worker thread so its LLM calls don't block the event loop."""
+    agent = get_agent(request)
+    return await asyncio.to_thread(agent.execute_graph, user_message)
+
+
+_CHAT_ERROR_RESPONSE = {
+    "ai_response": "I'm sorry, I'm having trouble processing your request right now. Please try again later.",
+    "agent_metadata": {"category": "ERROR", "step": "error_handling", "status": "error"},
+}
+
+
 @router.post("/api/general/chat/agentcore")
 async def general_chat_agentcore(request: Request):
-    """Handle general chat queries from the chat widget."""
-    logging.debug("ENDPOINT HIT! /api/general/chat was called!")
-    
+    """Chat via the Bedrock AgentCore agent, falling back to the local agent if AgentCore fails."""
+    user_message = await _read_chat_message(request)
     try:
-        request_json = await request.json()
-        user_message = request_json.get("message", "")
-        # user_id = request_json.get("user_id")  # Optional user ID
-        
-        logging.debug(f"API called with message: '{user_message}'")
-        logging.debug(f"Full message dict: {request_json}")
-        
-        # Use AgentCore instead of local agent
-        logging.debug("CALLING AGENTCORE AGENT")
         session_id = str(uuid.uuid4())
         result = await invoke_agent_runtime(user_message, session_id=session_id)
-        # Extract the response from the agent result
-        if result.get("status") == "success" and result.get("agent_result"):
-            agent_result = result.get("agent_result")
-            logging.debug("%s %s", agent_result, "agent_result")
-            assistant_messages = [msg for msg in agent_result["messages"] if msg["role"] == "assistant"]
-            logging.debug("%s %s", assistant_messages, "assistant_messages")
-            if assistant_messages:
-                ai_response = assistant_messages[-1]["content"]
-            else:
-                ai_response = "I'm sorry, I couldn't process your request."
-        else:
-            ai_response = f"I encountered an issue: {result.get('message', 'Unknown error')}"
-        result = result.get("agent_result")
-        response_data = {
-            "ai_response": ai_response,
-            "timestamp": "2024-01-01T00:00:00Z",
-            "agent_metadata": {
-                "category": result.get("category"),
-                "step": result.get("step"),
-                "status": result.get("status")
-            }
-        }
-        logging.debug("%s %s", result, "result")
-        
-        # If this is a route planning query, get the path data for highlighting
-        if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
-            logging.debug("I executed")
-            try:
-                path_objects = result.get("path_objects")
-                logging.debug("%s %s", path_objects, "path_objects")
-                logging.debug(f"Route planning path objects: {path_objects}")
-                
-                # Create edges for the path
-                edges = []
-                for i in range(len(path_objects) - 1):
-                    source = path_objects[i]["id"]
-                    target = path_objects[i + 1]["id"]
-                    edges.append({
-                        "id": f"{source}-{target}",
-                        "source": source,
-                        "target": target
-                    })
-                
-                path_data = {
-                    "path": path_objects,
-                    "edges": edges
-                }
-                logging.debug(f"Path data for highlighting: {path_data}")
-                response_data["path_data"] = path_data
-            except Exception as e:
-                logging.debug(f"Error creating path data: {e}")
-        
-        return response_data
-        
+        agent_result = result.get("agent_result")
+        if result.get("status") != "success" or not agent_result:
+            raise RuntimeError(f"AgentCore returned no result: {result.get('message', 'unknown error')}")
+        return _build_chat_response(agent_result)
     except Exception as e:
-        logging.debug(f"Error in general_chat: {e}")
-        # Fallback to local agent if AgentCore fails
-        logging.debug("Falling back to local agent...")
-        
-        try:
-            local_result = get_agent(request).execute_graph(user_message)
-            # Extract the response from the local agent result
-            if local_result.get("status") == "success" and local_result.get("messages"):
-                assistant_messages = [msg for msg in local_result["messages"] if msg["role"] == "assistant"]
-                if assistant_messages:
-                    ai_response = assistant_messages[-1]["content"]
-                else:
-                    ai_response = "I'm sorry, I couldn't process your request."
-            else:
-                ai_response = f"I encountered an issue: {local_result.get('error', 'Unknown error')}"
-            
-            response_data = {
-                "ai_response": ai_response,
-                "timestamp": "2024-01-01T00:00:00Z",
-                "agent_metadata": {
-                    "category": local_result.get("category"),
-                    "step": local_result.get("step"),
-                    "status": local_result.get("status"),
-                    "fallback": True
-                }
-            }
-            if local_result.get("category") == "ROUTE_PLANNING" and local_result.get("path_objects"):
-                logging.debug("I executed")
-                try:
-                    path_objects = local_result.get("path_objects")
-                    logging.debug("%s %s", path_objects, "path_objects")
-                    logging.debug(f"Route planning path objects: {path_objects}")
-                    
-                    # Create edges for the path
-                    edges = []
-                    for i in range(len(path_objects) - 1):
-                        source = path_objects[i]["id"]
-                        target = path_objects[i + 1]["id"]
-                        edges.append({
-                            "id": f"{source}-{target}",
-                            "source": source,
-                            "target": target
-                        })
-                    
-                    path_data = {
-                        "path": path_objects,
-                        "edges": edges
-                    }
-                    logging.debug(f"Path data for highlighting: {path_data}")
-                    response_data["path_data"] = path_data
-                except Exception as e:
-                    logging.debug(f"Error creating path data: {e}")
-        
-            return response_data
-        except Exception as fallback_error:
-            logging.debug(f"Fallback agent also failed: {fallback_error}")
-            return {
-                "ai_response": "I'm sorry, I'm having trouble processing your request right now. Please try again later.",
-                "timestamp": "2024-01-01T00:00:00Z",
-                "agent_metadata": {
-                    "category": "ERROR",
-                    "step": "error_handling",
-                    "status": "error",
-                    "fallback": True
-                }
-            }
+        logging.warning("AgentCore chat failed, falling back to local agent: %s", e)
+
+    try:
+        return _build_chat_response(await _run_local_agent(request, user_message), fallback=True)
+    except Exception as e:
+        logging.exception("Fallback agent also failed: %s", e)
+        return {**_CHAT_ERROR_RESPONSE, "timestamp": datetime.now(timezone.utc).isoformat()}
+
 
 @router.post("/api/general/chat")
 async def general_chat(request: Request):
-    """Handle general chat queries from the chat widget."""
-    logging.debug("ENDPOINT HIT! /api/skill/general/chat was called!")
-    # try:
-    request_json = await request.json()
-    user_message = request_json.get("message", "")
-    logging.debug(f"API called with message: '{user_message}'")
-    logging.debug(f"Full message dict: {request_json}")
-    # Use the global LangGraph agent
-    logging.debug("CALLING LANGGRAPH AGENT")
-    result = get_agent(request).execute_graph(user_message)
-    logging.debug("%s %s", "Agent result:", result)
-    
-    # Extract the response from the agent result
-    if result.get("status") == "success" and result.get("messages"):
-        assistant_messages = [msg for msg in result["messages"] if msg["role"] == "assistant"]
-        if assistant_messages:
-            ai_response = assistant_messages[-1]["content"]
-        else:
-            ai_response = "I'm sorry, I couldn't process your request."
-    else:
-        ai_response = f"I encountered an issue: {result.get('error', 'Unknown error')}"
-    
-    response_data = {
-        "ai_response": ai_response,
-        "timestamp": "2024-01-01T00:00:00Z",
-        "agent_metadata": {
-            "category": result.get("category"),
-            "step": result.get("step"),
-            "status": result.get("status")
-        }
-    }
-    
-    # If this is a route planning query, get the path data for highlighting
-    if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
-        try:
-            path_objects = result.get("path_objects")
-            logging.debug(f"Route planning path objects: {path_objects}")
-            
-            # Create edges for the path
-            edges = []
-            for i in range(len(path_objects) - 1):
-                source = path_objects[i]["id"]
-                target = path_objects[i + 1]["id"]
-                edges.append({
-                    "id": f"{source}-{target}",
-                    "source": source,
-                    "target": target
-                })
-            
-            path_data = {
-                "path": path_objects,
-                "edges": edges
-            }
-            logging.debug(f"Path data for highlighting: {path_data}")
-            response_data["path_data"] = path_data
-        except Exception as e:
-            logging.debug(f"Error creating path data: {e}")
-    
-    return response_data
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
+    """Chat via the local LangGraph agent (used by the chat widget)."""
+    user_message = await _read_chat_message(request)
+    try:
+        return _build_chat_response(await _run_local_agent(request, user_message))
+    except Exception as e:
+        logging.exception("Chat agent failed: %s", e)
+        return {**_CHAT_ERROR_RESPONSE, "timestamp": datetime.now(timezone.utc).isoformat()}
 
 
 @router.get("/api/roadmap-progression")

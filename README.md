@@ -28,6 +28,7 @@ This is to start the application.
    ```bash
    python run_server.py
    ```
+It starts in 'http://localhost:8008/atlas'
 
 ## Optional: Kuzu Database Explorer
 

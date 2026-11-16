@@ -7,3 +7,4 @@ raw_data/
 data/
 pocketbase-data/
 .bedrock_agentcore.yaml
+eks/
