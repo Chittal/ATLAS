@@ -1,3 +1,4 @@
+import logging
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
 from config import app_config
@@ -117,7 +118,7 @@ async def login(user_data: UserLogin, request: Request):
     except Exception as e:
         # Handle PocketBase authentication errors gracefully
         error_message = str(e)
-        print(f"Login error: {error_message}")  # Debug logging
+        logging.debug(f"Login error: {error_message}")  # Debug logging
         
         # Check if it's a PocketBase authentication error
         if "Failed to authenticate" in error_message or "Status code:400" in error_message:
@@ -216,7 +217,7 @@ async def profile_page(request: Request):
             })
             roadmaps_count = len(roadmaps.items)
         except Exception as e:
-            print(f"Error getting roadmaps count: {e}")
+            logging.debug(f"Error getting roadmaps count: {e}")
             roadmaps_count = 0
         
         # Prepare user data with statistics
@@ -236,7 +237,7 @@ async def profile_page(request: Request):
         }
         
     except Exception as e:
-        print(f"Error gathering user statistics: {e}")
+        logging.debug(f"Error gathering user statistics: {e}")
         # Fallback with basic user data
         user_data = {
             "id": user.id,

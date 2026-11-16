@@ -1,3 +1,4 @@
+import logging
 import hashlib
 from typing import List, Dict, Any, Optional
 from config import app_config
@@ -99,12 +100,12 @@ class UserProgressHelper:
     def get_user_roadmap_paths(self, user_id: str) -> List[Dict]:
         """Get all roadmap paths for a user (admin client)."""
         try:
-            print(f"Getting user roadmap paths for user_id: {user_id}")
+            logging.debug(f"Getting user roadmap paths for user_id: {user_id}")
             user_paths = self.pb.collection('user_roadmap_path').get_list(1, 50, {
                 "filter": f"user_id = '{user_id}'",
                 "expand": "roadmap_path_id,roadmap_path_id.roadmap_id"
             })
-            print(user_paths, "user_paths")
+            logging.debug("%s %s", user_paths, "user_paths")
             return [{
                 "id": path.id,
                 "progress": getattr(path, 'progress', 0),
@@ -114,7 +115,7 @@ class UserProgressHelper:
                 "updated": getattr(path, 'updated', None)
             } for path in user_paths.items]
         except Exception as e:
-            print(f"Error getting user roadmap paths: {e}")
+            logging.debug(f"Error getting user roadmap paths: {e}")
             return []
     
     def update_user_progress(self, user_roadmap_path_id: str, progress: float, 
@@ -224,7 +225,7 @@ class UserProgressHelper:
             skill_records = self.pb.collection('roadmap_path_skills').get_list(1, 100, {
                 "filter": f"skill_id = '{skill_name}'"
             })
-            print(f"Skill records: {skill_records}")
+            logging.debug(f"Skill records: {skill_records}")
             updated_count = 0
             for record in skill_records.items:
                 # Only update if the count is different (avoid unnecessary updates)
@@ -257,11 +258,11 @@ class UserProgressHelper:
             records = self.pb.collection('roadmap_path_skills').get_list(1, 5, {
                 "filter": f"roadmap_path_id = '{roadmap_path_id}' && skill_id = '{skill_id}'"
             })
-            print(f"Records: {records}")
+            logging.debug(f"Records: {records}")
             if not records.items:
                 return {"success": False, "error": "record_not_found", "roadmap_path_id": roadmap_path_id, "skill_id": skill_id}
 
-            print(f"Record: {records.items[0]}")
+            logging.debug(f"Record: {records.items[0]}")
             record = records.items[0]
             current_count = getattr(record, 'learning_nodes_count', 0)
             if current_count == learning_nodes_count:
@@ -270,7 +271,7 @@ class UserProgressHelper:
             self.pb.collection('roadmap_path_skills').update(record.id, {
                 "learning_nodes_count": learning_nodes_count
             })
-            print(f"Record updated: {record}")
+            logging.debug(f"Record updated: {record}")
             return {"success": True, "records_updated": 1, "learning_nodes_count": learning_nodes_count}
         except Exception as e:
             return {"success": False, "error": str(e), "roadmap_path_id": roadmap_path_id, "skill_id": skill_id}
@@ -302,7 +303,7 @@ class UserProgressHelper:
         return skills
         
         # except Exception as e:
-        #     print(f"Error getting skills from user roadmap path: {e}")
+        #     logging.debug(f"Error getting skills from user roadmap path: {e}")
         #     return []
     
     def get_user_skill_progress(self, user_roadmap_path_id: str, skill_id: str) -> Dict[str, Any]:
@@ -339,7 +340,7 @@ class UserProgressHelper:
                         completed_count += 1
                         
             except Exception as filter_error:
-                print(f"Error querying user_learning_node_progress collection: {filter_error}")
+                logging.debug(f"Error querying user_learning_node_progress collection: {filter_error}")
                 # If the collection doesn't exist or has issues, return 0 progress
                 completed_count = 0
             
@@ -352,6 +353,6 @@ class UserProgressHelper:
             }
             
         except Exception as e:
-            print(f"Error getting user skill progress: {e}")
+            logging.debug(f"Error getting user skill progress: {e}")
             return {"completed": 0, "total": 0, "percentage": 0}
     

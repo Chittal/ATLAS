@@ -1,3 +1,4 @@
+import logging
 from langchain_aws import ChatBedrock
 from langchain_core.messages import (
     SystemMessage,
@@ -41,7 +42,7 @@ class BedrockClient:
                 }
             )
         except Exception as e:
-            print(f"Warning: Could not initialize Bedrock with model '{self.model}': {e}")
+            logging.debug(f"Warning: Could not initialize Bedrock with model '{self.model}': {e}")
     
     def chat(self, messages: list[dict], system_prompt: Optional[str] = None) -> str:
         """
@@ -89,7 +90,7 @@ class BedrockClient:
             response = self.llm.invoke(messages)
             return response.content
         except Exception as e:
-            print(f"Error in Bedrock chat_simple: {e}")
+            logging.debug(f"Error in Bedrock chat_simple: {e}")
             return f"I encountered an error: {str(e)}"
 
     def bind_tools(self, tools: list[dict]):

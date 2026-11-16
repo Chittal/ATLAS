@@ -1,3 +1,4 @@
+import logging
 from deps import kuzu_manager
 from fastapi import Request
 
@@ -39,7 +40,7 @@ def get_current_user(request: Request):
             if auth_data and auth_data.record:
                 return auth_data.record
         except Exception as refresh_error:
-            print(f"Token refresh failed: {refresh_error}")
+            logging.debug(f"Token refresh failed: {refresh_error}")
             # If refresh fails, try to get user info directly
             try:
                 # Try to get current user info without refresh
@@ -47,11 +48,11 @@ def get_current_user(request: Request):
                 if user_info:
                     return user_info
             except Exception as get_error:
-                print(f"Get user info failed: {get_error}")
+                logging.debug(f"Get user info failed: {get_error}")
                 return None
         
         return None
             
     except Exception as e:
-        print(f"Auth validation error: {e}")
+        logging.debug(f"Auth validation error: {e}")
         return None

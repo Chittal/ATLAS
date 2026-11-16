@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 from langchain_litellm import ChatLiteLLM
 from langchain.schema import (
@@ -49,7 +50,7 @@ class LiteLLMClient:
         
         # Send the message to the model
         response = self.llm.invoke(chat_messages)
-        print("LLM response:", response.content)
+        logging.debug("%s %s", "LLM response:", response.content)
         return response.content
 
     def chat_simple(self, prompt: str) -> str:

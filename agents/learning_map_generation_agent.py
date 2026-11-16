@@ -14,12 +14,13 @@ This file provides a small CLI function `build_learning_map()` which will:
 
 The code is intentionally minimal and dependency-free except for `requests`
 which is only required when calling OpenAI's HTTP API directly. If the API key
-is not set, the agent will print the prompt and ask the user to paste back
+is not set, the agent will logging.debug the prompt and ask the user to paste back
 the LLM response (useful for local testing without keys).
 """
 
 from __future__ import annotations
 
+import logging
 import os
 import json
 from typing import List, Dict, Any, Optional
@@ -59,7 +60,7 @@ def chat_completions(messages: list[dict], system_prompt: Optional[str], model: 
 
     # Send the message to the model
     response = llm.invoke(chat_messages)
-    print("LLM response:", response.content)
+    logging.debug("%s %s", "LLM response:", response.content)
     return response
 
 
@@ -88,7 +89,7 @@ def list_skills(data_dir: str = DATA_DIR) -> List[str]:
 				skills.append(skill)
 
 	skills.sort()
-	print(len(skills))
+	logging.debug(len(skills))
 	return skills
 
 
@@ -121,7 +122,7 @@ def build_prompt(filenames: List[str]) -> str:
 
 def save_output(text: str, path: str = OUTPUT_PATH) -> None:
 	os.makedirs(os.path.dirname(path), exist_ok=True)
-	# Try to parse JSON and pretty-print; if not JSON, save raw text
+	# Try to parse JSON and pretty-logging.debug; if not JSON, save raw text
 	try:
 		obj = json.loads(text)
 		with open(path, "w", encoding="utf-8") as f:
@@ -138,8 +139,8 @@ def build_learning_map() -> Dict[str, Any]:
 	"""
 	skills = list_skills()
 	prompt = build_prompt(skills)
-	print("=== Prompt ===")
-	print(prompt)
+	logging.debug("=== Prompt ===")
+	logging.debug(prompt)
 
 	# text = chat_completions(messages=[{"role": "system", "content": prompt}])
 	text = chat_completions(messages=[], system_prompt=prompt)
@@ -154,12 +155,12 @@ def build_learning_map() -> Dict[str, Any]:
 
 
 # if __name__ == "__main__":
-print("Running learning_map_agent: building learning map from data/ ...")
+logging.debug("Running learning_map_agent: building learning map from data/ ...")
 res = build_learning_map()
-print("Result saved to", OUTPUT_PATH)
-# print a summary
+logging.debug("%s %s", "Result saved to", OUTPUT_PATH)
+# logging.debug a summary
 if isinstance(res, dict) and "nodes" in res:
-	print(f"Parsed map with {len(res['nodes'])} nodes and {len(res.get('edges', []))} edges")
+	logging.debug(f"Parsed map with {len(res['nodes'])} nodes and {len(res.get('edges', []))} edges")
 else:
-	print("Output saved but could not parse JSON automatically.")
+	logging.debug("Output saved but could not parse JSON automatically.")
 

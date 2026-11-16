@@ -1,3 +1,4 @@
+import logging
 import json
 import os
 import re
@@ -88,7 +89,7 @@ def create_nodes_and_edges(roadmap: dict):
     response = {'nodes': [], 'edges': []}
     for i in range(len(roadmap_keys)):
         main_topic = roadmap[roadmap_keys[i]]
-        # print(main_topic)
+        # logging.debug(main_topic)
         response["nodes"].append({
             "id": main_topic["id"],
             "name": main_topic["name"],
@@ -102,7 +103,7 @@ def create_nodes_and_edges(roadmap: dict):
                 "target": next_topic["id"]
             })
         for subtopic in main_topic["subtopics"]:
-            # print(subtopic)
+            # logging.debug(subtopic)
             response["nodes"].append({
                 "id": subtopic["id"],
                 "name": subtopic["name"],
@@ -151,7 +152,7 @@ def generate_json_based_roadmap(data: dict, content: dict):
                 "resources": resources
             })
     for edge in data["edges"]:
-        # print(edge)
+        # logging.debug(edge)
         roadmap["edges"].append({
             "source": edge.get("source", ""),
             "target": edge.get("target", "")
@@ -181,7 +182,7 @@ def create_roadmap(skill_location: str, content: dict):
 def get_roadmap_and_content(skill_location: str):
     skill_name = skill_location.split("/")[-1]
     content = extract_content(skill_location)
-    # print(content)
+    # logging.debug(content)
     # with open("data/" + skill_name + "_parsed_content.json", "w", encoding="utf-8") as f:
     #     json.dump(content, f, indent=2, ensure_ascii=False)
     roadmap = create_roadmap(skill_location, content)
@@ -194,5 +195,5 @@ base_path = "raw_data"
 for folder_name in os.listdir(base_path):
     folder_path = os.path.join(base_path, folder_name)
     if os.path.isdir(folder_path):
-        print(folder_name)
+        logging.debug(folder_name)
         get_roadmap_and_content(base_path + "/" + folder_name)

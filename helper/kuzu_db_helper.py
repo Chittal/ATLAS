@@ -1,3 +1,4 @@
+import logging
 from operator import le
 import kuzu
 import json
@@ -75,14 +76,14 @@ class KuzuSkillGraph:
             )
         """)
         
-        print("KuzuDB comprehensive schema created successfully!")
+        logging.debug("KuzuDB comprehensive schema created successfully!")
     
     def load_skills_from_files(self, skills_list: List[str], data_dir: str = "data"):
         """Load skills from JSON roadmap files into KuzuDB."""
         order_index = 0
         skill_id_mapping = {}
         for skill in skills_list:
-            print(skill)
+            logging.debug(skill)
             if isinstance(skill, list):
                 # Handle nested skill groups
                 for sub_skill in skill:
@@ -100,7 +101,7 @@ class KuzuSkillGraph:
         file_path = os.path.join(data_dir, file_name)
         
         if not os.path.exists(file_path):
-            print(f"Warning: Roadmap file not found for skill: {skill_name} at {file_path}")
+            logging.debug(f"Warning: Roadmap file not found for skill: {skill_name} at {file_path}")
             return skill_id_mapping
         # try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -129,10 +130,10 @@ class KuzuSkillGraph:
         for edge in edges:
             self._insert_edge(edge, skill_id, learning_node_mapping)
         
-        print(f"Loaded skill: {skill_name} with {len(nodes)} nodes and {len(edges)} edges")
+        logging.debug(f"Loaded skill: {skill_name} with {len(nodes)} nodes and {len(edges)} edges")
         return skill_id_mapping
         # except Exception as e:
-        #     print(f"Error loading skill {skill_name}: {str(e)}")
+        #     logging.debug(f"Error loading skill {skill_name}: {str(e)}")
         #     # Still create the skill node even if there's an error
         #     # skill_id = f"skill_{skill_name.replace(' ', '_')}"
         #     # self.conn.execute("""
@@ -156,7 +157,7 @@ class KuzuSkillGraph:
         
         if result.has_next():
             existing_id = result.get_next()[0]
-            print(f"Case 1: Found existing node with same name+description, using ID: {existing_id}")
+            logging.debug(f"Case 1: Found existing node with same name+description, using ID: {existing_id}")
             return existing_id, False
         
         # Case 2: Check if original ID exists but with different name/description
@@ -182,11 +183,11 @@ class KuzuSkillGraph:
                     "name": node_name,
                     "description": description
                 })
-                print(f"Case 2: ID exists with different content, created new ID: {new_id}")
+                logging.debug(f"Case 2: ID exists with different content, created new ID: {new_id}")
                 return new_id, True
             else:
                 # ID exists with same content
-                print(f"Case 2b: ID exists with same content, using original ID: {original_node_id}")
+                logging.debug(f"Case 2b: ID exists with same content, using original ID: {original_node_id}")
                 return original_node_id, False
         
         # Case 3: Everything is new, use original ID
@@ -201,7 +202,7 @@ class KuzuSkillGraph:
             "name": node_name,
             "description": description
         })
-        # print(f"Case 3: All new, created node with original ID: {original_node_id}")
+        # logging.debug(f"Case 3: All new, created node with original ID: {original_node_id}")
         return original_node_id, True
     
     def handle_resource(self, title, url, resource_type):
@@ -226,7 +227,7 @@ class KuzuSkillGraph:
         
         if result.has_next():
             existing_id = result.get_next()[0]
-            # print(f"Resource exists, using ID: {existing_id}")
+            # logging.debug(f"Resource exists, using ID: {existing_id}")
             return existing_id, False
         
         # Create new resource
@@ -244,7 +245,7 @@ class KuzuSkillGraph:
             "url": url,
             "type": resource_type
         })
-        # print(f"Created new resource with ID: {new_resource_id}")
+        # logging.debug(f"Created new resource with ID: {new_resource_id}")
         return new_resource_id, True
     
     def _insert_learning_node(self, node: Dict[str, Any], skill_id: str):
@@ -316,7 +317,7 @@ class KuzuSkillGraph:
             "to_id": to_skill
         })
         
-        print(f"Added skill connection: {from_skill} -> {to_skill}")
+        logging.debug(f"Added skill connection: {from_skill} -> {to_skill}")
     
     def add_skill_connections_from_progression(self, skill_id_mapping: Dict[str, str]):
         """Add skill connections based on logical learning progression from the skills list."""
@@ -470,9 +471,9 @@ class KuzuSkillGraph:
             try:
                 self.add_skill_connection(skill_id_mapping[from_skill], skill_id_mapping[to_skill])
             except Exception as e:
-                print(f"Warning: Could not add connection {from_skill} -> {to_skill}: {str(e)}")
+                logging.debug(f"Warning: Could not add connection {from_skill} -> {to_skill}: {str(e)}")
         
-        print(f"Added {len(connections)} skill connections based on learning progression")
+        logging.debug(f"Added {len(connections)} skill connections based on learning progression")
     
     def get_skill_info(self, skill_name: str) -> Dict[str, Any]:
         """Retrieve information for a specific skill."""
@@ -681,7 +682,7 @@ class KuzuSkillGraph:
                 })
             return skills
         except Exception as e:
-            print(f"Error getting skill prerequisites by name: {e}")
+            logging.debug(f"Error getting skill prerequisites by name: {e}")
             return []
 
     def get_skill_next_skills(self, skill_id: str) -> List[Dict[str, Any]]:
@@ -744,11 +745,11 @@ class KuzuSkillGraph:
                 row = res.get_next()
                 for node in row[0]["_nodes"]:
                     path.append({"id": node["id"], "name": node["name"]})
-            print("=================================")
-            print("Path objects:", path)
-            print("=================================")
+            logging.debug("=================================")
+            logging.debug("%s %s", "Path objects:", path)
+            logging.debug("=================================")
             if path:
-                print(f"Found path with {N} hops")
+                logging.debug(f"Found path with {N} hops")
                 return path
         return None
     
@@ -781,13 +782,13 @@ class KuzuSkillGraph:
                 })
             return learning_nodes
         except Exception as e:
-            print(f"Error getting learning nodes by skill name: {e}")
+            logging.debug(f"Error getting learning nodes by skill name: {e}")
             return []
 
     def get_resources_by_learning_node_id(self, learning_node_id: str) -> List[Dict[str, Any]]:
         """Get resources for a specific learning node."""
         try:
-            print(f"Getting resources for learning node id: {learning_node_id}")
+            logging.debug(f"Getting resources for learning node id: {learning_node_id}")
             result = self.conn.execute("""
                 MATCH (l:LearningNode {id: $learning_node_id})-[:HAS_RESOURCE]->(r:Resource)
                 RETURN r.id, r.title, r.url, r.type
@@ -804,7 +805,7 @@ class KuzuSkillGraph:
                 })
             return resources
         except Exception as e:
-            print(f"Error getting resources by learning node id: {e}")
+            logging.debug(f"Error getting resources by learning node id: {e}")
             return []
     
     def get_skill_edges(self, skill_name: str) -> List[Dict[str, Any]]:
@@ -824,7 +825,7 @@ class KuzuSkillGraph:
                 })
             return edges
         except Exception as e:
-            print(f"Error getting skill edges: {e}")
+            logging.debug(f"Error getting skill edges: {e}")
             return []
     
     def close(self):

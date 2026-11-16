@@ -1,3 +1,4 @@
+import logging
 from langchain_groq import ChatGroq
 from langchain_core.messages import (
     SystemMessage,
@@ -35,7 +36,7 @@ class GroqClient:
                 top_p=0.95
             )
         except Exception as e:
-            print(f"Warning: Could not initialize Groq with model '{self.model}': {e}")
+            logging.debug(f"Warning: Could not initialize Groq with model '{self.model}': {e}")
             # Fallback to a common model
             self.model = "llama-3.1-8b-instant"
             self.llm = ChatGroq(
@@ -92,7 +93,7 @@ class GroqClient:
             response = self.llm.invoke(messages)
             return response.content
         except Exception as e:
-            print(f"Error in Groq chat_simple: {e}")
+            logging.debug(f"Error in Groq chat_simple: {e}")
             return f"I encountered an error: {str(e)}"
 
     def bind_tools(self, tools: list[dict]):

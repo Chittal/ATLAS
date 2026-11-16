@@ -1,3 +1,4 @@
+import logging
 from fastapi import Request, HTTPException, APIRouter
 from fastapi.responses import RedirectResponse, HTMLResponse
 from config import app_config
@@ -274,5 +275,5 @@ async def get_user_tags(request: Request):
     # except HTTPException:
     #     raise
     # except Exception as e:
-    #     print(f"Error getting tags: {e}")  # Debug logging
+    #     logging.debug(f"Error getting tags: {e}")  # Debug logging
     #     raise HTTPException(status_code=500, detail=f"Error getting tags: {str(e)}")

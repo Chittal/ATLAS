@@ -1,8 +1,9 @@
+import logging
 import json
 from config import app_config
 # from llm.ollama import OllamaClient
-from llm.bedrock import BedrockClient
-# from llm.litellm import LiteLLMClient
+# from llm.bedrock import BedrockClient
+from llm.litellm import LiteLLMClient
 from schemas.agent import AgentState
 from langgraph.graph import StateGraph, START, END
 from helper.kuzu_db_helper import KuzuSkillGraph
@@ -12,8 +13,8 @@ class PersonalizedRoutePlanningAgent:
         # Initialize config instance and use it for OllamaClient
 
         # self.llm = OllamaClient(model=app_config.model)
-        # self.llm = LiteLLMClient(model=app_config.model)
-        self.llm = BedrockClient(model=app_config.model)
+        self.llm = LiteLLMClient(model=app_config.model)
+        # self.llm = BedrockClient(model=app_config.model)
         self.graph = None
         # Use injected shared instance if provided; otherwise, create one
         self.kuzu_db_helper = kuzu_helper if kuzu_helper is not None else KuzuSkillGraph()
@@ -21,8 +22,8 @@ class PersonalizedRoutePlanningAgent:
         # self.llm.bind_tools(tools)
     
     def prerequisite(self, state: AgentState):
-        print("I AM AT PRE-REQUISITE=============")
-        print("State", state)
+        logging.debug("I AM AT PRE-REQUISITE=============")
+        logging.debug("%s %s", "State", state)
         if state["category"] != "PREREQUISITE":
             return state
         target_skill = state["target_skill"]
@@ -32,7 +33,7 @@ class PersonalizedRoutePlanningAgent:
             prerequisites = ", ".join(prerequisites)
         else:
             prerequisites = "No prerequisites found"
-        print("Prerequisites IN DATABASE===========", prerequisites)
+        logging.debug("%s %s", "Prerequisites IN DATABASE===========", prerequisites)
         prompt = f"""
         You are a helpful assistant that provides the prerequisites for a given skill.
         I will provide you with a list of prerequisites already in the database for the target skill.
@@ -53,7 +54,7 @@ class PersonalizedRoutePlanningAgent:
     
     # @langchain_tool
     # def skill_details(self, state: AgentState):
-    #     print("I AM AT SKILL DETAILS=============")
+    #     logging.debug("I AM AT SKILL DETAILS=============")
     #     target_skill = state["target_skill"]
     #     skill_details = self.kuzu_db_helper.get_skill_details_by_name(target_skill)
     #     if skill_details:
@@ -73,7 +74,7 @@ class PersonalizedRoutePlanningAgent:
 
     def classify_query(self, state: AgentState):
         try:
-            print("I AM AT CLASSIFY QUERY=============")
+            logging.debug("I AM AT CLASSIFY QUERY=============")
             # - SKILL_DETAILS: What is the details of this skill?, what is a skill? "SKILL_DETAILS" | 
             prompt = f"""
             You are a helpful assistant that classifies user message into one of the following categories:
@@ -92,13 +93,13 @@ class PersonalizedRoutePlanningAgent:
             """
             response = self.llm.chat_simple(prompt)
             response = json.loads(response)
-            print("CATEGORY===========", response["category"])
+            logging.debug("%s %s", "CATEGORY===========", response["category"])
             state["category"] = response["category"].upper()
             state["step"] = "classify_query"
             state["status"] = "success"
             return state
         except Exception as e:
-            print("CLASSIFY QUERY ERROR===========", e)
+            logging.debug("%s %s", "CLASSIFY QUERY ERROR===========", e)
             state["step"] = "classify_query"
             state["status"] = "error"
             state["error"] = str(e)
@@ -106,7 +107,7 @@ class PersonalizedRoutePlanningAgent:
 
     def extract_skill_name(self, state: AgentState):
         # try:
-        print("I AM AT EXTRACT SKILL NAME=============")
+        logging.debug("I AM AT EXTRACT SKILL NAME=============")
         if state["category"] not in ["PREREQUISITE", "ROUTE_PLANNING"]:
             return state
         prompt = f"""
@@ -146,7 +147,7 @@ class PersonalizedRoutePlanningAgent:
         Output must be JSON with no additional text. Do not include ```json or ``` in the output.
         """
         response = self.llm.chat_simple(prompt)
-        print("RESPONSE===========", response)
+        logging.debug("%s %s", "RESPONSE===========", response)
         response = json.loads(response)
         start_skill = response.get("start_skill", None)
         target_skill = response.get("target_skill", None)
@@ -155,23 +156,23 @@ class PersonalizedRoutePlanningAgent:
         if target_skill:
             target_skill = target_skill.lower()
         state["start_skill"] = start_skill
-        print("START SKILL===========", state["start_skill"])
+        logging.debug("%s %s", "START SKILL===========", state["start_skill"])
         state["target_skill"] = target_skill
-        print("TARGET SKILL===========", state["target_skill"])
+        logging.debug("%s %s", "TARGET SKILL===========", state["target_skill"])
         state["step"] = "extract_skill_name"
         state["status"] = "success"
         return state
         # except Exception as e:
-        #     print("ERROR===========", e)
+        #     logging.debug("ERROR===========", e)
         #     state["step"] = "extract_skill_name"
         #     state["status"] = "error"
         #     state["error"] = str(e)
         #     return state
     
     def route_planning(self, state: AgentState):
-        print("I AM AT ROUTE PLANNING=============")
+        logging.debug("I AM AT ROUTE PLANNING=============")
         try:
-            print("State", state)
+            logging.debug("%s %s", "State", state)
             if state["category"] != "ROUTE_PLANNING":
                 return state
             target_skill = state["target_skill"]
@@ -186,7 +187,7 @@ class PersonalizedRoutePlanningAgent:
                 path = ", ".join(path_names)
             else:
                 path = "No path found"
-            print("Path IN DATABASE===========", path)
+            logging.debug("%s %s", "Path IN DATABASE===========", path)
             prompt = f"""
             Given this learning path from {start_skill} to {target_skill}:
             {path}
@@ -213,7 +214,7 @@ class PersonalizedRoutePlanningAgent:
 
     def general_query(self, state: AgentState):
         try:
-            print("I AM AT GENERAL QUERY=============")
+            logging.debug("I AM AT GENERAL QUERY=============")
             prompt = f"""
             You are a helpful assistant that answers general queries.
             User message: {{"current_message": {state["current_message"]}, "category": {state["category"]}}}
@@ -232,7 +233,7 @@ class PersonalizedRoutePlanningAgent:
 
     def create_graph(self):
         def map_category_to_node(state: AgentState):
-            print("I AM AT MAP CATEGORY TO NODE=============")
+            logging.debug("I AM AT MAP CATEGORY TO NODE=============")
             category = state["category"]
             if category == "ROUTE_PLANNING":
                 return "route_planning"
@@ -240,7 +241,7 @@ class PersonalizedRoutePlanningAgent:
                 return "prerequisite"
             else:
                 return "general_query"
-        print("creating graph")
+        logging.debug("creating graph")
         graph = StateGraph(AgentState)
 
         graph.add_node("classify_query", self.classify_query)
@@ -278,8 +279,8 @@ class PersonalizedRoutePlanningAgent:
             "target_skill": None,
             "path_objects": []
         }
-        print(initial_state, "initial_state")
+        logging.debug("%s %s", initial_state, "initial_state")
         result = self.graph.invoke(initial_state)
-        print(result, "result")
+        logging.debug("%s %s", result, "result")
         return result
 

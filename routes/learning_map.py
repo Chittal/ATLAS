@@ -1,3 +1,4 @@
+import logging
 from fastapi import Request, HTTPException, APIRouter
 from deps import templates
 import uuid
@@ -12,6 +13,14 @@ router = APIRouter(
     prefix="",
     tags=["Learning Map"],
 )
+
+
+def get_agent(request: Request):
+    """Lazily create the local route planning agent once and reuse it across requests."""
+    if getattr(request.app.state, "agent", None) is None:
+        from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
+        request.app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=request.app.state.kuzu_manager)
+    return request.app.state.agent
 
 @router.get("/api/skill/{skill_id}")
 async def get_skill_details(skill_id: str):
@@ -154,21 +163,21 @@ async def get_learning_graph_by_skill(skill_name: str, user_roadmap_path_id: str
                 try:
                     mapping_rec = progress_helper.pb.collection('user_roadmap_path').get_one(user_roadmap_path_id)
                     roadmap_path_id = getattr(mapping_rec, 'roadmap_path_id', None)
-                    print(f"Resolved roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {roadmap_path_id}")
+                    logging.debug(f"Resolved roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {roadmap_path_id}")
                 except Exception as resolve_err:
-                    print(f"Warning: could not resolve roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {resolve_err}")
+                    logging.debug(f"Warning: could not resolve roadmap_path_id from user_roadmap_path_id {user_roadmap_path_id}: {resolve_err}")
 
             if roadmap_path_id and skill_id:
-                print(f"Updating learning nodes count by ids: {roadmap_path_id}, {skill_id}")
+                logging.debug(f"Updating learning nodes count by ids: {roadmap_path_id}, {skill_id}")
                 progress_helper.update_learning_nodes_count_by_ids(roadmap_path_id, skill_id, len(learning_nodes))
             else:
-                print(f"Updating learning nodes count by name: {skill_name}")
+                logging.debug(f"Updating learning nodes count by name: {skill_name}")
                 progress_helper.update_learning_nodes_count(skill_name, len(learning_nodes))
-            print(f"Learning nodes count updated for {skill_name}")
-            print(f"Learning nodes count: {len(learning_nodes)}")
+            logging.debug(f"Learning nodes count updated for {skill_name}")
+            logging.debug(f"Learning nodes count: {len(learning_nodes)}")
         except Exception as update_error:
             # Don't fail the main request if the count update fails
-            print(f"Warning: Could not update learning nodes count for {skill_name}: {update_error}")
+            logging.debug(f"Warning: Could not update learning nodes count for {skill_name}: {update_error}")
         
         return {
             "skill_name": skill_name,
@@ -216,7 +225,7 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
         admin_pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(admin_pb)
         skills = progress_helper.get_skills_from_user_roadmap_path(user_roadmap_path_id)
-        print(skills, "skills")
+        logging.debug("%s %s", skills, "skills")
         
         if not skills:
             return {"path": [], "edges": []}
@@ -225,7 +234,7 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
         paths = []
         for skill in skills:
             skill_obj = manager.get_skill_by_id(skill["id"])
-            print(skill_obj, "skill_obj")
+            logging.debug("%s %s", skill_obj, "skill_obj")
             if skill_obj:
                 paths.append({
                     "id": skill["id"],
@@ -253,9 +262,9 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
     
     # Fallback to start/end parameters
     elif start and end:
-        print(start, end, "start, end")
+        logging.debug("%s %s %s", start, end, "start, end")
         paths = manager.find_learning_path(start, end)
-        print(paths, "paths")
+        logging.debug("%s %s", paths, "paths")
         if not paths:
             return {"path": [], "edges": []}
 
@@ -285,26 +294,26 @@ async def get_skill_path(start: str = None, end: str = None, user_roadmap_path_i
 @router.post("/api/general/chat/agentcore")
 async def general_chat_agentcore(request: Request):
     """Handle general chat queries from the chat widget."""
-    print("ENDPOINT HIT! /api/general/chat was called!")
+    logging.debug("ENDPOINT HIT! /api/general/chat was called!")
     
     try:
         request_json = await request.json()
         user_message = request_json.get("message", "")
         # user_id = request_json.get("user_id")  # Optional user ID
         
-        print(f"API called with message: '{user_message}'")
-        print(f"Full message dict: {request_json}")
+        logging.debug(f"API called with message: '{user_message}'")
+        logging.debug(f"Full message dict: {request_json}")
         
         # Use AgentCore instead of local agent
-        print("CALLING AGENTCORE AGENT")
+        logging.debug("CALLING AGENTCORE AGENT")
         session_id = str(uuid.uuid4())
         result = await invoke_agent_runtime(user_message, session_id=session_id)
         # Extract the response from the agent result
         if result.get("status") == "success" and result.get("agent_result"):
             agent_result = result.get("agent_result")
-            print(agent_result, "agent_result")
+            logging.debug("%s %s", agent_result, "agent_result")
             assistant_messages = [msg for msg in agent_result["messages"] if msg["role"] == "assistant"]
-            print(assistant_messages, "assistant_messages")
+            logging.debug("%s %s", assistant_messages, "assistant_messages")
             if assistant_messages:
                 ai_response = assistant_messages[-1]["content"]
             else:
@@ -321,15 +330,15 @@ async def general_chat_agentcore(request: Request):
                 "status": result.get("status")
             }
         }
-        print(result, "result")
+        logging.debug("%s %s", result, "result")
         
         # If this is a route planning query, get the path data for highlighting
         if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
-            print("I executed")
+            logging.debug("I executed")
             try:
                 path_objects = result.get("path_objects")
-                print(path_objects, "path_objects")
-                print(f"Route planning path objects: {path_objects}")
+                logging.debug("%s %s", path_objects, "path_objects")
+                logging.debug(f"Route planning path objects: {path_objects}")
                 
                 # Create edges for the path
                 edges = []
@@ -346,22 +355,20 @@ async def general_chat_agentcore(request: Request):
                     "path": path_objects,
                     "edges": edges
                 }
-                print(f"Path data for highlighting: {path_data}")
+                logging.debug(f"Path data for highlighting: {path_data}")
                 response_data["path_data"] = path_data
             except Exception as e:
-                print(f"Error creating path data: {e}")
+                logging.debug(f"Error creating path data: {e}")
         
         return response_data
         
     except Exception as e:
-        print(f"Error in general_chat: {e}")
+        logging.debug(f"Error in general_chat: {e}")
         # Fallback to local agent if AgentCore fails
-        print("Falling back to local agent...")
+        logging.debug("Falling back to local agent...")
         
         try:
-            from agents.personalized_route_planning_agent import PersonalizedRoutePlanningAgent
-            request.app.state.agent = PersonalizedRoutePlanningAgent(kuzu_helper=request.app.state.kuzu_manager)
-            local_result = request.app.state.agent.execute_graph(user_message)  
+            local_result = get_agent(request).execute_graph(user_message)
             # Extract the response from the local agent result
             if local_result.get("status") == "success" and local_result.get("messages"):
                 assistant_messages = [msg for msg in local_result["messages"] if msg["role"] == "assistant"]
@@ -383,11 +390,11 @@ async def general_chat_agentcore(request: Request):
                 }
             }
             if local_result.get("category") == "ROUTE_PLANNING" and local_result.get("path_objects"):
-                print("I executed")
+                logging.debug("I executed")
                 try:
                     path_objects = local_result.get("path_objects")
-                    print(path_objects, "path_objects")
-                    print(f"Route planning path objects: {path_objects}")
+                    logging.debug("%s %s", path_objects, "path_objects")
+                    logging.debug(f"Route planning path objects: {path_objects}")
                     
                     # Create edges for the path
                     edges = []
@@ -404,14 +411,14 @@ async def general_chat_agentcore(request: Request):
                         "path": path_objects,
                         "edges": edges
                     }
-                    print(f"Path data for highlighting: {path_data}")
+                    logging.debug(f"Path data for highlighting: {path_data}")
                     response_data["path_data"] = path_data
                 except Exception as e:
-                    print(f"Error creating path data: {e}")
+                    logging.debug(f"Error creating path data: {e}")
         
             return response_data
         except Exception as fallback_error:
-            print(f"Fallback agent also failed: {fallback_error}")
+            logging.debug(f"Fallback agent also failed: {fallback_error}")
             return {
                 "ai_response": "I'm sorry, I'm having trouble processing your request right now. Please try again later.",
                 "timestamp": "2024-01-01T00:00:00Z",
@@ -426,16 +433,16 @@ async def general_chat_agentcore(request: Request):
 @router.post("/api/general/chat")
 async def general_chat(request: Request):
     """Handle general chat queries from the chat widget."""
-    print("ENDPOINT HIT! /api/skill/general/chat was called!")
+    logging.debug("ENDPOINT HIT! /api/skill/general/chat was called!")
     # try:
     request_json = await request.json()
     user_message = request_json.get("message", "")
-    print(f"API called with message: '{user_message}'")
-    print(f"Full message dict: {request_json}")
+    logging.debug(f"API called with message: '{user_message}'")
+    logging.debug(f"Full message dict: {request_json}")
     # Use the global LangGraph agent
-    print("CALLING LANGGRAPH AGENT")
-    result = request.app.state.agent.execute_graph(user_message)
-    print("Agent result:", result)
+    logging.debug("CALLING LANGGRAPH AGENT")
+    result = get_agent(request).execute_graph(user_message)
+    logging.debug("%s %s", "Agent result:", result)
     
     # Extract the response from the agent result
     if result.get("status") == "success" and result.get("messages"):
@@ -461,7 +468,7 @@ async def general_chat(request: Request):
     if result.get("category") == "ROUTE_PLANNING" and result.get("path_objects"):
         try:
             path_objects = result.get("path_objects")
-            print(f"Route planning path objects: {path_objects}")
+            logging.debug(f"Route planning path objects: {path_objects}")
             
             # Create edges for the path
             edges = []
@@ -478,10 +485,10 @@ async def general_chat(request: Request):
                 "path": path_objects,
                 "edges": edges
             }
-            print(f"Path data for highlighting: {path_data}")
+            logging.debug(f"Path data for highlighting: {path_data}")
             response_data["path_data"] = path_data
         except Exception as e:
-            print(f"Error creating path data: {e}")
+            logging.debug(f"Error creating path data: {e}")
     
     return response_data
     # except Exception as e:
@@ -624,14 +631,14 @@ async def roadmap_progression_page(request: Request):
 async def home_page(request: Request):
     """Home page with sidebar layout"""
     user = get_current_user(request)
-    print(f"Main page access - User: {user}")  # Debug logging
+    logging.debug(f"Main page access - User: {user}")  # Debug logging
     
     # Redirect to login if no authenticated user
     if not user:
-        print("No user found, redirecting to login")  # Debug logging
+        logging.debug("No user found, redirecting to login")  # Debug logging
         return RedirectResponse(url=f"{app_config.url_prefix}/login", status_code=302)
     
-    print(f"User authenticated: {user.email}")  # Debug logging
+    logging.debug(f"User authenticated: {user.email}")  # Debug logging
     return templates.TemplateResponse("skills_graph.html", {
         "request": request,
         "user": user,
@@ -812,12 +819,12 @@ async def get_user_roadmaps(request: Request):
         admin_pb = get_pb_admin_client()
         progress_helper = UserProgressHelper(admin_pb)
         user_paths = progress_helper.get_user_roadmap_paths(user.id)
-        print(user_paths, "user_paths")
+        logging.debug("%s %s", user_paths, "user_paths")
 
         roadmaps: list[dict] = []
         for path in user_paths:
             roadmap_path_id = path.get("roadmap_path_id")
-            print(roadmap_path_id, "roadmap_path_id")
+            logging.debug("%s %s", roadmap_path_id, "roadmap_path_id")
 
             # Count skills for this roadmap path using totalItems (efficient)
             try:
@@ -834,7 +841,7 @@ async def get_user_roadmaps(request: Request):
                 rp_name = getattr(rp, 'name', '')
                 roadmap_id = getattr(rp, 'roadmap_id', '')
             except Exception:
-                print("Error fetching roadmap path details")
+                logging.debug("Error fetching roadmap path details")
                 rp_name = ''
                 roadmap_id = ''
 
@@ -851,5 +858,5 @@ async def get_user_roadmaps(request: Request):
 
         return {"success": True, "roadmaps": roadmaps}
     except Exception as e:
-        print(f"Error in get_user_roadmaps: {e}")
+        logging.debug(f"Error in get_user_roadmaps: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to load user roadmaps: {str(e)}")
